@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<h2>
+    var let 优缺点
+</h2>
+
+</body>
+<script>
+    //声明提升 =》先上车后买票
+    // console.log(name1)  //undefined
+    // var name1 = 'xiaoming'
+
+    // 没有局部作用域 = 》 红杏出墙
+    // function fn2() {
+    //     for (var i = 0; i < 5; i++) {
+    //         console.log("ii", i)
+    //     }
+    //     console.log("i", i)
+    // }
+    // fn2()
+
+    //声明覆盖 =》套牌车
+    // var name2 ='大郎'
+    // var name2 ='西门庆'
+    // let name2 = '大郎'
+    // let name2 = '西门庆'
+    // console.log("name2", name2)
+
+    var a;
+    console.log(a === undefined);
+    a=10;
+    function foo() {
+        console.log([a,i]);
+        var a=20;
+        for(var i=0;i<a;i++) {
+            //do
+        }
+        console.log([a,i])
+    }
+    foo();
+
+    // console.log(age);  // ReferenceError: age is not defined
+    // let age = 3;
+
+</script>
+
+</html>

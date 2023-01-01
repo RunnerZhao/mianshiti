@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * @param {Range[]} intervals - 若干个区间
+         * @return {Range[]} 合并后的区间
+         */
+        function merge(intervals) {
+            // 现在数组已经按对象中的start属性排序好了
+            const arr1 = intervals.sort(function (a, b) {
+                return a.start - b.start;
+            });
+            return arr1.reduce((acc, cur, index) => {
+                // 获取上一个对象
+                if (index > 0) {
+                    let prev;
+                    if (acc.length === 0) {
+                        prev = arr1[index - 1];
+                    } else {
+                        prev = acc[index - 2];
+                    }
+                    if (cur.start <= prev.end) {
+                        acc.push({ start: prev.start, end: Math.max(cur.end, prev.end) });
+                    } else {
+                        acc.push(cur);
+                    }
+                }
+                return acc;
+            }, [])
+        }
+        // test case
+        const a = { start: 1, end: 6 };
+        const b = { start: 4, end: 7 };
+        const c = { start: 7, end: 8 };
+
+        console.log(merge([b, c, a])); // [{ start: 3, end: 6 }, { start: 7, end: 8 }]
+    </script>
+</body>
+
+</html>

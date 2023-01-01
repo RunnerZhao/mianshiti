@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 {
+            line-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1" style="border:1px solid red">
+        aaa
+    </div>
+    <script>
+        // class A {
+        //     constructor(a) {
+        //         this.a = a;
+        //     }
+        //     say() {
+        //         console.log(1223);
+        //     }
+        // }
+        // const a = new A(10);
+        // a.say();
+        function A(a) {
+            this.a = a;
+        }
+        A.prototype.say = function () {
+            console.log(123);
+        }
+        const a = new A(10);
+        a.say();
+    </script>
+</body>
+
+</html>

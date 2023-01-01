@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app {
+            border: 1px solid red;
+            line-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        aaa
+    </div>
+    <script>
+        /**
+         * @param {Range} first - 第一个区间
+         * @param {Range} second - 第二个区间
+         * @return {boolean} 是否重叠
+         */
+        function isOverlapped(first, second) {
+            if (second.start > first.start && second.start < first.end) {
+                return true;
+            } else if (second.start < first.start && second.end < first.end && second.end > first.start) {
+                return true;
+            } else {
+                return false
+            }
+        }
+        //1.判断重叠。如果start1<start2<end1
+
+
+        // test case
+        const a = { start: 3, end: 5 };
+        const b = { start: 4, end: 6 };
+        const c = { start: 7, end: 8 };
+
+        console.log(isOverlapped(b, a));
+        console.log(isOverlapped(c, b));
+    </script>
+</body>
+
+</html>

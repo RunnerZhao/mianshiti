@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>v-for和v-if谁的优先级最高？</h1>
+        <p v-for="(child,index) in acitiveUser" :key="child.index">{{child.aa}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#demo',
+            data() {
+                return {
+                    children: [{ title: 'foo', ch: 'bar' }, { aa: 'aa' }]
+                }
+            },
+            computed: {
+                acitiveUser() {
+                    return this.children.filter((item) => {
+                        return item.aa
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
