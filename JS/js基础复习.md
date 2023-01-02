@@ -327,7 +327,8 @@ let p = new Proxy(target,handler);
 
 - 15.数组有哪些方法？
 
->map()、reduce()、fiter()、some()、erery()、forEach()、push()、pop()、unshift、shift()、fill()、copyWith()、sort()、reverse()、splice()、slice()、concat()、join()、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
+>map()、reduce()、fiter()、some()、erery()、forEach()、shift()数组头部删除、pop()数组尾部删除、unshift()向数组的开头添加一个或更多元素，并返回新的长度 、
+>push()数组的末尾添加一个或多个元素，并返回新的长度、 fill()、copyWith()、sort()、reverse()、splice()、slice()、concat()、join()、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
 
 - 16.for-in和for-of的区别？
 
