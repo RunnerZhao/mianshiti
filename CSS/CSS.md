@@ -63,9 +63,9 @@ margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇�
 - 7 水平垂直居中 
 1、父元素设置 display: flex; justify-content 水平方向: center; align-items 垂直方向: center; ，唯一的子元素就能水平垂直居中
 2、父级元素设置 flex，子元素设置 margin: auto;   
-3、子元素 position: relative; left: 50%; top: 50%; transform: translate(-50%, -50%);
-4、父元素 display: table-cell; text-align: center; vertical-align: middle;
-5、margin: auto; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+3、子元素 position: relative; left: 50%; top: 50%; transform: translate(-50%, -50%); 
+4、margin:auto+absolute + 四个方向的值相等 一般用于弹出层，需要设置弹出层的宽高 :.son:width:100px;height:100px; margin: auto; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+5、父元素 display: table-cell; text-align: center; vertical-align: middle;
 6、网格布局 父元素display: grid; 子元素 justify-self: center;水平方向    align-self: center;垂直方向
   [CSS 不定宽高的垂直水平居中](https://juejin.cn/post/6844903933350150158#heading-4)
 
