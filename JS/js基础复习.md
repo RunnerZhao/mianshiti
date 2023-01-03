@@ -47,6 +47,14 @@ nick.toString
 ```
 按理说， nick是 Person构造函数生成的实例，而 Person的 prototype并没有 toString方法，那么为什么， nick能获取到 toString方法？
 这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
+画出下面代码的原型链图
+```javascript
+class A {}
+class B extends A {}
+const b = new B();
+```
+![原型链图](.js基础复习_images/原型链图.png)
+
 
 构造函数分为 实例成员 和 静态成员 [ js原型及原型链](https://juejin.cn/post/6844904093828251662)
 ```javascript

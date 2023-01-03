@@ -95,6 +95,35 @@ rem 是相对于根字体的大小。1rem等于根字体大小px
 行内元素不能设置宽高，他的大小由内容撑起来的
 -12如何让浏览器支持小字体 
 谷歌最小是12px   transform:scale(0.8)
+-13 移动端1px解决方案
+1px问题产生的原因
+从移动端的角度说个具体的场景，以iphone6为例。
+iphone6的屏幕宽度为375px，设计师做的视觉稿一般是750px，也就是2x，这个时候设计师在视觉稿上画了1px的边框，于是你就写了“border-width:1px”，so...1px边框问题产生了。
+对设计师来说它的1px是相对于750px的（物理像素），对你来说你的1px是相对于375px的（css像素）“实际上你应该是border-width:0.5px”。
+媒体查询 + 伪元素 + transfrom
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+.border-top::after {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+border-top: 1px solid #000;
+transform-origin: left top;
+
+transform: scaleY(.5);
+}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) {
+.border-top::after {
+/* 省略无关代码 */
+transform: scaleY(1 / 3);
+}
+}
+
+
+
 
 
 
