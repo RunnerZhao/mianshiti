@@ -1,41 +1,50 @@
-- let var 声明提升：把声明提升到作用域的顶部，即提升到所有可执行代码之前。 （作用域分为全局作用域、函数作用域、块级作用域，此处仅指前两个作用域。） 声明提升分为“变量”声明提升、“函数”声明提升。（类定义不能提升）
-  提升会导致一些奇怪现象
-  https://zhuanlan.zhihu.com/p/519406888
+- let var 声明提升：把声明提升到作用域的顶部，即提升到所有可执行代码之前。 （作用域分为全局作用域、函数作用域、块级作用域，此处仅指前两个作用域。）
+  声明提升分为“变量”声明提升、“函数”声明提升。（类定义不能提升） 提升会导致一些奇怪现象
+ [](https://zhuanlan.zhihu.com/p/519406888)
 
 -作用域 变量 作用域链 [原生js作用域以及变量提升和函数提升的理解](https://blog.csdn.net/weixin_39755186/article/details/93161335)
-作用域 一：全局作用域：在整个script标签或者一个单独的js文件内起作用 二：函数作用域（局部作用域）：只能在函数内部起效果和作用 三：块级作用域：在for(){},if(){},else{}，try{},cath()
-{}等等的花括号{}内部的作用域，ES6中新增了块级作用域 在块级作用域中，var定义的变量是全局变量，let定义的变量是局部变量。而在局部作用域中，无论是用var定义的变量还是用let定义的变量都是局部变量。
-无论是在块级作用域还是局部作用域，省略变量前面的var或者let都会变成一个全局变量。 注意：①对象的{}不属于块级作用域，像for(){},if(){},else{}，try{},cath(){}等等的花括号才是块级作用域
-②对象的{}的作用域 是什么作用域取决于对象所处的作用域，比如对象在全局作域 下定义的，那么对象的{}的作用域就是全局作用域 全局变量和局部变量 根据作用域的不同，变量可以分为全局变量和局部变量。
+作用域 一：全局作用域：在整个script标签或者一个单独的js文件内起作用 二：函数作用域（局部作用域）：只能在函数内部起效果和作用
+三：块级作用域：在for(){},if(){},else{}，try{},cath(){}等等的花括号{}内部的作用域，ES6中新增了块级作用域 
+在块级作用域中，var定义的变量是全局变量，let定义的变量是局部变量。而在局部作用域中，无论是用var定义的变量还是用let定义的变量都是局部变量。
+无论是在块级作用域还是局部作用域，省略变量前面的var或者let都会变成一个全局变量。
+注意：①对象的{}不属于块级作用域，像for(){},if(){},else{}，try{},cath(){}等等的花括号才是块级作用域
+②对象的{}的作用域 是什么作用域取决于对象所处的作用域，比如对象在全局作域 下定义的，那么对象的{}的作用域就是全局作用域 
+全局变量和局部变量 根据作用域的不同，变量可以分为全局变量和局部变量。
 （1）全局变量：在全局作用域下的变量，在全局下都可以使用，包括函数内部。并且，全局变量只有浏览器关闭的时候才会销毁，比较占内存资源。
-（2）局部变量：在局部作用域下的变量，或者说成在函数内部的变量。并且，局部变量在程序执行完毕后就会立即销毁，比较节约内存资源。 注意： （1）在函数内部没有声明就直接赋值的变量是全局变量 （2）函数的形参可以看作是局部变量 作用域链:
-内部作用域访问外部作用域的变量，采取的是链式查找的方式来决定取哪个值，这种结构我们称为作用域链，采取就近原则的方式向上一级一级的作用域来查找变量值， 最顶级是全局作用域，如果到全局作用域也没找值，那么就会报错。
+（2）局部变量：在局部作用域下的变量，或者说成在函数内部的变量。并且，局部变量在程序执行完毕后就会立即销毁，比较节约内存资源。
+注意： （1）在函数内部没有声明就直接赋值的变量是全局变量 （2）函数的形参可以看作是局部变量 
+作用域链:内部作用域访问外部作用域的变量，采取的是链式查找的方式来决定取哪个值，这种结构我们称为作用域链，采取就近原则的方式向上一级一级的作用域来查找变量值， 最顶级是全局作用域，如果到全局作用域也没找值，那么就会报错。
 
-1)基本数据类型：String Number Boolean Null Undefinded Symbel Bigint 引用数据类型 Object Array Function undefined 表示未定义的变量。null
-值表示一个空对象指针 undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。典型用法是： -变量被声明了，但没有赋值时，就等于 undefined。 -调用函数时，应该提供的参数没有提供，该参数等于undefined。
--对象没有赋值的属性，该属性的值为 undefined。 -函数没有返回值时，默认返回 undefined。 null表示"没有对象"，即该处不应该有值。，典型的用法如下 -作为函数的参数，表示该函数的参数不是对象。
--作为对象原型链的终点。 为什么typeof null 是object 第一版的 JavaScript 是用 32 位比特来存储值的，且是通过值的低 1 位或 3 位来识别类型的，对象的类型标签是 000 。由于 null
+1)基本数据类型：String Number Boolean Null Undefinded Symbel Bigint 引用数据类型 Object Array Function undefined 表示未定义的变量。
+null 值表示一个空对象指针 undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。
+典型用法是： -变量被声明了，但没有赋值时，就等于 undefined。 -调用函数时，应该提供的参数没有提供，该参数等于undefined。
+-对象没有赋值的属性，该属性的值为 undefined。 -函数没有返回值时，默认返回 undefined。 
+null表示"没有对象"，即该处不应该有值。，典型的用法如下 -作为函数的参数，表示该函数的参数不是对象。 -作为对象原型链的终点。 
+为什么typeof null 是object 第一版的 JavaScript 是用 32 位比特来存储值的，且是通过值的低 1 位或 3 位来识别类型的，对象的类型标签是 000 。由于 null
 代表的是空指针（低三位也是 000 ），因此，null 的类型标签是 000，typeof null 也因此返回 "object"。
 
 2)判断数组的方法 • Object.prototype.toString.call()。 每一个继承 Object 的对象都有 toString 方法，如果 toString 方法没有重写的话，会返回 [Object type]，其中
-type 为对象的类型 • Array.isArray()
-const a = [];const b = {};Array.isArray(a);//trueArray.isArray(b);//false • instanceof。instanceof 运算符可以用来判断某个构造函数的
-prototype 属性所指向的對象是否存在于另外一个要检测对象的原型链上。因为数组的构造函数是 Array，所以可以通过以下判断。注意：因为数组也是对象，所以 a instanceof Object 也为 true const a
-= [];const b = {};console.log(a instanceof Array);//true console.log(a instanceof Object)
-;//true,在数组的原型链上也能找到Object构造函数console.log(b instanceof Array);//false • constructor。通过构造函数实例化的实例，拥有一个 constructor 属性。
-function B() {};let b = new B();console.log(b.constructor === B) // true复制代码 而数组是由一个叫 Array 的函数实例化的。所以可以 let c = []
-;console.log(c.constructor === Array) // true复制代码 注意：constructor 是会被改变的。所以不推荐这样判断 isArray >
-Object.prototype.toString.call() > instanceof > constructor
+type 为对象的类型 
+• Array.isArray()
+const a = [];const b = {};Array.isArray(a);//trueArray.isArray(b);//false 
+• instanceof。 instanceof 运算符可以用来判断某个构造函数的 prototype 属性所指向的對象是否存在于另外一个要检测对象的原型链上。因为数组的构造函数是 Array，所以可以通过以下判断。
+注意：因为数组也是对象，所以 a instanceof Object 也为 true 
+const a = [];const b = {};console.log(a instanceof Array);//true console.log(a instanceof Object);//true,
+在数组的原型链上也能找到Object构造函数console.log(b instanceof Array);//false 
+• constructor。通过构造函数实例化的实例，拥有一个 constructor 属性。
+function B() {};let b = new B();console.log(b.constructor === B) // true 而数组是由一个叫 Array 的函数实例化的。所以可以 let c = []
+;console.log(c.constructor === Array) // true 注意：constructor 是会被改变的。所以不推荐这样判断 
+isArray >Object.prototype.toString.call() > instanceof > constructor
 [帮你彻底搞懂JS中的prototype、__proto__与constructor（图解）](https://chen-cong.blog.csdn.net/article/details/81211729?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&utm_relevant_index=1)
 
-1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 const a = Symbol('描述啊'); String(a) // "Symbol(描述啊)"
-a.toString() // "Symbol(描述啊)"  a.description // "描述啊"
+1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 
+const a = Symbol('描述啊'); String(a) // "Symbol(描述啊)"  a.toString() // "Symbol(描述啊)"  a.description // "描述啊"
 2、用处 一，避免对象的键被覆盖。Symbol用于对象的属性名时，能保证对象不会出现同名的属性。这对于一个对象由多个模块构成的情况非常有用，能防止某一个键被不小心改写或覆盖。
-二，避免魔术字符串。魔术字符串的诠释是：在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值。风格良好的代码，应该尽量消除魔术字符串，改由含义清晰的变量代替。 3 方法 Symbol.for()
-方法接受一个字符串作为参数，然后全局搜索有没有以该参数作为描述值的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建一个以该字符串为名称的 Symbol 值，并将其注册到全局 Symbol.keyFor()
-方法返回一个已全局注册的 Symbol 类型值的描述值，如果该 Symbol 类型值未全局注册，则返回undefined。 它类似于通过Symbol值的属性description直接获取描述内容
+二，避免魔术字符串。魔术字符串的诠释是：在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值。风格良好的代码，应该尽量消除魔术字符串，改由含义清晰的变量代替。 
+3 方法 Symbol.for()方法接受一个字符串作为参数，然后全局搜索有没有以该参数作为描述值的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建一个以该字符串为名称的 Symbol 值，并将其注册到全局
+Symbol.keyFor()方法返回一个已全局注册的 Symbol 类型值的描述值，如果该 Symbol 类型值未全局注册，则返回undefined。 它类似于通过Symbol值的属性description直接获取描述内容
 
-原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显示原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
+原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显式原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
 ```javascript
 function Person(name) {
     this.name = name
@@ -46,7 +55,8 @@ nick.toString
 // ƒ toString() { [native code] }
 ```
 按理说， nick是 Person构造函数生成的实例，而 Person的 prototype并没有 toString方法，那么为什么， nick能获取到 toString方法？
-这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
+这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。
+构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
 画出下面代码的原型链图
 ```javascript
 class A {}
