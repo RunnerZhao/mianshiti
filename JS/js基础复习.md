@@ -57,6 +57,7 @@ nick.toString
 按理说， nick是 Person构造函数生成的实例，而 Person的 prototype并没有 toString方法，那么为什么， nick能获取到 toString方法？
 这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。
 构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
+
 画出下面代码的原型链图
 ```javascript
 class A {}
@@ -108,11 +109,9 @@ class Student extends Person{
 > Proxy对象用于创建一个对象的代理，从而实现基本的拦截和自定义（属性查找，赋值，枚举，函数调用等）。
 
 > 语法：
-
 ```javascript
 let p = new Proxy(target, handler);
 ```
-
 > 参数：target：要使用Proxy包装的目标对象。handler：一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行操作时代理p的行为。
 
 > Proxy本质上是一个构造函数。
@@ -148,12 +147,12 @@ console.log(obj);
 console.log(obj1);
 ```
 
-> 上面这种方式不能处理undefined，function对象和Sumbol类型，原因是JSON.stringify()在处理这些类型的时候，这些类型会被忽略。
+> 上面这种方式不能处理undefined，function对象和Symbol类型，原因是JSON.stringify()在处理这些类型的时候，这些类型会被忽略。
 
 > 2.递归，对每层数据进行遍历然后进行拷贝。
 
 ```javascript
-        const obj = {
+const obj = {
     age: 20,
     friends: ['小花', '小丽']
 }
