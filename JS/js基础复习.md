@@ -353,9 +353,9 @@ function fn(f) {
 
 - 12.数组方法slice和splice的区别？
 
-> splice从数组固定位置删除添加元素。会改变原数组。
+> splice array.splice(startingIndex, length, ...items) 从数组固定位置对原数组进行删除添加操作。会改变原数组。返回的是startIndex和length取出的值组成的数组
 
-> slice从数组中提取一部分元素。
+> slice array.slice(startingIndex, endingIndex) 从数组中提取一部分元素组成数组并返回。不会改变原数组
 
 - 13.类数组转换成数组的方法？
 
