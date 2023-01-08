@@ -13,8 +13,7 @@
 
 - 3.BFC相关原理及特性？ [什么是BFC，他有什么用？](https://blog.csdn.net/sqLeiQ/article/details/125261564)
 
->BFC(Block Formatting Context)：块级格式化上下文，是web页面的可视化CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
-它有一套渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
+>BFC(Block Formatting Context)：块级格式化上下文，BFC是一块块独立的渲染区域，它有一套渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
 > BFC的布局规则：
 1 内部的Box会在垂直方向，一个接一个地放置。
 2 Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠。
