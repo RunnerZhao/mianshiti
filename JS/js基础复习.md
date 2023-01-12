@@ -30,7 +30,7 @@ const a = [];const b = {};Array.isArray(a);//trueArray.isArray(b);//false
 • instanceof。 instanceof 运算符可以用来判断某个构造函数的 prototype 属性所指向的對象是否存在于另外一个要检测对象的原型链上。因为数组的构造函数是 Array，所以可以通过以下判断。
 注意：因为数组也是对象，所以 a instanceof Object 也为 true 
 const a = [];const b = {};console.log(a instanceof Array);//true console.log(a instanceof Object);//true,
-在数组的原型链上也能找到Object构造函数console.log(b instanceof Array);//false 
+在数组的原型链上也能找到Object构造函数 console.log(b instanceof Array);//false 
 • constructor。通过构造函数实例化的实例，拥有一个 constructor 属性。
 function B() {};let b = new B();console.log(b.constructor === B) // true 而数组是由一个叫 Array 的函数实例化的。所以可以 let c = []
 ;console.log(c.constructor === Array) // true 注意：constructor 是会被改变的。所以不推荐这样判断 
@@ -68,6 +68,8 @@ const b = new B();
 
 
 构造函数分为 实例成员 和 静态成员 [ js原型及原型链](https://juejin.cn/post/6844904093828251662)
+实例成员： 实例成员就是在构造函数内部，通过this添加的成员。实例成员只能通过实例化的对象来访问。
+静态成员： 在构造函数本身上添加的成员，只能通过构造函数来访问
 ```javascript
     function Star(name,age) {
         //实例成员
@@ -103,6 +105,95 @@ class Student extends Person{
   }
 }
 ```
+
+-[this、apply、call、bind](https://juejin.cn/post/6844903496253177863)
+1 this 的指向:this 永远指向最后调用它的那个对象
+2 改变 this 的指向的方法：
+1)使用 ES6 的箭头函数 ：ES6箭头函数的 this 始终指向函数定义时的 this，而非执行时。箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，
+如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
+```javascript
+    var name = "windowsName";
+    var a = {
+        name : "Cherry",
+
+        func1: function () {
+            console.log(this.name)     
+        },
+        func2: function () {
+            setTimeout( () => {
+                this.func1()
+            },100);
+        }
+
+    };
+    a.func2()     // Cherry
+```
+2)在函数内部使用 _this = this   如果不使用 ES6，那么这种方式应该是最简单的不会出错的方式了，我们是先将调用这个函数的对象保存在变量 _this 中，
+然后在函数中都使用这个 _this，这样 _this 就不会改变了。
+```javascript
+    var name = "windowsName";
+
+    var a = {
+
+        name : "Cherry",
+
+        func1: function () {
+            console.log(this.name)     
+        },
+
+        func2: function () {
+            var _this = this;
+            setTimeout( function() {
+                _this.func1()
+            },100);
+        }
+
+    };
+
+    a.func2()       // Cherry
+```
+3)使用 apply、call、bind  
+```javascript
+//使用apply call bind
+    var a = {
+        name : "Cherry",
+
+        func1: function () {
+            console.log(this.name)
+        },
+
+        func2: function () {
+            setTimeout(  function () {//apply
+                this.func1()
+            }.apply(a),100);
+            // setTimeout(  function () {//call
+            //     this.func1()
+            // }.call(a),100);
+            // setTimeout(  function () {//bind
+            //     this.func1()
+            // }.bind(a),100);
+        }
+
+    };
+
+    a.func2()            // Cherry
+```
+apply、call、bind 区别:
+1))apply定义：apply() 方法调用一个函数, 其具有一个指定的this值，以及作为一个数组（或类似数组的对象）提供的参数
+语法：fun.apply(thisArg, [argsArray]) ：
+thisArg：在 fun 函数运行时指定的 this 值。需要注意的是，指定的 this 值并不一定是该函数执行时真正的 this 值，如果这个函数处于非严格模式下，
+则指定为 null 或 undefined 时会自动指向全局对象（浏览器中就是window对象），同时值为原始值（数字，字符串，布尔值）的 this 会指向该原始值的自动包装对象。
+argsArray：一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 fun 函数。
+如果该参数的值为null 或 undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。浏览器兼容性请参阅本文底部内容。
+2))apply 和 call 的区别
+call语法：
+
+
+
+
+4)new 实例化一个对象
+
+
 
 - 1.说一下ES6的Proxy？
 
