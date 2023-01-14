@@ -24,7 +24,7 @@ null表示"没有对象"，即该处不应该有值。，典型的用法如下 -
 代表的是空指针（低三位也是 000 ），因此，null 的类型标签是 000，typeof null 也因此返回 "object"。
 
 2)判断数组的方法 • Object.prototype.toString.call()。 每一个继承 Object 的对象都有 toString 方法，如果 toString 方法没有重写的话，会返回 [Object type]，其中
-type 为对象的类型 
+type 为对象的类型  
 • Array.isArray()
 const a = [];const b = {};Array.isArray(a);//trueArray.isArray(b);//false 
 • instanceof。 instanceof 运算符可以用来判断某个构造函数的 prototype 属性所指向的對象是否存在于另外一个要检测对象的原型链上。因为数组的构造函数是 Array，所以可以通过以下判断。
@@ -171,7 +171,7 @@ class Student extends Person{
             // }.call(a),100);
             // setTimeout(  function () {//bind
             //     this.func1()
-            // }.bind(a),100);
+            // }.bind(a)(),100);
         }
 
     };
@@ -186,7 +186,54 @@ thisArg：在 fun 函数运行时指定的 this 值。需要注意的是，指�
 argsArray：一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 fun 函数。
 如果该参数的值为null 或 undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。浏览器兼容性请参阅本文底部内容。
 2))apply 和 call 的区别
-call语法：
+call语法：fun.call(thisArg[, arg1[, arg2[, ...]]])
+区别:call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
+3))bind 和 apply、call 区别
+bind的入参跟call一致，可以传多个参数，但是bind 是创建一个新的函数，我们必须要手动去调用
+```javascript
+    var a ={
+        name : "Cherry",
+        fn : function (a,b) {
+            console.log( a + b)
+        }
+    }
+    var b = a.fn;
+    b.bind(a,1,2)()           // 3  手动调用
+```
+- JS 中的函数调用：
+1)作为一个函数调用:
+```javascript
+    var name = "windowsName";
+    function a() {
+        var name = "Cherry";
+
+        console.log(this.name);          // windowsName
+
+        console.log("inner:" + this);    // inner: Window
+    }
+    a();
+    console.log("outer:" + this)         // outer: Window
+```  
+这样一个最简单的函数，不属于任何一个对象，就是一个函数，这样的情况在 JavaScript 的在浏览器中的非严格模式默认是属于全局对象 window 的，在严格模式，就是 undefined。
+但这是一个全局的函数，很容易产生命名冲突，所以不建议这样使用
+2）函数作为方法调用
+```javascript
+    var name = "windowsName";
+    var a = {
+        name: "Cherry",
+        fn : function () {
+            console.log(this.name);      // Cherry
+        }
+    }
+    a.fn();
+```
+这里定义一个对象 a，对象 a 有一个属性（name）和一个方法（fn）。
+
+然后对象 a 通过 . 方法调用了其中的 fn 方法。
+
+然后我们一直记住的那句话“this 永远指向最后调用它的那个对象”，所以在 fn 中的 this 就是指向 a 的。
+
+
 
 
 
