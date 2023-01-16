@@ -49,7 +49,7 @@ margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇�
 -清除浮动主要是为了解决，父元素因为子级元素浮动引起的内部高度为0的问题（高度塌陷） [清除浮动的4种方式](https://blog.csdn.net/weixin_43638968/article/details/107617275)
 方法：1.父级添加overflow:hidden方法： 可以通过触发BFC的方式，实现清楚浮动效果。必须定义width或zoom:1，同时不能定义height，使用overflow:hidden时，浏览器会自动检查浮动区域的高度
 优点： 简单、代码少、浏览器支持好 缺点： 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素。不能和position配合使用，因为超出的尺寸的会被隐藏。
-2.使用after伪元素清除浮动：.father:after{content:"";display:block;clear:both} :after方式为空元素的升级版，好处是不用单独加标签了。IE8以上和非IE浏览器才支持:after，zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
+2.使用after伪元素清除浮动：.father::after{content:"";display:block;clear:both} :after方式为空元素的升级版，好处是不用单独加标签了。IE8以上和非IE浏览器才支持:after，zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 优点： 符合闭合浮动思想，结构语义化正确，不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 缺点： 由于IE6-7不支持：after，使用zoom：1   zoom在ie、chorm支持，在火狐Firefox中不支持
 
 - 4.通过修改文字方式如何控制div大小？
