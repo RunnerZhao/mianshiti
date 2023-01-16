@@ -43,13 +43,13 @@ margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇�
 （2）本身父元素与上一个元素的距离是0，子元素如果设置了垂直方向的上边距，会带着父级元素一起掉下来（父元素的上边距0塌陷到了子元素的上边距50里面）。
 解决方法： （1）同级元素：如果两个元素垂直方向有间距，只需要设置给一个元素，不要进行拆分。
 （2）父子元素：1 让两个边距不要相遇，中间可以使用父元素border或padding将边距分隔开；2 更加常用的方法，父子盒模型之间的距离就不要用子元素的margin去设置，
-而是用父元素的padding挤出来。3利用伪元素给父元素的前面添加一个空元素  .father::before {content:'';display:table}  4 最常用的方法：给父元素添加overflow：hidden（注意是给父级元素添加）
+而是用父元素的padding挤出来。3利用伪元素给父元素的前面添加一个空元素(伪元素是行内元素)  .father::before {content:'';display:table}  4 最常用的方法：给父元素添加overflow：hidden（注意是给父级元素添加）
 注：水平方向没有margin塌陷 除非设置writing-mode(书写模式，比如实现古代诗词竖向效果) 。 
 
 -清除浮动主要是为了解决，父元素因为子级元素浮动引起的内部高度为0的问题（高度塌陷） [清除浮动的4种方式](https://blog.csdn.net/weixin_43638968/article/details/107617275)
 方法：1.父级添加overflow:hidden方法： 可以通过触发BFC的方式，实现清楚浮动效果。必须定义width或zoom:1，同时不能定义height，使用overflow:hidden时，浏览器会自动检查浮动区域的高度
 优点： 简单、代码少、浏览器支持好 缺点： 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素。不能和position配合使用，因为超出的尺寸的会被隐藏。
-2.使用after伪元素清除浮动：.father::after{content:"";display:block;clear:both} :after方式为空元素的升级版，好处是不用单独加标签了。IE8以上和非IE浏览器才支持:after，zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
+2.使用after伪元素清除浮动：.father::after{content:"";display:block;clear:both} （clear：none/left/right/both 左侧/右侧/两边不能出现浮动元素 ） :after方式为空元素的升级版，好处是不用单独加标签了。IE8以上和非IE浏览器才支持:after，zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 优点： 符合闭合浮动思想，结构语义化正确，不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 缺点： 由于IE6-7不支持：after，使用zoom：1   zoom在ie、chorm支持，在火狐Firefox中不支持
 
 - 4.通过修改文字方式如何控制div大小？
