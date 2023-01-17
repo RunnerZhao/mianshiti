@@ -530,7 +530,7 @@ function fn(f) {
 
 > 1.Array.isArray().
 
-> 2.Object.prototype.toString().call().call
+> 2.Object.prototype.toString().call()
 
 > 3.使用instanceOf进行判断。
 
@@ -582,3 +582,15 @@ function fn(f) {
 
 - 27.如何实现图片轮播？
 
+- forEach:不能跳出循环 。 
+  [Js中forEach map无法跳出循环问题以及forEach会不会修改原数组
+  ](https://blog.csdn.net/weixin_43190804/article/details/125643403?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&utm_relevant_index=1)
+  map ：不能跳出循环   
+  for 循环 ：return 跳出循环
+  every() ：当内部 return false 时跳出整个循环（需要写 return true ）
+  some ()  ：当内部 return true 时跳出整个循环
+  
+- forEach会不会改变原数组？
+  答：如果数组中的值是基本类型, 改变不了;如果是引用类型分两种情况：
+  1、没有修改形参元素的地址值, 只是修改形参元素内部的某些属性，
+  会改变原数组；2、直接修改整个元素对象时，无法改变原数组；
