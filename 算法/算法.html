@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<h2>
+    算法
+</h2>
+
+</body>
+<script>
+    //旋转数组
+    function rotate1(arr, k) {
+        const length = arr.length
+        if (!k || length === 0) return arr
+        const step = Math.abs(k % length)//取余 取绝对值
+        for (let i = 0; i < step; i++) {
+            let lastValue = arr.pop()
+            arr.unshift(lastValue)
+        }
+        return arr
+    }
+    let array1 = [1,2,3]
+    console.log("11", rotate1(array1,2))
+
+
+
+</script>
+
+</html>

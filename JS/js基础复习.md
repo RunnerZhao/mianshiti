@@ -15,7 +15,7 @@
 注意： （1）在函数内部没有声明就直接赋值的变量是全局变量 （2）函数的形参可以看作是局部变量 
 作用域链:内部作用域访问外部作用域的变量，采取的是链式查找的方式来决定取哪个值，这种结构我们称为作用域链，采取就近原则的方式向上一级一级的作用域来查找变量值， 最顶级是全局作用域，如果到全局作用域也没找值，那么就会报错。
 
-1)基本数据类型：String Number Boolean Null Undefinded Symbel Bigint 引用数据类型 Object Array Function
+1)基本数据类型：String Number Boolean Null Undefined Symbel Bigint 引用数据类型 Object Array Function
 undefined 表示未定义的变量。 null 值表示一个空对象指针 undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。
 典型用法是： -变量被声明了，但没有赋值时，就等于 undefined。 -调用函数时，应该提供的参数没有提供，该参数等于undefined。
 -对象没有赋值的属性，该属性的值为 undefined。 -函数没有返回值时，默认返回 undefined。 
@@ -45,6 +45,7 @@ const a = Symbol('描述啊'); String(a) // "Symbol(描述啊)"  a.toString() //
 Symbol.keyFor()方法返回一个已全局注册的 Symbol 类型值的描述值，如果该 Symbol 类型值未全局注册，则返回undefined。 它类似于通过Symbol值的属性description直接获取描述内容
 
 -原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显式原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
+prototype是函数独有的 __proto__ constrctor是对象独有的 因为函数也是对象，所以函数也有__proto__ constrctor
 ```javascript
 function Person(name) {
     this.name = name
@@ -244,7 +245,7 @@ bind的入参跟call一致，可以传多个参数，但是bind 是创建一个�
         function  myNew(constrc,...args){
             //1,2 创建空对象并且把空对象的__proto__指向constrc的原型对象
             let obj = Object.create(constrc.prototype)
-            console.("obj",obj)
+            console.log("obj",obj)
 
             //3 改变constrc中this的指向并执行
             let res = constrc.apply(obj,args)
@@ -265,10 +266,14 @@ bind的入参跟call一致，可以传多个参数，但是bind 是创建一个�
         console.log('person1',person1,person2,person1 == person2)
 ```
 
-箭头函数为什么不能作为构造函数
-箭头函数没有自己的 this，以上第2步无法进行
-箭头函数没有自己的 prototype，以上第3步 修改原型对象无法进行
+Object.create() 方法用于创建一个新对象，使用现有的对象来作为新创建对象的原型（prototype）
 
+箭头函数为什么不能作为构造函数
+箭头函数没有自己的 this，
+箭头函数没有自己的 prototype， 修改原型对象无法进行
+
+对象字面量创建对象(obj = {})与 Object.create(null) 创建对象有什么区别
+通过Object.create(null)创建的对象是非常纯净的，原型链的属性和方法都不会携带。这就非常适合数组对象开发的时候，从对象中取值，提高循环效率。
 
 - 1.说一下ES6的Proxy？
 
@@ -291,6 +296,7 @@ let p = new Proxy(target, handler);
 - 2.深拷贝与浅拷贝的区别？怎么实现一个深拷贝？
 
 > [参考链接](https://juejin.cn/post/6908309980206759943)
+> [JS 深拷贝的原生终结者 structuredClone API](https://juejin.cn/post/7080433165264748557)
 > 浅拷贝：一个对象直接拷贝已存在对象的引用。
 
 > 当原对象属性值都是基本数据类型时，改变新拷贝的对象属性并不会影响到原对象。
@@ -519,9 +525,9 @@ function fn(f) {
 
 - 12.数组方法slice和splice的区别？
 
-> splice array.splice(startingIndex, length, ...items) 从数组固定位置对原数组进行删除添加操作。会改变原数组。返回的是startIndex和length取出的值组成的数组
+> splice(拼接) array.splice(startingIndex, length, ...items) 从数组固定位置对原数组进行删除添加操作。会改变原数组。返回的是startIndex和length取出的值组成的数组
 
-> slice array.slice(startingIndex, endingIndex)从数组中提取一部分元素组成数组并返回。不会改变原数组
+> slice（片） array.slice(startingIndex, endingIndex)从数组中提取一部分元素组成数组并返回。不会改变原数组
 
 - 13.类数组转换成数组的方法？
 
@@ -543,8 +549,8 @@ function fn(f) {
 
 - 15.数组有哪些方法？
 
-> map()、reduce()、fiter()、some()、erery()、forEach()、shift()数组头部删除、pop()数组尾部删除、unshift()向数组的开头添加一个或更多元素，并返回新的长度 、
-> push()数组的末尾添加一个或多个元素，并返回新的长度、 fill()、copyWith()、sort()、reverse()、splice()、slice()、concat()、join()、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
+> map()、reduce()、fiter()、some()、erery()、forEach()、unshift()向数组的开头添加一个或更多元素，并返回新的长度 、shift()删除数组第一个元素，返回被删除的元素、
+push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()、splice()、slice()、concat()、join()、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
 
 - 16.for-in和for-of的区别？
 
@@ -625,3 +631,30 @@ function fn(f) {
   答：如果数组中的值是基本类型, 改变不了;如果是引用类型分两种情况：
   1、没有修改形参元素的地址值, 只是修改形参元素内部的某些属性，
   会改变原数组；2、直接修改整个元素对象时，无法改变原数组；
+  
+-[详解defineProperty和Proxy](https://www.jianshu.com/p/0e2984d13ab4) [ defineProperty 与 proxy](https://juejin.cn/post/6844903710410162183)
+ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
+语法:Object.defineProperty(obj, prop, descriptor)
+参数 :  obj: 要在其上定义属性的对象。 prop: 要定义或修改的属性的名称。 descriptor: 将被定义或修改的属性的描述符。
+函数的第三个参数 descriptor 所表示的属性描述符有两种形式：数据描述符和存取描述符。
+两者均具有以下两种键值：
+enumerable
+当且仅当该属性的 enumerable 为 true 时，该属性才能够出现在对象的枚举属性中。默认为 false。
+configurable
+当且仅当该属性的 configurable 为 true 时，该属性描述符才能够被改变，也能够被删除。默认为 false。
+数据描述符同时具有以下可选键值：
+value
+该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。
+复制代码
+writable
+当且仅当该属性的 writable 为 true 时，该属性才能被赋值运算符改变。默认为 false。
+复制代码
+存取描述符同时具有以下可选键值：
+get
+一个给属性提供 getter 的方法，如果没有 getter 则为 undefined。该方法返回值被用作属性值。默认为 undefined。
+复制代码
+set
+一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
+
+
+
