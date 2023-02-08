@@ -17,7 +17,6 @@
 
         }
 
-
     </style>
 </head>
 
@@ -28,20 +27,112 @@
 
 </body>
 <script>
-    //旋转数组
-    function rotate1(arr, k) {
-        const length = arr.length
-        if (!k || length === 0) return arr
-        const step = Math.abs(k % length)//取余 取绝对值
-        for (let i = 0; i < step; i++) {
-            let lastValue = arr.pop()
-            arr.unshift(lastValue)
-        }
-        return arr
-    }
-    let array1 = [1,2,3]
-    console.log("11", rotate1(array1,2))
+    // //旋转数组 pop unshift  时间复杂度 O(n2) 空间复杂度O（1）
+    // function rotate1(arr, k) {
+    //     const length = arr.length
+    //     if (!k || length === 0) return arr
+    //     const step = Math.abs(k % length)//取余 取绝对值
+    //     for (let i = 0; i < step; i++) {
+    //         let lastValue = arr.pop()
+    //         arr.unshift(lastValue) //数组是一个有序数组 unshift操作非常慢 时间复杂度是O(n)  ，数组是连续的内存空间
+    //     }
+    //     return arr
+    // }
+    // // slice concat    时间复杂度 O(1) 空间复杂度O（n）
+    // function rotate2(arr,k){
+    //     const length = arr.length
+    //     if (!k || length === 0) return arr
+    //     const step = Math.abs(k % length)
+    //     const part1 = arr.slice(-step)//O(1)
+    //     const part2 = arr.slice(0,length-step)
+    //     const part3 = part1.concat(part2)
+    //     return part3
+    // }
+    // //功能测试
+    // let array1 = [1,2,3]
+    // console.log("11", rotate1(array1,2))
+    // //性能测试
+    // let arrTest = []
+    // for (let i = 0;i < 10 * 10000; i++){
+    //     arrTest.push(i)
+    // }
+    // let arrTest2 = []
+    // for (let i = 0;i < 10 * 10000; i++){
+    //     arrTest2.push(i)
+    // }
+    // console.time('rotate1')
+    // rotate1(arrTest,9 * 10000)  //980.5830078125 ms
+    // console.timeEnd('rotate1')
+    //
+    // console.time('rotate2')
+    // rotate2(arrTest2,9 * 10000) //0.51220703125 ms
+    // console.timeEnd('rotate2')
 
+    //二分查找  循环跟递归时间复杂度都是O(logn)也就是性能基本差不多 但是循环是只调用一次函数内，
+    //递归是多次调用函数，所以循环性能稍微好一些。  递归更清晰一些
+    // 凡是有序必二分 凡是二分复杂度必包含O(logn)
+    //循环
+    function halfSearch1(arr, num) { //时间复杂度 O(logn)
+        // console.log('arr', arr, num)
+        // 1 定义start和end 用来查目标数组段 2 定义中间index middleIndex 3 取中间值middleVal = arr[middleIndex]
+        // 4 while 循环条件中start<end 体中判断middleVal比num小就使start=middleInde + 1 ，middleVal比num大就使end = middleIndex - 1 ，middleVal等于num就return middleIndex
+        let start = 0;
+        let end = arr.length - 1;
+        while (start <= end) {
+            let middleIndex = Math.floor((start + end) / 2)
+            let middleVal = arr[middleIndex]
+            if (middleVal < num) {
+                //num 在middleVal右侧
+                start = middleIndex + 1
+            } else if (middleIndex > num) {
+                //num 在middleVal左侧
+                end = middleIndex - 1
+            } else {//相等
+                return middleIndex
+            }
+        }
+        return -1
+    }
+    //递归
+    function halfSearch2(arr, num, startIndex, endIndex) {//O(logn)
+        //如果 startIndex endIndex 没传 startIndex赋值0 endIndex赋值arr.length-1
+        //如果startIndex > endIndex return -1
+        //定义中间index => midIndex 中间值midVal
+        //判断midVal<num则num在右侧 startIndex= midIndex+1
+        //如果midVal>num 则num在左侧 endIndex= midIndex-1
+        //如果midVal == num return midIndex
+        // return startIndex endIndex作为入参调用halfSearch
+        // debugger
+        if (!startIndex) startIndex = 0 ; endIndex = arr.length - 1
+        if (startIndex > endIndex) return -1
+        const midIndex = Math.floor((startIndex + endIndex) / 2)
+        const midVal = arr[midIndex]
+        if (midVal < num) {
+            startIndex = midIndex + 1
+        } else if (midVal > num) {
+            endIndex = midIndex - 1
+        } else {
+            return midIndex
+        }
+        return  halfSearch2(arr, num, startIndex, endIndex)
+    }
+    //功能测试
+    console.log('二分1', halfSearch1([1, 2, 3, 4], 3))
+    console.log('二分2', halfSearch2([1, 2, 3, 4], 3))
+
+    //性能测试
+    let halfArr = [1,2,3,4,5,6]
+    console.time('halfSearch1')//20ms
+    for (let i =0;i<100 * 10000;i++){
+        halfSearch1(halfArr,5)
+    }
+    console.timeEnd('halfSearch1')
+
+    console.time('halfSearch2')//29ms
+    for (let i =0;i<100 * 10000;i++){
+        halfSearch2(halfArr,5)
+    }
+    console.timeEnd('halfSearch2')
 
 
 </script>
