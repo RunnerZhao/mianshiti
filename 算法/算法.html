@@ -74,8 +74,9 @@
     //循环
     function halfSearch1(arr, num) { //时间复杂度 O(logn)
         // console.log('arr', arr, num)
-        // 1 定义start和end 用来查目标数组段 2 定义中间index middleIndex 3 取中间值middleVal = arr[middleIndex]
-        // 4 while 循环条件中start<end 体中判断middleVal比num小就使start=middleInde + 1 ，middleVal比num大就使end = middleIndex - 1 ，middleVal等于num就return middleIndex
+        // 1 定义start和end 用来查目标数组段
+        // 2 while 循环条件中start<end 循环体中 定义中间index middleIndex 3 取中间值middleVal = arr[middleIndex]
+        // 判断middleVal比num小就使start=middleInde + 1 ，middleVal比num大就使end = middleIndex - 1 ，middleVal等于num就return middleIndex
         let start = 0;
         let end = arr.length - 1;
         while (start <= end) {
@@ -95,6 +96,7 @@
     }
     //递归
     function halfSearch2(arr, num, startIndex, endIndex) {//O(logn)
+        console.log('调用')
         //如果 startIndex endIndex 没传 startIndex赋值0 endIndex赋值arr.length-1
         //如果startIndex > endIndex return -1
         //定义中间index => midIndex 中间值midVal
@@ -121,18 +123,18 @@
     console.log('二分2', halfSearch2([1, 2, 3, 4], 3))
 
     //性能测试
-    let halfArr = [1,2,3,4,5,6]
-    console.time('halfSearch1')//20ms
-    for (let i =0;i<100 * 10000;i++){
-        halfSearch1(halfArr,5)
-    }
-    console.timeEnd('halfSearch1')
-
-    console.time('halfSearch2')//29ms
-    for (let i =0;i<100 * 10000;i++){
-        halfSearch2(halfArr,5)
-    }
-    console.timeEnd('halfSearch2')
+    // let halfArr = [1,2,3,4,5,6]
+    // console.time('halfSearch1')//20ms
+    // for (let i =0;i<100 * 10000;i++){
+    //     halfSearch1(halfArr,5)
+    // }
+    // console.timeEnd('halfSearch1')
+    //
+    // console.time('halfSearch2')//29ms
+    // for (let i =0;i<100 * 10000;i++){
+    //     halfSearch2(halfArr,5)
+    // }
+    // console.timeEnd('halfSearch2')
 
 
 </script>
