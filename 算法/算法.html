@@ -27,8 +27,12 @@
 
 </body>
 <script>
-    // //旋转数组 pop unshift  时间复杂度 O(n2) 空间复杂度O（1）
+    // //旋转数组 pop unshift  时间复杂度 O(n^2) 空间复杂度O（1）
     // function rotate1(arr, k) {
+    //     // 1 定义length来处理数组长度为0的情况，以及用来取旋转的步数step
+    //     // 2 定义step = Math.abs(k % length)
+    //     // 3 for循环step步 每次循环中取数组最后一位lastValue = arr.pop() 把lastValue加在数组前面 arr.unshift(lastValue)
+    //     // 4 return arr
     //     const length = arr.length
     //     if (!k || length === 0) return arr
     //     const step = Math.abs(k % length)//取余 取绝对值
@@ -91,7 +95,6 @@
                 end = middleIndex - 1
             } else {//相等
                 return middleIndex
-                break
             }
         }
         return -1
@@ -108,8 +111,7 @@
         //如果midVal == num return midIndex
         // return startIndex endIndex作为入参调用halfSearch
         // debugger
-        if (!startIndex) startIndex = 0;
-        endIndex = arr.length - 1
+        if (!startIndex) {startIndex = 0 ;endIndex = arr.length - 1}
         if (startIndex > endIndex) return -1
         const midIndex = Math.floor((startIndex + endIndex) / 2)
         const midVal = arr[midIndex]
@@ -164,6 +166,92 @@
     }
     const arrSum = [1,3,4,5,8,9]
     console.log(findTwoNum(arrSum,11))
+
+
+    // 求二叉搜索树的第k小值
+    const bst = {
+        value: 5,
+        left: {
+            value: 3,
+            left: {
+                value: 2,
+                left: null,
+                right: null
+            },
+            right: {
+                value: 4,
+                left: null,
+                right: null,
+            }
+        },
+        right: {
+            value: 7,
+            left: {
+                value: 6,
+                left: null,
+                right: null
+            },
+            right: {
+                value: 8,
+                left: null,
+                right: null
+            }
+        }
+    }
+    let sortArr = []
+    //二叉树中序遍历
+    function inOrderTraverse(node){
+        if (node == null) return
+        inOrderTraverse(node.left)
+        sortArr.push(node.value)
+        inOrderTraverse(node.right)
+    }
+    // inOrderTraverse(bst)
+    function getKthNum(arr,k){
+        inOrderTraverse(arr)
+        console.log('sortArr',sortArr)
+        return sortArr[k-1]
+    }
+
+    console.log("getKthNum",getKthNum(bst,2))
+
+    //fibonacci数列 递归
+    function fibonacci(n){ //时间复杂度 O(2^n) 重复计算了
+        //如果n == 0,return 0 如果n == 1，return 1
+        //return fibonacci(n-1) + fibonacci(n-2)
+        if (n <= 0) return 0
+        if (n === 1) return 1
+        return fibonacci(n-1) + fibonacci(n - 2)
+    }
+
+    console.log('fibonacci',fibonacci(2))
+    //fibonacci数列 循环 记录中间值
+    function fibonacci1(n) {//时间复杂度O(n)
+        // 如果n == 0,return 0 如果n == 1，return 1
+        //定义 n的前一位数 n1 = 1，n的前两位数 n2 = 0 ，n1 n2的和res=0
+        //for循环中 res = n1 + n2   n2 = n1   n1=res
+        if (n === 0) return 0
+        if (n === 1) return 1
+        let n1 = 1, n2 = 0, res = 0;
+        for (let i = 2; i <= n; i++) {//从2开始
+            res = n1 + n2;
+            //记录中间结果
+            n2 = n1
+            n1 = res
+        }
+        return res
+    }
+    console.log("fibonacci1",fibonacci1(2))
+
+
+    // 将数组中的所有0移动到末尾  双指针
+    function moveZero(arr){
+        //定义zeroIndex用来指向0  定义unZeroIndex用来指向zeroIndex后的第一个非0
+        //for
+    }
+
+
+
 
 </script>
 
