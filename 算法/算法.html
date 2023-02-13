@@ -246,12 +246,106 @@
 
     // 将数组中的所有0移动到末尾  双指针
     function moveZero(arr){
-        //定义zeroIndex用来指向0  定义unZeroIndex用来指向zeroIndex后的第一个非0
-        //for
+        //定义length  = arr.length
+        //定义j = -1 用来指向0  定义i用来指向j后的第一个非0
+        //for循环体 循环到arr[i]=0时就j=i  如果arr[i] == 0 { 如果j < 0 就j = i }
+        //循环到arr[i] !==0 并且j > = 0时,arr[i]跟arr[j]的值进行交换 交换完成后j向前走一步j++
+        let length = arr.length
+        if (length == 0) return arr
+        let i,j = -1;
+        for (let i = 0;i<length;i++){
+            console.log('222',i,j, arr)
+            if (arr[i] == 0 && j < 0 ){
+                j = i
+            }
+            if (arr[i] !== 0 && j >= 0 ){
+                //交换
+                const n = arr[i]
+                arr[i] = arr[j]
+                arr[j] = n
+                //交换完成后j向前走一步j++
+                j++
+            }
+            console.log(i,j, arr)
+        }
     }
 
+    let zeroArr = [0,0,3,0,0,4]
+    console.log("moveZero",moveZero(zeroArr))
+
+    //获取字符串中连续最多的字符以及次数 双指针
+    //定义指针i ,j 。j不动i继续移动
+    //如果str[i] == str[j] ,i继续移动
+    //直到str[i] !== str[j],记录处理，继续第一步
+    function findContinuousChart(str){
+        let res = {char:'',length:0}
+        const length = str.length
+        if (length === 0) return res
+        let tempLength = 0;
+        let i,j=0;
+        for (i = 0;i<length;i++){
+            if (str[i] === str[j]){
+                tempLength++
+            }
+            if (str[i] !== str[j] || i === length -1){
+                if (tempLength > res.length){
+                    res.char = str[j]
+                    res.length = tempLength
+                }
+                tempLength = 0
+                if (i < length -1 ){
+                    j = i;
+                    i--
+                }
+            }
+
+        }
+        return  res
+    }
+    let findContinuousStr = 'aabbbccccdd'
+    console.log('findContinuousChart',findContinuousChart(findContinuousStr))
 
 
+    //快速排序  时间复杂度O(n*logn)
+    function quickSort(arr) {
+        //定义一个中间index midIndex 定义中间值midVal  定义左数组left=[] 右数组right = []
+        //for循环中 如果arr[i]<midVal那么left.push(arr[i]) 如果arr[i]>midVal那么right.push(arr[i])
+        //return quickSort(left).concat([midValue],quickSort(right))
+        const length = arr.length;
+        if (length === 0) return arr;
+        const midIndex = Math.floor(length / 2);
+        const midValue = arr[midIndex];
+        let left = [],right = [];
+        for(let i = 0;i < length;i++) {
+            if (i !== midIndex) {
+                const n = arr[i];
+                if (n < midValue) {
+                    left.push(n);
+                } else {
+                    right.push(n)
+                }
+            }
+        }
+        return quickSort(left).concat([midValue],quickSort(right))
+    }
+    let quickArr = [2,3,5,1,4]
+    console.log('quickSort',quickSort(quickArr))
+
+    //查询1-max的对称数  [1,2,3,...,100,101]  Palindrome[ˈpælɪndroʊm]
+
+    function findPalindromeNumbers(max){//
+        //数字转化为字符串，再转化为数组，再颠倒顺序，再转为字符串
+        let arr = []
+        for (let i = 1;i <= max; i++){
+            const s = i.toString();
+            // console.log("s",s,i,s.split('').reverse().join(''))
+            if ( s === s.split('').reverse().join('')){
+                arr.push(i)
+            }
+        }
+        return arr
+    }
+    console.log("findPalindromeNumbers",findPalindromeNumbers(30))
 
 </script>
 

@@ -550,8 +550,18 @@ function fn(f) {
 - 15.数组有哪些方法？
 
 > map()、reduce()、fiter()、some()、erery()、forEach()、unshift()向数组的开头添加一个或更多元素，并返回新的长度 、shift()删除数组第一个元素，返回被删除的元素、
-push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()、splice()、slice()、concat()、join()、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
+push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()颠倒数组中元素的顺序、splice()、slice()、concat()、join() 把数组中的所有元素转换一个字符串 array.join(separator) separator	可选。指定要使用的分隔符。如果省略该参数，则使用逗号作为分隔符、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
 
+- 字符串有哪些方法？
+>  str.charAt(index) 获取指定位置的字符;
+> str.charCodeAt(index) 获取指定位置字符的编码; 
+> str.indexOf(searchvalue,fromindex)返回字符串中一个子串第一处出现的索引 从字符串中左边开始搜索规定的字符子串 返回值：字符子串的索引值，如果没有找到，则返回-1; 
+> str.lastIndexOf(searchvalue,fromindex) 返回字符串中一个子串最后一处出现的索引 功能：从字符串中右边开始搜索规定的字符子串 返回值：字符子串的位置，如果没有找到，则返回-1;
+> str.slice(start，end) (片); 截取字符串 ①start：必需，指定字符串的开始位置 ②end：可选，指定字符串的结束位置，省略时截取至字符串末尾；end本身不在截取范围内； ③当参数为负数时，会将传入的负值与字符串的长度相加，之后再确定相应的位置。
+>str.split(" ") （(使)分裂）;把一个字符串分割成字符串数组
+> str.replace(regexp/substr,replacement);在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的字符串 ①regexp/substr：必需，规定字符串或要替换的模式的RegExp对象； ②replacement：必需，字符串值； ③replace()方法不会修改原来的字符串，只会生成原字符串的副本。
+> 字符串的转换大小写方法：toUpperCase()、toLowerCase()
+> trim() 去掉字符串前后的空格
 - 16.for-in和for-of的区别？
 
 > 1.for-in循环出来的是key，for-of循环出来的是value。
@@ -563,15 +573,7 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 - 16.[iterable](https://blog.csdn.net/zhouyuzhu666/article/details/120515394) 
   iterable是es6新增的类型，iterable类型的数据有，Array,Set,Map,Set和Map是es6新增的数据类型，
 
-
-
-> 1.Array.isArray().
-
-> 2.Object.prototype.toString().call()
-
-> 3.使用instanceOf进行判断。
-
-> 4.使用arr.__proto__.constructor === Array进行判断。
+  
 
 - 17.JS中的sort方法内部使用的什么排序？
 
@@ -656,5 +658,6 @@ get
 set
 一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
 
+-
 
 
