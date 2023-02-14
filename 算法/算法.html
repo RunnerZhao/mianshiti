@@ -332,8 +332,7 @@
     console.log('quickSort',quickSort(quickArr))
 
     //查询1-max的对称数  [1,2,3,...,100,101]  Palindrome[ˈpælɪndroʊm]
-
-    function findPalindromeNumbers(max){//
+    function findPalindromeNumbers(max){// 时间复杂度O（n） 但是操作数组性能比操作字符串的性能差
         //数字转化为字符串，再转化为数组，再颠倒顺序，再转为字符串
         let arr = []
         for (let i = 1;i <= max; i++){
@@ -346,6 +345,74 @@
         return arr
     }
     console.log("findPalindromeNumbers",findPalindromeNumbers(30))
+
+    function findPalindromeNumbers1(max){//字符串前后比较
+        // 定义 首尾index，首尾value是否相等的flag=true 。 while条件startIndex<endIndex， {}中：判断首尾value是否相等，相等则startIndex++ endIndex-- ，不相等则flag=false break
+        //如果flag为true arr.push(i)
+        let arr = []
+        for (let i = 1;i <= max; i++){
+            const s = i.toString();
+            let startIndex = 0,endIndex =s.length - 1, flag = true;
+            while (startIndex < endIndex){
+                if (s[startIndex] !== s[endIndex]){
+                    flag = false
+                    break
+                }else{
+                    startIndex++
+                    endIndex--
+                }
+            }
+            if (flag){ arr.push(i)}
+        }
+        return arr
+    }
+    console.log("findPalindromeNumbers1",findPalindromeNumbers1(30))
+
+
+    //切换字母大小写 如输入12aBc34   输出12AbC34
+    function switchLetterCase(str){//正则表达式  2ms
+        //定义length 判断大小写的正则表达式 /[a-z]/ /[A-Z]/  新的字符串res
+        //for循环如果str[i]是小写就用 string.toUpperCase()转为大写， 大写就用string.toLowerCase()转为小写
+        const length = str.length;
+        if (length === 0) {return str}
+        const req1 = /[a-z]/ ;
+        const req2 = /[A-Z]/;
+        let res = '';
+        for (let i = 0;i < length; i++){
+            const val = str[i]
+            if (req1.test(val)){
+                res += val.toUpperCase()
+            }else if (req2.test(val)){
+                res += val.toLowerCase()
+            }else{
+                res += val
+            }
+        }
+        return res
+    }
+    const strSwitch = '12aBc34'
+    console.log('switchLetterCase',switchLetterCase(strSwitch))
+
+    function switchLetterCase2(str) {//ASCII码  4ms
+        const length = str.length;
+        if (length === 0) {return str}
+        let res = ''
+        for(let i = 0; i< length ; i++){
+            const val = str[i]
+            const ascVal = val.charCodeAt(0)
+            if (ascVal >=65 && ascVal <= 90){//大写
+                res += val.toLowerCase()
+            }else if (ascVal >= 97 && ascVal <= 112){
+                res += val.toUpperCase()
+            }else{
+                res += val
+            }
+        }
+        return res
+
+    }
+    const strSwitch2 = '12aBc34'
+    console.log('switchLetterCase2',switchLetterCase2(strSwitch2))
 
 </script>
 
