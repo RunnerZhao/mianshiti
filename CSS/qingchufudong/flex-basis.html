@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex-shrink</title>
+    <style>
+        .box {
+            /*width: 500px;*/
+
+            /*overflow: hidden;*/
+
+            background-color: hotpink;
+        }
+        /*伪类元素*/
+        .box:after{content:"";display:block;clear:both}
+
+        .box div {
+            /*width: 100px;*/
+        }
+
+        .box div:nth-child(1) {
+            float: right;
+            height: 200px;
+            background-color: red;
+        }
+        /*空元素*/
+        /*.clear{*/
+        /*    clear: both;*/
+        /*}*/
+
+
+    </style>
+</head>
+<body>
+<div class="box">
+    <div>1</div>
+<!--    空元素-->
+<!--    <br class="clear" />-->
+
+</div>
+</body>
+</html>

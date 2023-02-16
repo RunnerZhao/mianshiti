@@ -553,7 +553,7 @@ function fn(f) {
 push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()颠倒数组中元素的顺序、splice()、slice()、concat()、join() 把数组中的所有元素转换一个字符串 array.join(separator) separator	可选。指定要使用的分隔符。如果省略该参数，则使用逗号作为分隔符、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
 
 - 字符串有哪些方法？
->  str.charAt(index) 获取指定位置的字符;
+> str.charAt(index) 获取指定位置的字符;
 > str.charCodeAt(index) 获取指定位置字符的编码; 
 > str.indexOf(searchvalue,fromindex)返回字符串中一个子串第一处出现的索引 从字符串中左边开始搜索规定的字符子串 返回值：字符子串的索引值，如果没有找到，则返回-1; 
 > str.lastIndexOf(searchvalue,fromindex) 返回字符串中一个子串最后一处出现的索引 功能：从字符串中右边开始搜索规定的字符子串 返回值：字符子串的位置，如果没有找到，则返回-1;
