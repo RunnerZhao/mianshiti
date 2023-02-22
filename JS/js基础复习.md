@@ -112,11 +112,24 @@ class Student extends Person{
 2 改变 this 的指向的方法：
 1)使用 ES6 的箭头函数 ：ES6箭头函数的 this 始终指向函数定义时的 this，而非执行时。箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，
 如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
+
+箭头函数为什么不能作为构造函数
+箭头函数没有自己的 this，
+箭头函数没有自己的 prototype， 修改原型对象无法进行
+
+箭头函数与普通函数的区别？
+1.this指向不同，普通函数指向调用对象，而箭头函数没有自己的this，this的值取决于执行上下文,不能使用call apply bind改变this指向。
+2.箭头函数不能作为构造函数。因为它没有prototype属性。
+3.箭头函数没有arguments属性，不能通过arguments属性拿到变量。
+
+箭头函数不能用的情况
+1. ![对象方法](.js基础复习_images/839db600.png) 2 ![原型方法](.js基础复习_images/28aad8d1.png) 3 ![构造函数](.js基础复习_images/86f59012.png)
+4 ![动态上下文中的回调函数](.js基础复习_images/1e0fb493.png)  5 ![vue生命周期和methods](.js基础复习_images/36535b1b.png)
+   传统vue组件是js对象 传统React 组件是class
 ```javascript
     var name = "windowsName";
     var a = {
         name : "Cherry",
-
         func1: function () {
             console.log(this.name)     
         },
@@ -125,7 +138,6 @@ class Student extends Person{
                 this.func1()
             },100);
         }
-
     };
     a.func2()     // Cherry
 ```
@@ -229,14 +241,8 @@ bind的入参跟call一致，可以传多个参数，但是bind 是创建一个�
     a.fn();
 ```
 这里定义一个对象 a，对象 a 有一个属性（name）和一个方法（fn）。
-
 然后对象 a 通过 . 方法调用了其中的 fn 方法。
-
 然后我们一直记住的那句话“this 永远指向最后调用它的那个对象”，所以在 fn 中的 this 就是指向 a 的。
-
-
-
-
 
 
 4)new 实例化一个对象 手写new
@@ -268,13 +274,54 @@ bind的入参跟call一致，可以传多个参数，但是bind 是创建一个�
 
 Object.create() 方法用于创建一个新对象，使用现有的对象来作为新创建对象的原型（prototype）
 
-箭头函数为什么不能作为构造函数
-箭头函数没有自己的 this，
-箭头函数没有自己的 prototype， 修改原型对象无法进行
+
 
 对象字面量创建对象(obj = {})与 Object.create(null) 创建对象有什么区别
 通过Object.create(null)创建的对象是非常纯净的，原型链的属性和方法都不会携带。这就非常适合数组对象开发的时候，从对象中取值，提高循环效率。
 
+
+-map和set，map和object，map和weakMap，weakMap和weakSet？
+一  Map Set ES6提供了新的数据结构Set数据结构和Map数据结构
+  1）Map 对象保存键值对，并且能够记住键的原始插入顺序。任何值（对象或者原始值）都可以作为一个键或一个值。
+    let iMap = new Map([['name', '张三'], ['name', 20]]);
+  2）Set 结构类似于数组，Set 中的元素是唯一的。Set 是值的集合，是无序的。
+    let iSet = new Set(['张三', 12, true])
+    Set 对象是一个类数组对象，它长得就很像数组。
+    Set 对象存储的值是不重复的，所以我们通常使用它来实现数组去重。
+    Set 对象存储的数据不是键值对的形式，而且它可以存储任何类型的数据。
+  使用场景 ：数组去重 let arr = [1, 2, 3, 4, 5, 6, 3, 2, 5, 3, 2]; console.log([...new Set(arr)]); // [1, 2, 3, 4, 5, 6]
+二 Array和Set区别：Array是有序结构 Set是无序结构
+三 Object和Map区别：
+  1）key的有序和无序 ： Object是无序结构 Map是有序结构
+  2）继承： Map 对象继承自 Obeject 对象
+  3）创建实例 ： 创建 Map 实例只有一种方式,就是使用其内置的构造函数以及 new 语法,而创建对象则有多种方法,  
+      const m = new Map([["key", "value"]]);
+      const object = {...};
+      const object = new Object();
+      const object = Object.create(null);
+      而通过使用 Object.create(null) 来创建的对象,它可以生成一个不继承 Object.prototyoe 的实例对象。
+  4）迭代： 通过 Map 创建出来的实例对象能通过 for...of 方法进行遍历,而普通对象则不能,但是能通过 for...in 方法去枚举所有的 key,
+    要想查看当前对象是否可以被 for...of 遍历,我们通过查看该对象本身是否有定义了 Symbol.Iterator 方法,,如果存在则可以变遍历:
+    const map = new Map();
+    const object = {};
+    console.log(map[Symbol.iterator]); // [Function: entries]
+    console.log(object[Symbol.iterator]); // undefined
+  5） 键的值 ：在 Map 对象中,该对象的 key 可以是任何类型的值,
+    而在普通对象中的 key 只能是 string 类型(number类型会自动转变成 string 类型)和 Symbol 类型,如果传进来的是复杂类型会自动报错:
+
+四  WeakSet WeakMap [深入了解ES6的Set，WeakSet，Map和WeakMap](https://juejin.cn/post/7062921417196568607#heading-9)
+    1）WeakSet  和Set结构类似，也是不重复的值的集合，但WeakSet的成员只能是对象。
+    其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。
+    这是因为垃圾回收机制根据对象的可达性（reachability）来判断回收，如果对象还能被访问到，垃圾回收机制就不会释放这块内存。结束使用该值之后，有时会忘记取消引用，导致内存无法释放，进而可能会引发内存泄漏。WeakSet 里面的引用，都不计入垃圾回收机制，所以就不存在这个问题。
+    因此，WeakSet 适合临时存放一组对象，以及存放跟对象绑定的信息。只要这些对象在外部消失，它在 WeakSet 里面的引用就会自动消失。
+    由于上面这个特点，WeakSet 的成员是不适合引用的，因为它会随时消失。另外，由于 WeakSet 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而垃圾回收机制何时运行是不可预测的，因此 ES6 规定 WeakSet 不可遍历。
+    2）WeakMap
+        WeakMap结构与Map结构类似，也是用于生成键值对的集合。
+        WeakMap与Map的区别有两点：
+          首先，WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名。
+          其次，WeakMap的键名所指向的对象，不计入垃圾回收机制。
+        WeakMap只有四个方法可用：get()、set()、has()、delete()
+      总之，WeakMap的专用场合就是，它的键所对应的对象，可能会在将来消失。WeakMap结构有助于防止内存泄漏。 注意，WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用
 - 1.说一下ES6的Proxy？
 
 > Proxy对象用于创建一个对象的代理，从而实现基本的拦截和自定义（属性查找，赋值，枚举，函数调用等）。
@@ -392,6 +439,44 @@ console.log(obj2);
   而深拷贝有4种方式，使用JSON.parse(JSON.stringify())，注意这种方法处理不了function、undefined和Symbol类型，第2种使用递归， 第3种使用jQuery的$.extend()
   方法，第4种使用lodash库的_.defaultsDeep()方法。
 
+-如何解决深拷贝递归的循环引用问题？
+    使用WeakMap解决循环引用的问题。
+
+```javascript
+  // 深拷贝简易版本
+const deepClone = source => {
+    // 创建一个 WeakMap 对象，记录已拷贝过的对象
+    const weakmap = new WeakMap();
+    // 判断是否为数组
+    const isArray = arr => Object.prototype.toString.call(arr) === '[object Array]';
+    // 判断是否为引用类型
+    const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function');
+    //拷贝（递归）
+    const copy = input => {
+        // 当输入为函数或基本数据类型时，直接返回
+        if (typeof input === 'function' || !isObject(input)) return input;
+        // 针对已拷贝过的对象，直接返回
+        if (weakmap.has(input)) {
+            return weakmap.get(input)
+        }
+        const output = isArray(input) ? [] : {};
+        // 记录每次拷贝的对象(需要放在递归引用的前面)
+        weakmap.set(input, output);
+        for (let key in input) {
+            // console.log(key)
+            // 如果key是对象的自有属性
+            if (input.hasOwnProperty(key)) {
+                // 递归调用深拷贝方法
+                output[key] = copy(input[key]);
+            }
+        }
+        return output;
+    }
+    return copy(source);
+}
+
+```
+
 - 3.怎么理解原型链？
 
 > 对象可以通过_proto_属性找到不属于该对象的属性，_proto_将对象连接起来组成原型链。
@@ -480,13 +565,7 @@ Person.prototype.say = function () {
 const p = new Person();
 ```
 
-- 7.箭头函数与普通函数的区别？
-
-> 1.this指向不同，普通函数指向调用对象，而箭头函数没有自己的this，this的值取决于执行上下文。
-
-> 2.箭头函数不能作为构造函数。因为它没有prototype属性。
-
-> 3.箭头函数没有arguments属性，不能通过arguments属性拿到变量。
+- 7.
 
 - 8.实现一个函数柯里化？
 
@@ -550,7 +629,9 @@ function fn(f) {
 - 15.数组有哪些方法？
 
 > map()、reduce()、fiter()、some()、erery()、forEach()、unshift()向数组的开头添加一个或更多元素，并返回新的长度 、shift()删除数组第一个元素，返回被删除的元素、
-push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()颠倒数组中元素的顺序、splice()、slice()、concat()、join() 把数组中的所有元素转换一个字符串 array.join(separator) separator	可选。指定要使用的分隔符。如果省略该参数，则使用逗号作为分隔符、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
+push()数组的末尾添加一个或多个元素，并返回新的长度、pop()删除最后一个元素，返回被删除的元素、 fill()、copyWith()、sort()、reverse()颠倒数组中元素的顺序、splice()、slice()、concat()、
+  join() 把数组中的所有元素转换一个字符串 array.join(separator) separator	 可选。指定要使用的分隔符。如果省略该参数，则使用逗号作为分隔符、keys()、values()、entries()、reduceRight、indexOf()、find()、includes()、flat()、flatMap()
+  Array.from()方法从类似数组或可迭代对象创建一个新的(浅拷贝)的数组实例
 
 - 字符串有哪些方法？
 > str.charAt(index) 获取指定位置的字符;
@@ -560,15 +641,9 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 > str.slice(start，end) (片); 截取字符串 ①start：必需，指定字符串的开始位置 ②end：可选，指定字符串的结束位置，省略时截取至字符串末尾；end本身不在截取范围内； ③当参数为负数时，会将传入的负值与字符串的长度相加，之后再确定相应的位置。
 >str.split(" ") （(使)分裂）;把一个字符串分割成字符串数组
 > str.replace(regexp/substr,replacement);在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的字符串 ①regexp/substr：必需，规定字符串或要替换的模式的RegExp对象； ②replacement：必需，字符串值； ③replace()方法不会修改原来的字符串，只会生成原字符串的副本。
+> str.includes(searchString[, position]) searchString	需要查找的目标字符串 position	(可选) 从当前字符串的哪个索引位置开始搜寻子字符串，默认值为 0
 > 字符串的转换大小写方法：toUpperCase()、toLowerCase()
 > trim() 去掉字符串前后的空格
-- 16.for-in和for-of的区别？
-
-> 1.for-in循环出来的是key，for-of循环出来的是value。
-
-> 2.遍历对象的时候推荐使用for-in，遍历数组的时候使用for-of。
-
-> 3.for-of不能用来循环遍历普通对象，只能遍历可迭代结构。
 
 - 16.[iterable](https://blog.csdn.net/zhouyuzhu666/article/details/120515394) 
   iterable是es6新增的类型，iterable类型的数据有，Array,Set,Map,Set和Map是es6新增的数据类型，
@@ -592,8 +667,9 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 > canvas缺点:放大会失真，依赖于像素。
 
 - 20.说说事件循环吧？
+同步和异步任务分别进入不同的执行环境，同步的进入主线程，即主执行栈，异步的进入任务队列 (Event Queue，机制为先进先出)。
+  主线程内的任务执行完毕为空，会去任务队列读取对应的任务，推入主线程执行。 上述过程的不断重复就是我们说的 Event Loop (事件循环)。
 
-> 事件循环就是控制浏览器调用函数的顺序。
 
 - 21.说一说JS闭包吧？
 
@@ -606,6 +682,36 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 > 闭包的缺点，可能会导致内存泄漏。
 
 - 22.防抖节流？
+一 防抖：触发高频事件后n秒内函数只会执行一次，如果n秒内高频事件再次被触发，则重新计算时间。
+一 节流：高频事件触发，但在n秒内只会执行一次，所以节流会稀释函数的执行频率。
+  
+```javascript
+ //防抖 bounce[baʊns]
+   function debounce(delay,fn){
+       let timer = null
+       return function (e){
+           clearTimeout(timer)
+           timer = setTimeout(() =>{
+               fn.call(this,arguments)
+           },delay)
+       }
+   }
+   //节流 throttle [ˈθrɑːtl]
+    function throttle(delay,fn){
+       let isRun = true//1 定义一个标识决定定时器是否执行完毕
+        return function (){
+           if (!isRun) return// 2 如果没执行完直接return
+            isRun = false//执行完毕就置为正在执行
+            setTimeout( () =>{
+                fn.call(this,arguments)
+                isRun = true//置为执行完毕
+            },delay)
+        }
+    }
+    
+
+```
+  
 
 - 23.跨域？
 
@@ -617,22 +723,32 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 
 - 25.var、let、const区别？
 
-- 26.this?
+
 
 - 27.如何实现图片轮播？
 
+- for...in for...of 区别 for(let key in arr||string||arguments){}  for(let val of arr||string||arguments){}
+1.for in 遍历得到key  for of遍历得到value
+2 遍历对象：for in可以 for of 不可以    遍历Map、Set、generator：for of可以  for in不可以
+3 for in用于可枚举数据  对象 数组 字符串 , for of用于可迭代数据   数组 字符串 Map Set  
+![可迭代怎么看](.js基础复习_images/439364bc.png)
+可枚举对象的一个定义特征是：当我们通过赋值运算符将属性赋值给对象时，我们将内部可枚举（enumerable）设置为 true。这是默认值。
+但是，我们可以通过将其设置为 false 来更改此行为。
+经验法则是，可枚举属性总是出现在 for...in 循环中。
+Object.keys()   （ES6对象的拓展） ：用于获取对象自身所有的可枚举的属性，但不包括原型中的属性，然后返回一个由属性名组成的数组。注意它同for..in一样不能保证属性按对象原来的顺序输出。
+
+- for await ...of 用于遍历多个Promise 和Promise.all的作用一样
+
 - forEach:不能跳出循环 。 
-  [Js中forEach map无法跳出循环问题以及forEach会不会修改原数组
-  ](https://blog.csdn.net/weixin_43190804/article/details/125643403?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&utm_relevant_index=1)
-  map ：不能跳出循环   
+  [Js中forEach map无法跳出循环问题以及forEach会不会修改原数组](https://blog.csdn.net/weixin_43190804/article/details/125643403?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-125643403-blog-127126782.pc_relevant_aa&utm_relevant_index=1)
+一  forEach/map ：不能跳出循环   因为功能是遍历
   for 循环 ：return 跳出循环
   every() ：当内部 return false 时跳出整个循环（需要写 return true ）
-  some ()  ：当内部 return true 时跳出整个循环
-  
-- forEach会不会改变原数组？
+  some ()  ：当内部 return true 时跳出整个循环 
+二 forEach会不会改变原数组？
   答：如果数组中的值是基本类型, 改变不了;如果是引用类型分两种情况：
   1、没有修改形参元素的地址值, 只是修改形参元素内部的某些属性，
-  会改变原数组；2、直接修改整个元素对象时，无法改变原数组；
+  会改变原数组；2、直接修改整个item对象时，无法改变原数组；
   
 -[详解defineProperty和Proxy](https://www.jianshu.com/p/0e2984d13ab4) [ defineProperty 与 proxy](https://juejin.cn/post/6844903710410162183)
 ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
@@ -658,6 +774,119 @@ get
 set
 一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
 
--
+-Ajax Fetch axios 区别 
+Ajax是技术统称，  Fetch 具体API ，Axios 第三方库
+Fetch:浏览器原生API，用于网络请求，更加简洁，易用，支持promise
+```javascript
+//用XMLHttpRequest fetch 实现 ajax
+function ajax1(url,sucessFn){
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET',url,false)//false 异步
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState ==4){
+            if(xhr.status == 200){
+                sucessFn(xhr.responseText)
+            }
+        }
+    }
+    xhr.send(null)
+}
+    ajax1('https://www.fastmock.site/mock/8d2379d99cbc63432bfc2dcdb7d4af0a/runmonitor/serveInfo/paginQuery',function (res){console.log(res)})
+function ajax2(url){
+  fetch(url).then(
+          function(res) {
+            if (res.status === 200) {
+              return res.json()
+            } else {
+              return Promise.reject(res.json())
+            }
+          }
+  ).then(function(data) {
+    console.log(data);
+  }).catch(function(err) {
+    console.log(err);
+  })
+}
+ajax2('https://www.fastmock.site/mock/8d2379d99cbc63432bfc2dcdb7d4af0a/runmonitor/serveInfo/paginQuery')
+
+```
+-  js严格模式的特点
+```javascript
+'use strict' //全局开启严格模式
+function fn(){
+    'use strict'//只对函数开启
+}
+//特点
+//1 全局变量必须声明  2 禁止使用with 3、 禁止this指向window 4 函数参数不能重名
+```
+
+- 跨域请求时为什么发送options请求 ![跨域请求时为什么发送options请求](.js基础复习_images/4b8cc894.png)
+  有三个标签是允许跨域加载资源：<img src='xxx'> <link href='xxx'> <script src='xxx'>
+  options请求是跨域请求之前的预检查 浏览器自行发起的，无需我们干预
+  
+- 27.跨域问题？
+
+>协议、域名、端口任何一个不一样都会造成跨域问题。
+
+>解决跨域问题的方案：jsonp，CORS，postMessage、 nginx代理，websocket协议
+    1 ）![jsonp](.js基础复习_images/a2f7fc41.png) A网页通过scripte 的src 跨域请求一个b的接口，b接口直接返回一个字符串给
+    A, A当做方法执行，拿到数据  缺点是仅支持get方法具有局限性, 不安全可能会遭受XSS攻击。
+    2）CORS服务端配置
+    3）postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题： 
+        页面和其打开的新窗口的数据传递
+        多窗口之间消息传递
+        页面与嵌套的iframe消息传递
+        上面三个场景的跨域数据传递
+- js中哪些情况会造成内存泄漏？
+
+>1.闭包使用不当可能会导致内存泄漏。
+
+>2.Dom对象内存泄漏。
+
+>3.使用setTimeout和setInterval没有及时销毁。
+
+>4.隐式声明的全局变量。
 
 
+- 内存泄漏如何监测，场景有哪些
+一、 垃圾回收
+   V8引擎回收机制。
+    V8引擎底层是用C++写的。
+    参考文章，[V8引擎详细的垃圾回收](https://time.geekbang.org/column/article/131233) 
+    数据类型 
+        基本数据类型
+            栈
+                ESP指针标识
+        引用数据类型
+            堆  
+                代际假说 
+                    新生代区域
+                        副垃圾回收器
+                            对象区域， 空闲区域  在对象区域中对活动对象进行标记，然后将这些活动对象复制到空闲区域，然后将空闲区域和对象区域反转，然后进行垃圾回收
+                    老生代区域 
+                        主垃圾回收器
+                            标记-清除  标记-整理
+                    晋升机制
+                    JS是单线程 拆分成小任务
+  
+        首先说到垃圾回收，就要说一下JS存储数据的方式，JS中的数据类型其实是分为两类的，
+      一类是原始数据类型，另一类就是引用类型，然后JS中的原始类型是存在栈空间中的，
+      而引用类型是存在堆空间中的，栈空间中存了一个引用地址，然后通过这个引用地址去使用引用类型。
+      然后对于栈空间中的垃圾数据，回收的方法是通过一个ESP指针去移动标识哪些内容是否有用，没用的就直接抹掉。
+      而堆空间中的垃圾回收要比栈空间中的垃圾回收更为复杂，说到堆空间里的垃圾回收，我们先要说一下代际假说，
+      这个假说有两个特点，一个特点是有些对象生存时间很短，在分配内存没多久就变得不可访问了，
+      第二个特点是有些对象会活的很久。在这个假说的基础上，V8进行了垃圾回收的实现。
+      首先V8引擎将堆空间分为新生代区域和老生代区域，然后新生代区域主要存储生存时间短的对象，而老生代区域存储的是生存时间长的对象。
+      然后垃圾回收也通过2个垃圾回收器进行回收，一个副垃圾回收器负责新生代区域的垃圾回收，一个主垃圾回收器负责老生代区域的垃圾回收。
+      新生代区域的垃圾回收，主要是将新生代区域拆分成两个区域，一个对象区域，一个空闲区域，
+      在对象区域中对活动对象进行标记，然后将这些活动对象复制到空闲区域，然后将空闲区域和对象区域反转，然后进行垃圾回收。
+      老生代区域的垃圾回收是通过主垃圾回收器进行的，因为老生代区域里的对象比较大，所以不能像新生代区域那样采用scavenge算法，
+      因为复制活动对象是需要时间的，因为老生代区域里的对象比较大，复制时间会比较长，所以老生代区域采用标记-清除的方法进行垃圾回收，
+      对不活动对象进行标记，然后标记完成之后将不活动对象全部清理掉。但是这种方法会导致内存空间里存在内存碎片，
+      所以还有一种清理方法就是标记-整理的清理方法，基本上跟上一种方法差不多，不过清理的时候，会将活动对象全部放到一端，清除端之外的内存，这样就不存在内存碎片了。
+      然后这里面还有一个机制就是晋升机制，当一个对象在新生代里经过2次垃圾回收还存在的话就会被自动晋升放到老生代区域中。
+      最后就是在执行垃圾回收的过程中，因为JS是单线程运行的，所以进行垃圾回收的时候需要停下js脚本的运行工作，这样如果js垃圾回收时间较长的话，
+      那么JS脚本如果正在执行动画，那就会卡顿， 所以V8对将一个垃圾回收过程拆成了很多小的任务，和js脚本穿插执行，这样就不会有卡顿的感觉了，JS的垃圾回收机制基本是这样。
+
+  
+  

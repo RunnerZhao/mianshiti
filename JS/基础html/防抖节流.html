@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<h2>
+    用XMLHttpRequest 实现 ajax
+</h2>
+
+</body>
+<script>
+    //防抖 bounce[baʊns]
+   function debounce(delay,fn){
+       let timer = null
+       return function (e){
+           clearTimeout(timer)
+           timer = setTimeout(() =>{
+               fn.call(this,arguments)
+           },delay)
+       }
+   }
+   //节流 throttle [ˈθrɑːtl]
+    function throttle(delay,fn){
+       let isRun = true//1 定义一个标识决定定时器是否执行完毕
+        return function (){
+           if (!isRun) return// 2 如果没执行完直接return
+            isRun = false//执行完毕就置为正在执行
+            setTimeout( () =>{
+                fn.call(this,arguments)
+                isRun = true//置为执行完毕
+            },delay)
+        }
+    }
+</script>
+
+</html>

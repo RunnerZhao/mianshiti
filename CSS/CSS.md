@@ -10,6 +10,7 @@
         怪异盒模型 box-sizing:border-box   设置的width是content+padding+border的宽度  div的宽高是 设置的宽高
   标准盒模型大小等于width+padding+border，例如设置width为100，padding为10，border为10，那么这个盒模型的大小为140，
   IE盒模型设置width为100，那么这个盒模型的大小就为100，且content等于100-40=60。
+  二 offSetWidth 布局宽度：content + padding + border ； clientWidth 内容宽度 content + padding ；scrollWidth 滚动内容宽度 ：padding + 实际内容尺寸
 
 - 3.BFC相关原理及特性？ [什么是BFC，他有什么用？](https://blog.csdn.net/sqLeiQ/article/details/125261564)
 >BFC(Block Formatting Context)：块级格式化上下文，BFC是一块块独立的渲染区域，它有一套渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
@@ -113,7 +114,7 @@ rem 是相对于根字体的大小。1rem等于根字体大小px
 iphone6的屏幕宽度为375px，设计师做的视觉稿一般是750px，也就是2x，这个时候设计师在视觉稿上画了1px的边框，于是你就写了“border-width:1px”，so...1px边框问题产生了。
 对设计师来说它的1px是相对于750px的（物理像素），对你来说你的1px是相对于375px的（css像素）“实际上你应该是border-width:0.5px”。
 媒体查询 + 伪元素 + transfrom
-@media screen and (-webkit-min-device-pixel-ratio: 2) {
+@media(媒体) screen(屏幕) and (-webkit（网络套件）-min-device（装置）-pixel（像素）-ratio（率）: 2) {
 .border-top::after {
 content: "";
 position: absolute;
@@ -186,3 +187,9 @@ Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型�
     建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
   4.6 align-self属性 align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
     .item { align-self: auto | flex-start | flex-end | center | baseline | stretch; } ![1](.CSS_images/29e1afda.png)
+  
+- HTMLCollection 和NodeList 区别
+ 一、Node和element ![1](.CSS_images/c4ebb985.png) text comment（注释）
+     1 Dom是一棵树，所有节点都是Node  2 Node是ELement的基类 3 Element是其他HTML元素的基类，如HTMLDivELement
+  二、 HtmlCollection是Element的集合 NodeLsit是Node的集合
+  三 HTMLCollection 和NodeList 是类数组 本质是对象 ，类数组list可以用Array.from(list)  [...list] 来转成数组

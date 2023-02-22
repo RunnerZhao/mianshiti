@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+    </style>
+</head>
+
+<body>
+<h2>
+    深拷贝循环引用
+</h2>
+
+</body>
+<script>
+    let obj = {a:{c:3},d:1}
+    obj.b = obj
+    console.log('obj',obj)
+    function deepCopy(obj,weakMap = new WeakMap()){
+        let res = Object.prototype.toString.call(obj) == '[object Array]'?[]:{}
+        if(weakMap.get(obj)){
+            return weakMap.get(obj);
+        }
+        weakMap.set(obj,res);
+        for (let k in obj){
+            // console.log(k)
+            if (obj.hasOwnProperty(k)) {//判断是否是自有属性
+                if (typeof obj[k] == 'object' && obj[k] !== null ){//判断是否为引用类型
+                    res[k]= deepCopy(obj[k],weakMap)
+                }else{
+                    res[k] = obj[k]
+                }
+            }
+        }
+
+        return res
+    }
+    console.log('deepcopy',deepCopy(obj))
+</script>
+
+</html>
