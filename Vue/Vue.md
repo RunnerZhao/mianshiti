@@ -55,9 +55,9 @@
 >[答案](https://juejin.cn/post/6844904084374290446#heading-21)
 
 - 3.Vue生命周期？（必问）
-  beforeCreate  实例创建前   使用 setup()
-  created       实例创建完成 使用 setup()
-  beforeMount   挂载前  onBeforeMount
+  beforeCreate  实例创建前   使用 setup() 创建一个空白的vue实例 data method尚未初始化，不可使用
+  created       实例创建完成 使用 setup() 实例创建完成 ，完成响应式绑定   data method都已经初始化完成，可调用 。 尚未开始渲染模板
+  beforeMount   挂载前  onBeforeMount 编译模板，调用render生成vdom
   mounted       挂载完成  onMounted
   beforeUpdate  更新前  onBeforeUpdate
   updated       更新完成 onUpdated
@@ -183,3 +183,9 @@ export default new Vuex.Store({
 
 >观察者模式：目标 <=> 观察者
 
+- 虚拟dom？
+虚拟dom： 用js对象模拟DOM节点数据 
+  一、框架价值
+    1 组件化 2 数据驱动视图 （1数据变化 2 生成新vnode 然后diff算法旧vnode 3 更新dom
+  3 vDom并不快，js直接操作DOM才是最快的，但是‘数据驱动视图’不能对全部DOM进行重建，vDom是最合适的方案
+  4 Svelte框架就不用vdom， 是构建 Web 应用程序的一种新方法。Svelte 是一个编译器,它将声明性组件转换成高效的 JavaScript 代码,并像做外科手术一样细粒度地更新 DOM
