@@ -68,6 +68,37 @@
 ![Vue生命周期](.Vue_images/178810d7.png)
 >[答案](https://juejin.cn/post/6844904084374290446#heading-5)
 
+- 7.如何写一个组件和设计一个组件？
+一 、
+如果全局引入，那么所有的组件需要要注册到Vue component 上，并导出。
+Vue component用来注册一个组件。
+按需加载，单个导出组件即可。 
+  二、vue3 用<script setup>语法糖的情况  父组件信息用defineProps接收 子组件信息用defineEmits传递
+```javascript
+      defineProps({
+          modelValue: {
+              type: String,
+              default: ""
+          },
+      })
+
+    let emit = defineEmits(["update:modelValue", "onChange"]);
+    emit("onChange", val);
+```
+vue2 父组件信息用props接收 子组件信息用$emit传递
+
+setup（props, context）{
+// props.data
+// context.attrs    context.slots    context.emit
+}
+props指组件传递来的参数，并且ts可以推论出props的类型.props也就是 vue2 中组件中的 props
+context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slots插槽、$emit发送事件
+
+
+[Vue3关于响应式数据类型(ref、reactive、toRef、以及toRefs)](https://blog.csdn.net/qq_41400354/article/details/124121777?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-124121777-blog-120720925.pc_relevant_3mothn_strategy_and_data_recovery&spm=1001.2101.3001.4242.1&utm_relevant_index=3)
+
+- <script setup> 语法糖 父组件访问子组件数据
+[Vue3父组件访问子组件数据 defineExpose用法](https://blog.csdn.net/qq_29585681/article/details/126485407)
 - 4.Vue2和Vue3的区别？(必问)
 
 - 5.Vue和React的区别？(必问)
