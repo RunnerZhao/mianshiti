@@ -54,20 +54,26 @@
     Vuex
 >[答案](https://juejin.cn/post/6844904084374290446#heading-21)
 
-- 3.Vue生命周期？（必问）
-  beforeCreate  实例创建前   使用 setup() 创建一个空白的vue实例 data method尚未初始化，不可使用
+- 3.Vue生命周期？（必问） 
+一、beforeCreate  实例创建前   使用 setup() 创建一个空白的vue实例 data method尚未初始化，不可使用
   created       实例创建完成 使用 setup() 实例创建完成 ，完成响应式绑定   data method都已经初始化完成，可调用 。 尚未开始渲染模板
-  beforeMount   挂载前  onBeforeMount 编译模板，调用render生成vdom
-  mounted       挂载完成  onMounted
-  beforeUpdate  更新前  onBeforeUpdate
-  updated       更新完成 onUpdated
+  beforeMount   挂载前  onBeforeMount 编译模板，调用render生成vdom  还没有渲染DOM
+  mounted       挂载完成  onMounted   完成DOM渲染 组件创建完成 开始由创建阶段进入运行阶段
+  beforeUpdate  更新前  onBeforeUpdate data发生变化之后，准备更新DOM
+  updated       更新完成 onUpdated   DOM更新完成 此时不能修改data，可能会导致死循环
   beforeDestory 销毁前  onBeforeUnmount
   destoryed     销毁完成 onUnmounted
+  keep alive组件 ：onActivated 缓存组件被激活 ，onDeactivated 缓存组件被隐藏
+  ![Vue生命周期](.Vue_images/178810d7.png)
+  [答案](https://juejin.cn/post/6844904084374290446#heading-5)
+二、Vue的nextTick实现原理以及应用场景？
+Vue的nextTick实现原理是在Vue中dom更新并不是在数据变化之后立马发生的，而是按照一定的策略进行DOM的更新，而在此过程中，dom更新之后会立马执行nextTick的回调函数。
+应用场景，在created阶段，如果需要操作渲染后的视图，就需要使用nextTick方法。
+三、vue什么时候操作dom比较合适
+  mounted跟uptated都不能保证子组件全部挂载完成
+  使用$nextTick操作dom
+四、ajax放在created跟mounted都可以 相比ajax请求的时间1s，created到mounted的时间特别小10ms
   
-  
-![Vue生命周期](.Vue_images/178810d7.png)
->[答案](https://juejin.cn/post/6844904084374290446#heading-5)
-
 - 7.如何写一个组件和设计一个组件？
 一 、
 如果全局引入，那么所有的组件需要要注册到Vue component 上，并导出。
@@ -165,11 +171,17 @@ export default new Vuex.Store({
 - 10.路由守卫？
 
 - 11.diff算法？
-
->深度比较，同层优先。
-
->先比较同级，再比较子节点。如果都有子节点的话，会递归比较。
-
+深度比较，同层优先。
+先比较同级，再比较子节点。如果都有子节点的话，会递归比较。
+  一、diff算法很早就有而且应用广泛，例如github中pull代码的时候 。如果要严格diff两棵树，时间复杂度是O(n^3),不可用
+  二、优化（O（n））：1只比较同一层级，不跨级比较 2 tag不同直接删除重建，不再比较内部的细节 3子节点通过key区分（key的重要性）
+  三、 vue2 vue3 react 的diff算法区别
+  react：仅右移 ![](.Vue_images/aaf2920e.png)
+  vue2：双端比较 ![](.Vue_images/3e45c97d.png)
+  vue3：在双端比较的基础上加上了查找最长递增子序列 ![最长递增子序列](.Vue_images/474590b5.png)
+  四、vue react 循环时为什么必须使用key
+  1 vdom diff算法会根据key判断元素是否要删除，匹配了key，就只移动元素-性能较好，未匹配key，则删除重建-性能较差
+  
 - 12.详细说说Vue双向绑定原理？
 
 - 13.Vue2和Vue3的区别？(必问)
@@ -220,3 +232,9 @@ export default new Vuex.Store({
     1 组件化 2 数据驱动视图 （1数据变化 2 生成新vnode 然后diff算法旧vnode 3 更新dom
   3 vDom并不快，js直接操作DOM才是最快的，但是‘数据驱动视图’不能对全部DOM进行重建，vDom是最合适的方案
   4 Svelte框架就不用vdom， 是构建 Web 应用程序的一种新方法。Svelte 是一个编译器,它将声明性组件转换成高效的 JavaScript 代码,并像做外科手术一样细粒度地更新 DOM
+  
+- 路由 vue-router三种模式
+    1.hash local 用的 location.hash 获取#后面的内容
+    2 webHistory  用的h5的history.pushState 和 window.onpopState
+    3 MemoryHistory （vuerouter4之前叫abstract history） 不能有前进后退
+
