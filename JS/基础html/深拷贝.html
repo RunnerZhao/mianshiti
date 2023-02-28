@@ -32,7 +32,7 @@
     console.log('obj',obj)
     function deepCopy(obj,weakMap = new WeakMap()){
         let res = Object.prototype.toString.call(obj) == '[object Array]'?[]:{}
-        if(weakMap.get(obj)){
+        if(weakMap.has(obj)){
             return weakMap.get(obj);
         }
         weakMap.set(obj,res);
@@ -49,7 +49,28 @@
 
         return res
     }
-    console.log('deepcopy',deepCopy(obj))
+
+
+
+    function deepCopy1(obj,weakMap = new WeakMap()){
+        //定义返回值 res  判断weakMap中是否has obj 有的话return weakMap.get(obj) 没有的话set(obj,res)
+        //for in obj 自有属性下判断是否是对象 是对象则调用deepcopy(obj,weakMap) 不是则res.push(obj)
+        let res = Object.prototype.toString.call(obj) == '[object Array]'?[]:{}
+        // console.log(weakMap.has(obj),weakMap.get(obj),'get has 的区别')
+        if (weakMap.has(obj)) return weakMap.get(obj)
+        weakMap.set(obj,res)
+        for (let k in obj){
+            if (obj.hasOwnProperty(k)){
+                if (typeof obj[k] == 'object' && obj[k] !== null){
+                    res[k] =  deepCopy1(obj[k],weakMap)//并不是 return deepCopy1（）
+                }else{
+                    res[k] = obj[k]
+                }
+            }
+        }
+        return res
+    }
+    console.log('deepcopy',deepCopy1(obj))
 </script>
 
 </html>
