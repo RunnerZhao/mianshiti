@@ -892,7 +892,28 @@ function fn(){
 - 移动端H5 300ms延迟
 背景：double tap to zoom （双击放大）
   解决：以前用FastClick（原理监听touchEnd）  现在在meta标签加 device-width知道移动端做响应式，就没必要有300ms延迟了
+  <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
+width：控制 layout viewport 的大小，可以指定的一个值，如 600，或者特殊的值，如 device-width 为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
+viewport的width和scale是两个维度的放大或缩小。（用多大尺寸的放大镜或多高倍率的放大镜）
+放大缩小仅仅针对可视视口，布局视口不会发生改变。（清明上河图那张纸不可能被拉伸或压缩）
 
+- script标签中defer（延迟） async（异步）有什么区别 ![](.js基础复习_images/ecd5e1e4.png)
+  一、parser 美[ˈpɑrsər] 解析器; 分析器; 剖析器; 解析; 语法分析器;
+  fetch  美[fetʃ] vt.	获取
+  execution 	美[ˌeksɪˈkjuːʃn] n.	 执行; 实施; 表演;
+  二、
+  无：暂停解析html，下载js，执行js，再解析html
+  defer 是html解析跟js加载并行，解析完成后再js执行 跟js放在body最后作用类似
+  async 也是html解析跟js加载并行，加载完成后js执行
+  
+-prefetch 跟dns-prefetch  (prefetch 网络	预读; 数据预取; 预存取; 预载; 预读取文件夹;)
+一、preload prefetch
+preload 资源在当前页面使用，会优先加载
+prefetch 资源在未来页面使用，空闲时加载
+![](.js基础复习_images/949a0b44.png)
+二、dns-prefetch preconnect
+dns-prefetch DNS预查询
+preconnect DNS预连接（tcp连接）  
 
 
   

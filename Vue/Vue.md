@@ -236,5 +236,5 @@ export default new Vuex.Store({
 - 路由 vue-router三种模式
     1.hash local 用的 location.hash 获取#后面的内容
     2 webHistory  用的h5的history.pushState 和 window.onpopState
-    3 MemoryHistory （vuerouter4之前叫abstract history） 不能有前进后退
+    3 MemoryHistory （vuerouter4之前叫abstract history） 不能有浏览器的前进后退
 
