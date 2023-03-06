@@ -110,6 +110,34 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
 - 5.Vue和React的区别？(必问)
 
 - 6.Vue项目如何做性能优化？(必问)
+    1 v-if v-show的正确使用，如果dom计算量很大就用v-show，一般的用v-if就行
+    2 v-for使用key
+  3 使用计算属性computed缓存  计算量比较大的结果把他缓存起来 比如未读消息数
+  4 keep-alive缓存组件 比如频繁切换的tabs，不能乱用，因为缓存太多会占用内存，且不好debug
+  5 异步组件 [defineAsyncComponent](https://blog.csdn.net/weixin_44733660/article/details/128639280)
+  ES 模块动态导入也会返回一个 Promise，所以多数情况下我们会将它和 defineAsyncComponent 搭配使用 ![](.项目_images/5af59217.png)
+  6 路由懒加载  7 服务端渲染ssr  
+    
+
+
+>1.路由懒加载
+
+>2.keep-alive缓存页面
+
+>3.使用v-show复用dom
+
+>4.v-for同级别避免使用v-if
+
+>5.长列表性能优化，如果只是做纯粹的数据展示，不会有任何改变，就不需要响应化，对对象进行冻结。
+
+>6.事件销毁
+
+>7.图片懒加载 vue-lazyload
+
+>8.插件按需引入
+
+>9.SSR,服务端渲染。
+
 
 >[答案](https://juejin.cn/post/6844904084374290446#heading-23)
 
@@ -189,6 +217,13 @@ export default new Vuex.Store({
 - 14.Vue和React的区别？(必问)
 
 - 15.Vue父子组件执行过程中生命周期？
+  创建阶段：父组件执行了前三个生命周期：beforeCreate=>created=>beforeMounted，
+  然后等子组件执行完四个生命周期:beforeCreate=>created=>beforeMount=>mounted,父组件再执行了mounted
+  如果父组件传给子组件的数据是异步获取的，比如在父组件created中通过接口获取数据，接口很长时间才返回，那么在子组件的created、beforeMounted、mounted都拿不到数据
+  解决方案：在子组件中watch要传的数据 [父子组件的生命周期执行流程是怎么样的呢？](https://juejin.cn/post/7024151086436974623)  [vue父子组件传值不能实时更新](https://blog.csdn.net/catascdd/article/details/129065973)
+  更新阶段： 先执行父组件的beforeUpdate（） 再执行子组件的beforeUpdate（） 再执行子组件的 updated（）再执行父组件的 updated（）
+  销毁阶段：先执行父组件的beforeDestroy（） 再执行子组件的beforeDestroy（） 再执行子组件的 destroyed（） 再执行父组件的 destroyed（）
+    
 
 - 16.Vue父子组件通信？
 
@@ -198,33 +233,10 @@ export default new Vuex.Store({
 
 - 18.Vue中的data为什么是函数，如果Vue中的data是对象的话，那么他的对象属性如果是引用类型的话，那么在复用组件的时候，创建多个实例，这些实例用的都是同一个构造函数，就会影响到所有实例，为了保证组件间不同的实例之间的独立性，data必须是一个函数。
 
-- 19.Vue性能优化？
-
->1.路有懒加载
-
->2.keep-alive缓存页面
-
->3.使用v-show复用dom
-
->4.v-for同级别避免使用v-if
-
->5.长列表性能优化，如果只是做纯粹的数据展示，不会有任何改变，就不需要响应化，对对象进行冻结。
-
->6.事件销毁
-
->7.图片懒加载 vue-lazyload
-
->8.插件按需引入
-
->9.SSR,服务端渲染。
 
 - 20.双向绑定具体过程？
 
->发布订阅模式和观察者模式之间的区别
 
->发布订阅模式：发布者=>事件中心<=>订阅者。
-
->观察者模式：目标 <=> 观察者
 
 - 虚拟dom？
 虚拟dom： 用js对象模拟DOM节点数据 
@@ -237,4 +249,42 @@ export default new Vuex.Store({
     1.hash local 用的 location.hash 获取#后面的内容
     2 webHistory  用的h5的history.pushState 和 window.onpopState
     3 MemoryHistory （vuerouter4之前叫abstract history） 不能有浏览器的前进后退
+  
+- vue遇到的坑
+一 内存泄漏
+  产生原因：全局变量、全局事件、全局定时器、自定义事件 没有销毁
+二 vue2响应式的缺陷
+  data属性新增用Vue.set() 删除用vue.delete() 
+三  详情页回到列表页，滚动到原来位置 
+  方案：keep-alive与vue-router beforeRouteEnter(to, from, next) beforeRouteLeave(to, from, next)配合使用  [1](https://juejin.cn/post/6844904127076499469)
 
+-监听vue组件报错
+一、window.onerror = function(msg,source,line,column,error){}  
+1 全局监听js错误 2 是js级别的，识别不了vue组件信息 3捕捉vue监听不到的错误 4 不能监听 try ...catch捕获的错误
+window.addEventListener('error',event => { event是一个错误事件对象})
+二、errorCaptured生命周期  （captured 捕获  美[ˈkæptʃərd]）
+1监听所有下级组件的错误   2 返回false会阻止向上传播 
+三、errorHandler配置  Handler（ 搬运工; 操作者; 组织者; 顾问 美[ˈhændlər]）
+1 vue全局错误监听 ，所有组件报错都汇总到这里 2 如果errorCaptured返回false ，就不会传播到这里
+四 异步错误只有window.onerror能监听到
+五 三种监听方式结合使用 errorCaptured监听重点组件 errorHandler window.onerror候补监听 
+
+- H5很慢 该如何排查问题
+一 前端性能指标 ![](.Vue_images/e5f89216.png)  paint（	美[peɪnt] 把…描绘成）
+  First Paint（FP）第一次渲染
+  First Contentful Paint (FCP) 第一次有内容渲染  content（内容 美[ˈkɑːntent , kənˈtent]） 
+  First Meaningful Paint （FMP） 第一次有意义的渲染（不好定义 业界已弃用 企业内可以自己约定）
+  DOMContentLoaded(DCL)  当初始的 HTML 文档被完全加载和解析完成之后 ![](.Vue_images/2dd3168c.png)
+  Largest Contentfull Paint (LCP)   最大内容的渲染
+  Load（L） load 是在 HTML 所有相关资源被加载完成后触发。
+二 chrome devTools
+  performance可查看上述性能指标，并有网页快照
+  netWork 可以查看资源的加载时间 
+三 也可以用第三方性能评测工具  LightHouse   ![](.Vue_images/e95e248d.png)
+四 如果是网页加载慢
+  1.优化服务器硬件配置 使用cdn 2路由懒加载 大组件异步加载 ---减少主包的体积 3 优化http缓存策略 
+五 如果是网页渲染慢
+  1 优化服务端接口 2 继续分析，优化前端组件内部逻辑 3 服务端渲染 
+六 持续跟进持续优化  
+  
+  

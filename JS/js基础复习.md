@@ -898,23 +898,112 @@ viewport的width和scale是两个维度的放大或缩小。（用多大尺寸�
 放大缩小仅仅针对可视视口，布局视口不会发生改变。（清明上河图那张纸不可能被拉伸或压缩）
 
 - script标签中defer（延迟） async（异步）有什么区别 ![](.js基础复习_images/ecd5e1e4.png)
+```javascript
+<script src='' defer></script>   <script src='' async></script>
+```
   一、parser 美[ˈpɑrsər] 解析器; 分析器; 剖析器; 解析; 语法分析器;
   fetch  美[fetʃ] vt.	获取
   execution 	美[ˌeksɪˈkjuːʃn] n.	 执行; 实施; 表演;
   二、
   无：暂停解析html，下载js，执行js，再解析html
-  defer 是html解析跟js加载并行，解析完成后再js执行 跟js放在body最后作用类似
-  async 也是html解析跟js加载并行，加载完成后js执行
+  defer 是html解析跟js加载并行，解析html完成后再js执行 跟js放在body最后作用类似
+  async 也是html解析跟js加载并行，加载js完成后js执行,再解析html
   
 -prefetch 跟dns-prefetch  (prefetch 网络	预读; 数据预取; 预存取; 预载; 预读取文件夹;)
 一、preload prefetch
 preload 资源在当前页面使用，会优先加载
 prefetch 资源在未来页面使用，空闲时加载
 ![](.js基础复习_images/949a0b44.png)
-二、dns-prefetch preconnect
+二、dns-prefetch preconnect ![](.js基础复习_images/55b40003.png)
 dns-prefetch DNS预查询
-preconnect DNS预连接（tcp连接）  
+preconnect DNS预连接（tcp连接） connect 美[kəˈnekt] 使计算机连接(到互联网或计算机网络)  
+
+- h5页面首屏优化
+一 路由懒加载
+  1 适用于spa 2 路由拆分 优先保证首页加载  vue中配置路由懒加载用import  component: ()=>import("@/components/HelloWorld")
+  定义： 也叫延迟加载，即在需要的时候进行加载，随用随载。
+  方式：
+    1：vue-router配置路由，使用vue的异步组件技术，可以实现懒加载，此时一个组件会生成一个js文件。
+        component: resolve => require(['放入需要加载的路由地址'], resolve)
+    2 ES2020推荐方式imprort()—-推荐使用, import属于异步引用组件，需要特殊的babel-loader处理: syntax-dynamic-import
+    const Aoo = () => import('../components/Aoo')
+二、服务端渲染SSR
+  SSR渲染过程简单，所以性能好，纯H5页面优化的终极方案
+  ssr直接从服务器请求拿到带有数据的html 
+三、APP预取
+  1 如果H5在App webView中展示，可使用app预取
+  2 用户在列表页的时候（微信朋友圈），app会预加载可视区域内新闻链接的首屏内容，等到用户进H5页面（点新闻链接），就直接从app中获取内容，
+  瞬间展示首页
+四 分页 对列表页 上拉加载更多
+五 图片懒加载 
+  原理： ![](.js基础复习_images/69fea9ff.png) 
+  提前设置图片尺寸，尽量只重绘不重排
+六 hybrid（混合）
+  提前把html css js 下载到app内部 ，在app webview中使用file://协议加载页面文件 ，再用请求接口数据
+  
+- ES增加了哪些新特性？
+一
+ES6新增了类、模块、迭代器、生成器、箭头函数、Promise、反射、代理和众多新的数据类型。
+ES6新增了，let和const，展开语法，箭头函数，Promise，类，模板字符串，函数参数默认值，对象数组解构，for...of...,for...in。
+  
+
+-ES2020 [可选链和模块动态导入](https://blog.csdn.net/KlausLily/article/details/124580720) 
+ 一、 可选链：
+借助可选链特性我们可以通过 ?. 操作符在访问对象嵌套的属性而不需要校验这些属性是否存在。
+?.操作符与传统的.操作符十分相似，但是在操作符前面的值为undefined或null时该语法不会导致程序报错，并且其获取到的属性值为undefined。
+使用可选链特性可以使代码变得更简洁的同时确保在访问对象中不确定是否存在的属性时不会报错。
+  二、模块动态导入
+动态导入使得应用可以以原生的方式（译者注：之前的动态导入都是由打包工具，如 webpack 在本地编译打包的方式实现的）把 .js 文件作为模块动态地进行导入。
+在 ES2020 之前，模块无论是否被使用到了都会被导入进来。这一特性，将极大的提升网页应用的性能。
+动态导入语法实现了两个模块的动态导入。只有在对应模块对使用到时，其模块代码才会被加载，这样就减少了页面加载资源的大小并缩短了页面加载时间。
+
+-[模块化方案](https://blog.csdn.net/Superman_H/article/details/126911615)
+一 CommonJs (cjs)
+cjs 是 Node 的模块化规范，使用 require & exports 进行导入导出
+cjs 可作用于 node 环境 & webpack 环境，但不可作用浏览器
+如果前端项目在 webpack 中，也可以理解为浏览器和 Node 都支持
+二 ESModule (esm)
+esm 是 ES6 的模块化规范，使用 import & export 进行导入导出
+Node 及浏览器均支持 esm
+如需动态导入，esm 也可使用import()表达式： import("./module.js") 进行导入
+import()表达式返回一个解析为模块对象的 promise  新特性
+
+-后端返回10W数据怎么处理
+ 1.本身就不合理，需要分页
+2 自定义nodejs中间层，获取并拆分10w条数据
+3 虚拟列表-第三方lib vue virtual（美[ˈvɜːrtʃuəl] 虚拟） scroll list
+    只渲染可视区域的DOM
+
+- 前端常见的设计模式和使用场景
+一 设计原则
+1最重要的思想：开放封闭原则  对扩展开放 对修改封闭（修改后不影响别的功能）
+```javascript
+//一 工厂模式：用一个工厂函数，来创建实例，隐藏new ， 如jQuery $函数 react creatELement
+function Person(name) {
+    const obj = new Object();
+    obj.name = name;
+    return obj;
+}
+let xiaoming = Person("xiaoming")
+//二 单例模式：限制类只能有一个实例化对象。 全局唯一的实例 如 vuex redux的store  提示弹框
+class SingelTon{
+    private static instance:SingelTon | null = null
+    private constructor(){}//私有属性
+    public static getInstance():singelTon{
+        if (this.instance == null) this.instance = new  singelTon()
+        return this.instance
+    }
+    f1(){}
+}
+//三 代理模式 ：使用者不能直接 访问对象，而是访问一个代理层，在代理层可以监听get set 做很多事情。
+// 如proxy实现vue3响应式 https://es6.ruanyifeng.com/#docs/proxy
+
+//四 观察者模式  监听事件 btn.addEventListener('click',()=>{} )
+
+//五 发布订阅 vue组件通信中的自定义事件.  绑定事件event.on()  触发事件event.emit()
+```
+二 观察者模式和发布订阅模式区别： 观察者模式没有中间媒介，发布订阅模式有
+发布订阅模式：发布者=>事件中心<=>订阅者。
+观察者模式：目标 <=> 观察者
 
 
-  
-  
