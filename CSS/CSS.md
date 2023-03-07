@@ -193,3 +193,25 @@ Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型�
      1 Dom是一棵树，所有节点都是Node  2 Node是ELement的基类 3 Element是其他HTML元素的基类，如HTMLDivELement
   二、 HtmlCollection是Element的集合 NodeLsit是Node的集合
   三 HTMLCollection 和NodeList 是类数组 本质是对象 ，类数组list可以用Array.from(list)  [...list] 来转成数组
+  
+-[HTML - 替换（置换）元素和非替换（置换）元素](https://blog.csdn.net/huanan__/article/details/117285403?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-117285403-blog-79510379.pc_relevant_recovery_v2&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-117285403-blog-79510379.pc_relevant_recovery_v2&utm_relevant_index=1)
+一、替换元素
+1.定义
+一个内容不受CSS视觉格式化模型控制，CSS渲染模型并不考虑对此内容的渲染，且元素本身一般拥有固有尺寸（宽度，高度，宽高比）的元素，被称之为置换元素。简单来说就是浏览器通过其标签的元素属性来判断显示具体的内容的元素。
+2.举例说明
+<img>元素：浏览器根据src来显示图片内容；
+<input>元素：浏览器根据其type值来选择显示输入框还是其他类型。
+3.替换元素有哪些
+3.html中的替换元素有：<img>, <input>, <textarea>, <select>, <object> 等
+二、非替换元素
+1.定义
+html中大多数都是非替换元素，他们直接将内容告诉浏览器，直接显示出来，通常都是双标签。
+2.举例说明
+ <span>元素，浏览器会直接显示span标签里的内容。
+ <p>元素，浏览器会直接显示span标签里的内容。
+3.非替换元素有哪些
+非替换元素（non-replaced element）就是除了 img, input, textarea, select, object 等替换元素以外的元素，如：<p>,<span>,<div>,h标签等文本类标签。
+
+
+
+

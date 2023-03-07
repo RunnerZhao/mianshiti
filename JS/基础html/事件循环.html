@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<h2>
+    事件循环
+</h2>
+
+</body>
+<script>
+    // //golb1  glob1_promise glob2_promise glob1_then glob2_then
+    // //timeout1 timeout1_promise timeout1_then   timeout2 timeout2_promise timeout2_then
+    // //
+    // console.log('golb1');
+    //
+    // setTimeout(function() {
+    //     console.log('timeout1');
+    //
+    //     new Promise(function(resolve) {
+    //         console.log('timeout1_promise');
+    //         resolve();
+    //     }).then(function() {
+    //         console.log('timeout1_then')
+    //     })
+    // })
+    //
+    // // setImmediate(function() {
+    // //     console.log('immediate1');
+    // //
+    // //     new Promise(function(resolve) {
+    // //         console.log('immediate1_promise');
+    // //         resolve();
+    // //     }).then(function() {
+    // //         console.log('immediate1_then')
+    // //     })
+    // // })
+    //
+    //
+    // new Promise(function(resolve) {
+    //     console.log('glob1_promise');
+    //     resolve();
+    // }).then(function() {
+    //     console.log('glob1_then')
+    // })
+    //
+    // setTimeout(function() {
+    //     console.log('timeout2');
+    //
+    //     new Promise(function(resolve) {
+    //         console.log('timeout2_promise');
+    //         resolve();
+    //     }).then(function() {
+    //         console.log('timeout2_then')
+    //     })
+    // })
+    //
+    // new Promise(function(resolve) {
+    //     console.log('glob2_promise');
+    //     resolve();
+    // }).then(function() {
+    //     console.log('glob2_then')
+    // })
+
+
+    //同步代码  script start   promise1 script end
+    // 微任务  then3 Promise88  queueMicrotask1  then4 then88
+    // 宏任务  setTimeout1 微任务  then2  then1 Promise8 then8  Promise11 then11
+    // 宏任务  setTimeout2  Promise10  微任务  then10
+    // 宏任务  setTimeout8 Promise9 微任务 then9
+    console.log("script start");
+    setTimeout(() => {
+        console.log("setTimeout1");
+        new Promise((resolve) => {
+            resolve()
+        }).then(() => {
+            new Promise((resolve) => {
+                resolve()
+            }).then(() => {
+                console.log("then1");
+
+                setTimeout(function (){
+                    console.log('setTimeout8')
+                    new Promise((resolve) => {
+                        resolve()
+                        console.log("Promise9");
+                    }).then(() => {
+                        console.log("then9");
+                    })
+                })
+                new Promise((resolve) => {
+                    resolve()
+                    console.log("Promise8");
+                }).then(() => {
+                    console.log("then8");
+                    new Promise((resolve) => {
+                        resolve()
+                        console.log("Promise11");
+                    }).then(() => {
+                        console.log("then11");
+                    })
+                })
+            })
+            console.log("then2");
+        })
+    });
+    new Promise((resolve) => {
+        console.log("promise1");
+        resolve()
+    }).then(() => {
+        console.log("then3");
+        new Promise((resolve) => {
+            resolve()
+            console.log("Promise88");
+        }).then(() => {
+            console.log("then88");
+        })
+    })
+    setTimeout(function () {
+        console.log("setTimeout2");
+        new Promise((resolve) => {
+            resolve()
+            console.log("Promise10");
+        }).then(() => {
+            console.log("then10");
+        })
+    });
+    queueMicrotask(() => {
+        console.log("queueMicrotask1")
+    });
+    new Promise(function (resolve) {
+        resolve();
+    }).then(function () {
+        console.log("then4");
+    });
+    console.log("script end");
+
+
+</script>
+
+</html>
