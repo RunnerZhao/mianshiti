@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+
+    </style>
+</head>
+
+<body>
+<h2>
+    读代码
+</h2>
+</body>
+<script type="text/javascript">
+
+    //数组转树
+    const arr = [
+        { id: '02', name: '小亮', pid: '01', job: '产品leader' },
+        { id: '01', name: '张大大', pid: '', job: '项目经理' },
+        { id: '100', name: '赵大大', pid: '', job: '项目经理' },
+        { id: '03', name: '小美', pid: '01', job: 'UIleader' },
+        { id: '04', name: '老马', pid: '01', job: '技术leader' },
+        { id: '05', name: '老王', pid: '01', job: '测试leader' },
+        { id: '06', name: '老李', pid: '01', job: '运维leader' },
+        { id: '07', name: '小丽', pid: '02', job: '产品经理' },
+        { id: '08', name: '大光', pid: '02', job: '产品经理' },
+        { id: '09', name: '小高', pid: '03', job: 'UI设计师' },
+        { id: '10', name: '小刘', pid: '04', job: '前端工程师' },
+        { id: '11', name: '小华', pid: '04', job: '后端工程师' },
+        { id: '12', name: '小李', pid: '04', job: '后端工程师' },
+        { id: '13', name: '小赵', pid: '05', job: '测试工程师' },
+        { id: '14', name: '小强', pid: '05', job: '测试工程师' },
+        { id: '15', name: '小涛', pid: '06', job: '运维工程师' }]
+
+    //利用map
+    function arrToTree(data) {
+        // 创建一个空数组
+        let result = []
+        if (!Array.isArray(data)) {
+            // 首先判断传进来的这个参数是不是一个数组
+            return result
+            // 如果不是直接结束
+        }
+        // 创建一个空对象
+        let map = {};
+        data.forEach(item => {
+            // 然后再次遍历数组中的每一项，让每一项的ID值作为map对象的键
+            map[item.id] = item;
+        });
+        data.forEach(item => {
+            // 找到item的上一级
+            let parent = map[item.pid];
+            if (parent) {
+
+                // 判断当前parent有没有children属性有的话就把item加进去，没有就先初始化再加进去
+                parent.children ? parent.children.push(item) : (parent.children = []).push(item)
+
+            } else {
+                // 如果他没有父亲就把他加入到我们首次声明的数组里
+                result.push(item);
+            }
+        });
+        return result;
+    }
+    console.info('arrToTree',arrToTree(arr))
+
+
+
+
+</script>
+
+</html>
