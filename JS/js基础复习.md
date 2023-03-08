@@ -367,9 +367,7 @@ obj1.friends[0] = '1123';
 console.log(obj);
 console.log(obj1);
 ```
-
 > 上面这种方式不能处理undefined，function对象和Symbol类型，原因是JSON.stringify()在处理这些类型的时候，这些类型会被忽略。
-
 > 2.递归，对每层数据进行遍历然后进行拷贝。
 
 ```javascript
@@ -396,13 +394,13 @@ obj2.friends[0] = '1245';
 console.log(obj);
 console.log(obj2);
 ```
-
+>无法处理map set 以及循环引用
 > 3.jQuery中实现深拷贝，jQuery中实现深拷贝的原理也是递归。
 
 > $.extend()方法，$extend(true,obj1,obj2);obj1目标对象，obj2合并到obj1中的对象。
 
 ```javascript
-        const obj = {
+const obj = {
     name: {
         firstName: '小',
         lastName: '星',
@@ -444,37 +442,20 @@ console.log(obj2);
 -如何解决深拷贝递归的循环引用问题？
     使用WeakMap解决循环引用的问题。
 ```javascript
-  // 深拷贝简易版本
-const deepClone = source => {
-    // 创建一个 WeakMap 对象，记录已拷贝过的对象
-    const weakmap = new WeakMap();
-    // 判断是否为数组
-    const isArray = arr => Object.prototype.toString.call(arr) === '[object Array]';
-    // 判断是否为引用类型
-    const isObject = obj => obj !== null && (typeof obj === 'object' || typeof obj === 'function');
-    //拷贝（递归）
-    const copy = input => {
-        // 当输入为函数或基本数据类型时，直接返回
-        if (typeof input === 'function' || !isObject(input)) return input;
-        // 针对已拷贝过的对象，直接返回
-        if (weakmap.has(input)) {
-            return weakmap.get(input)
+ function deepCopy2(obj,weakMap = new WeakMap){
+    let res  = Object.prototype.toString.call(obj) == '[object Array]'?[]:{}
+    if (weakMap.has(obj)) return weakMap.get(obj)
+    weakMap.set(obj,res)
+    Object.keys(obj).forEach(k =>{
+        if (typeof obj[k] == 'object'&& obj[k] !== null ){
+            res[k] = deepCopy2(obj[k],weakMap)
+        }else{
+            res[k] = obj[k]
         }
-        const output = isArray(input) ? [] : {};
-        // 记录每次拷贝的对象(需要放在递归引用的前面)
-        weakmap.set(input, output);
-        for (let key in input) {
-            // console.log(key)
-            // 如果key是对象的自有属性
-            if (input.hasOwnProperty(key)) {
-                // 递归调用深拷贝方法
-                output[key] = copy(input[key]);
-            }
-        }
-        return output;
-    }
-    return copy(source);
+    })
+    return  res
 }
+console.log('deepcopy2',deepCopy2(obj))
 
 ```
 
@@ -749,6 +730,8 @@ push()数组的末尾添加一个或多个元素，并返回新的长度、pop()
 1.for in 遍历得到key  for of遍历得到value
 2 遍历对象：for in可以 for of 不可以    遍历Map、Set、generator：for of可以  for in不可以
 3 for in用于可枚举数据  对象 数组 字符串 , for of用于可迭代数据   数组 字符串 Map Set  
+4 使用for-in循环，返回的是所有能够通过对象访问的、可枚举的属性，其中既包括存在于实例中的属性，又包括存在于原型中的属性。
+  屏蔽了原型中不可枚举属性的实例属性也会在for-in循环中返回。   如果想要只遍历实例对象的属性，不遍历原型链中的属性，可以使用hasOwnProperty 方法过滤一下。
 ![可迭代怎么看](.js基础复习_images/439364bc.png)
 可枚举对象的一个定义特征是：当我们通过赋值运算符将属性赋值给对象时，我们将内部可枚举（enumerable ）设置为 true。这是默认值。
 但是，我们可以通过将其设置为 false 来更改此行为。

@@ -112,9 +112,10 @@
 
     //获取详细的数据类型
     function getType(x){
-        const originType = Object.prototype.toString.call(x)
+        const originType = Object.prototype.toString.call(x)//orgin 起源 美[ˈɔːrɪdʒɪn]
+        console.log('originType',originType)
         const sliceIndex = originType.indexOf(' ')
-        const type = originType.slice(sliceIndex+1 , -1)
+        const type = originType.slice(sliceIndex+1 , -1)//slice传入负值，会用负值加上字符串length来确定index
         return type.toLowerCase()
     }
 
@@ -159,7 +160,7 @@
             console.log('HTMLElement', `<${n.tagName.toLowerCase()}>`)
         }
     }
-    //深度优先遍历 用递归
+    //深度优先遍历 用递归 贪心
     function depthFirstTraverse(root){
         visitNode(root)
         const childNodes = root.childNodes
@@ -174,7 +175,7 @@
     const box = document.getElementById('box')
     // depthFirstTraverse(box)
 
-    //深度优先遍历 用栈
+    //深度优先遍历 用栈 后进先出
     function depthFirstTraverse1(root){
         //定义一个栈 根节点压栈
         //while循环条件栈的长度大于零 出栈 如果出栈的节点等于null就break  访问出栈节点
@@ -194,9 +195,9 @@
         }
 
     }
-    depthFirstTraverse1(box)
+    // depthFirstTraverse1(box)
 
-    //广度优先 用队列
+    //广度优先 用队列 先进先出
     function breadthFirstTraverse(root){
         //1 用数组来定义队列  根节点入队
         //2 while循环条件 队列长度大于0 就出队一个并且访问 如果出队的节点有子节点，就把子节点全部入队
@@ -212,7 +213,7 @@
             }
         }
     }
-    // breadthFirstTraverse(box)
+    breadthFirstTraverse(box)
 
 
     //promise实现延时函数
@@ -224,6 +225,7 @@
     sleep(2000).then(() => {
         console.log("两秒执行")
     })
+
     //promise 带延时功能的链式调用
     function human(name){
         return new Human(name)
@@ -304,7 +306,7 @@
     const curryAdd = curry(add)
     console.log(curryAdd(10)(20))
 
-    //instance原理
+    //instanceof原理
     // f instanceof F  判断构造函数F的原型对象是否在被监测对象f的原型链上
     function myInstanceof(left,right){
         if (left === null) return false //处理被检测对象是 null undefined的情况
@@ -335,8 +337,8 @@
     function fnBind(x,y,z){
         console.log(this,x,y,z)
     }
-    const fn1 = fnBind.myBind({x:100},10)
-    fn1(20,30,40)
+    // const fn1 = fnBind.myBind({x:100},10)
+    // fn1(20,30,40)
 
     //手写call apply
     //应用 bind返回一个新函数（不执行），可以传入部分参数，在执行时再传剩余参数。
@@ -346,7 +348,29 @@
         //call(null)后this变为window  globalThis在浏览器中就是window 在nodejs中是global
         if (context == null) context = globalThis
         if (typeof context !== 'object') context = new Object(context)//值类型变为对象
+        const fnKey = Symbol()//防止出现属性名称的覆盖
+        context[fnKey] = this//当前函数fn
+        console.log("args11",args,...args)
+        const res = context[fnKey](...args)//绑定了this并且执行
+        delete context[fnKey]//清理掉fn 防止污染
+        return res
     }
+    Function.prototype.myApply = function (context,args){
+        //call(null)后this变为window  globalThis在浏览器中就是window 在nodejs中是global
+        if (context == null) context = globalThis
+        if (typeof context !== 'object') context = new Object(context)//值类型变为对象
+        const fnKey = Symbol()//防止出现属性名称的覆盖
+        context[fnKey] = this//当前函数fn
+        console.log("args22",args,...args)
+        const res = context[fnKey](...args)//绑定了this并且执行
+        delete context[fnKey]//清理掉fn 防止污染
+        return res
+    }
+    // const fn2 = fnBind.myCall({x:100},10,20,30)
+    const fn2 = fnBind.myApply({x:100},[10,20,30])
+    console.info('fn2',fn2)
+
+
 
 
 
