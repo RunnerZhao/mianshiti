@@ -37,7 +37,7 @@
 
 </body>
 <script type="text/javascript">
-    //数组扁平化 只扁平化一级 多维数组转为一维数组
+//数组扁平化 只扁平化一级 多维数组转为一维数组
     //使用push  循环数组，如果item为数组则循环item并把n push到res中 ，如果不为数组则把item push到res中
     function flatten(arr){
         const res  = []
@@ -52,7 +52,6 @@
     }
     const arr1 = [1,2,[3,[4,5]],6]
     // console.log('flatten',flatten(arr1))
-
     //使用concat
     function flatten1(arr){
         let res = [];
@@ -61,7 +60,6 @@
         })
         return res;
     }
-
     console.log('flatten1',flatten1(arr1))
 
     //单元测试 jest
@@ -71,7 +69,6 @@
     //         expect(res).toEqual([])
     //     });
     // })
-
 
     //数组深度扁平化 彻底拍平 多维数组转为一维数组
     //使用push
@@ -109,6 +106,7 @@
     }
     const arr3 = [1,2,[3,[4,5]],6]
     console.log("flattenDeep1",flattenDeep1(arr3))
+
 
     //获取详细的数据类型
     function getType(x){
@@ -322,7 +320,6 @@
 
     console.log('myInstanceof',myInstanceof({},Array))
 
-
     //手写bind
     //应用：返回一个新函数 但是不执行 绑定this和部分参数  如果是箭头函数，不能改变this只能改变参数
     //返回一个函数 函数里面返回原本函数apply的结果
@@ -349,6 +346,7 @@
         if (context == null) context = globalThis
         if (typeof context !== 'object') context = new Object(context)//值类型变为对象
         const fnKey = Symbol()//防止出现属性名称的覆盖
+        console.log("this111",this)
         context[fnKey] = this//当前函数fn
         console.log("args11",args,...args)
         const res = context[fnKey](...args)//绑定了this并且执行
@@ -366,8 +364,8 @@
         delete context[fnKey]//清理掉fn 防止污染
         return res
     }
-    // const fn2 = fnBind.myCall({x:100},10,20,30)
-    const fn2 = fnBind.myApply({x:100},[10,20,30])
+    const fn2 = fnBind.myCall({x:100},10,20,30)
+    // const fn2 = fnBind.myApply({x:100},[10,20,30])
     console.info('fn2',fn2)
 
 
