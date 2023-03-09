@@ -996,3 +996,19 @@ class SingelTon{
 一 扩展运算符（spread运算符）用三个点号（…）表示，功能是把数组或类数组对象展开成一系列用逗号隔开的值。 
 二 rest运算符
   rest运算符也是三个点号，不过其功能与扩展运算符恰好相反，把逗号隔开的值序列组合成一个数组
+  
+-如果proxy_pass末尾有斜杠/，proxy_pass不拼接location的路径
+如果proxy_pass末尾无斜杠/，proxy_pass会拼接location的路径
+
+一、proxy_pass末尾有斜杠
+location  /api/ {
+proxy_pass http://127.0.0.1:8000/;
+}
+请求地址：http://localhost/api/test
+转发地址：http://127.0.0.1:8000/test
+二、proxy_pass末尾无斜杠
+location  /api/ {
+proxy_pass http://127.0.0.1:8000;
+}
+请求地址：http://localhost/api/test
+转发地址：http://127.0.0.1:8000/api/test
