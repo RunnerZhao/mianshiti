@@ -922,7 +922,7 @@ preconnect DNS预连接（tcp连接） connect 美[kəˈnekt] 使计算机连接
   瞬间展示首页
 四 分页 对列表页 上拉加载更多
 五 图片懒加载 
-  原理： ![](.js基础复习_images/69fea9ff.png) 
+  原理： 监听滚动 节流  getBoundingClientRect().top //dom距离视窗的距离 小于 window.innerHeight //视窗高度  时就把src修改成对应的地址
   提前设置图片尺寸，尽量只重绘不重排
 六 hybrid（混合）
   提前把html css js 下载到app内部 ，在app webview中使用file://协议加载页面文件 ，再用请求接口数据
@@ -999,7 +999,6 @@ class SingelTon{
   
 -如果proxy_pass末尾有斜杠/，proxy_pass不拼接location的路径
 如果proxy_pass末尾无斜杠/，proxy_pass会拼接location的路径
-
 一、proxy_pass末尾有斜杠
 location  /api/ {
 proxy_pass http://127.0.0.1:8000/;
@@ -1012,3 +1011,43 @@ proxy_pass http://127.0.0.1:8000;
 }
 请求地址：http://localhost/api/test
 转发地址：http://127.0.0.1:8000/api/test
+
+-[竞态问题](https://juejin.cn/post/7128205011019890695)
+简单来说，竞态问题出现的原因是无法保证异步操作的完成会按照他们开始时同样的顺序
+例子：有一个分页列表，快速地切换第二页，第三页；
+先后请求 data2 与 data3，分页器显示当前在第三页，并且进入 loading；
+但由于网络的不确定性，先发出的请求不一定先响应，所以有可能 data3 比 data2 先返回；
+在 data2 最终返回后，分页器指示当前在第三页，但展示的是第二页的数据。
+这就是竞态条件，在前端开发中，常见于搜索，分页，选项卡等切换的场景。
+解决：1 取消请求  axios ：AbortController() 在处理请求错误时，需要判断 error 是否来自 cancel  abort 放弃;
+```javascript
+const controller = new AbortController();
+axios.get('/xxx', {
+    signal: controller.signal
+}).then(function(response) {
+//...
+});
+
+controller.abort() // 取消请求
+```
+2 忽略请求
+使用唯一 id 标识每次请求  具体思路是：
+利用全局变量记录最新一次的请求 id
+在发请求前，生成唯一 id 标识该次请求
+在请求回调中，判断 id 是否是最新的 id，如果不是，则忽略该请求的回调
+
+
+
+-code review
+一、1 代码规范 （变量命名 代码语义）  2重复代码要抽离 复用  3 单个函数内容过长需要拆分 
+4 算法复杂度 5 安全问题 6 扩展性 
+
+-不足 
+限定在非核心技术领域 比如nodejs不是很熟  
+翻转话题 面对nodejs不熟这个事，我正在进行学习，估计一个月就学完了
+
+ 
+
+
+
+
