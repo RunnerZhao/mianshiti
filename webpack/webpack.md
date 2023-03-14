@@ -1,6 +1,136 @@
 ## webpack
+发布时间：w5：
+- 5大核心概念
+1 entry（入口）提示webpack从哪个文件开始打包
+2 output（输出）打包完的文件输出到哪
+3 loader（加载器）webpack只能处理js json 等 其他资源需要借助loader才能解析
+4 plugin （插件）拓展webpack的功能
+5 mode（模式）主要有两种模式 开发模式：development 生产模式：production
+开发模式：开发代码时使用的模式 主要做两件事：1 编译代码，使浏览器能识别运行 2 代码质量检查
+- 处理样式资源
+处理.css文件 在main.js中引入css文件 安装css-loader 在webpack.config.js中module rules下配置
 
->生活，热爱。
+-处理图片资源 优化 给小于10kb的图片转成base64能减少http请求数 在
+webpack5中直接配置 type:asset 在parser下dataUrlCondition里面maxSize  ![](.webpack_images/f0e15d8e.png)
+
+-修改文件输出目录 ![](.webpack_images/c081c95b.png)  在generator中修改  n.	发电机; 发生器; 电力公司
+hash:10  ：哈希值只取前10位
+ext： 文件后缀
+
+-自动清空上次打包内容
+W5中output下clean：true  原理：在每次打包前将打包目录清空，再进行打包
+
+-处理字体、图标资源
+![](.webpack_images/fd5726d9.png)
+
+-处理其他资源 加在字体（woff）后面就可以
+
+-处理js代码
+一、检查代码格式：eslint 根目录下.eslintrc.js文件中配置
+定义 ：检查js jsx 代码语法的工具
+使用eslint关键是配置eslint文件  ![配置文件 .eslintrc.js](.webpack_images/04534ef0.png)
+![](.webpack_images/f26f3ca3.png)
+```javascript
+//.eslintrc.js
+module.exports = {
+  root: true,
+  env: {
+    node: true,
+  },
+  globals: {
+    defineProps: 'readonly',
+    defineEmits: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly',
+  },
+  extends: [//继承现有的规则
+    'plugin:vue/vue3-essential',//vue3 cli官方规则
+    'eslint:recommended',//eslint官方规则
+    '@vue/typescript/recommended',
+    '@vue/prettier',
+    '@typescript-eslint',
+  ],
+  parserOptions: {//解析选项 parser 美[ˈpɑrsər]  解析器; 分析器; 
+    ecmaVersion: 2020,//es语法版本
+  },
+  rules: {//具体规则 off/0 关闭     warn/1 开启规则 警告级别 触发程序不会退出    error/2 开启规则 错误级别 触发程序能退出
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+  },
+}
+
+```
+二、js兼容性：babel
+定义：js编译器 把高级的语法比如es6 vue 转换为向下兼容的语法 便于在浏览器中运行
+位置：项目根目录下的 babel.config.js/json
+具体配置：
+1 presets预设：就是一组babel插件 拓展babel功能   vt.	预调; 预置; 给…预定时间; 预先决定; 事先安排;
+preset-env是智能预设 能把es6转成es5  preset-typescript 编译ts的预设
+2 使用：
+exclude:排除哪些文件
+
+-处理html文件 使用插件  html-webpack-plugin
+为了保留原来的html结构 自动引入打包生成的资源 要加template:path.resolve(__dirname,'public/index.html')  模板 以public/index.html文件为模板创建新的html文件
+
+-搭建开发服务器 自动化
+1 下载包 npm i webpack-server -D  开发服务器不会输出资源，是在内存中编译打包的
+2 配置
+```javascript
+devServer: {
+    host: 'localhost',//服务器域名
+    open: true,//自动打开浏览器
+    historyApiFallback: true,
+    // port: 8080,
+    proxy: {
+      '/change': {
+        target: 'http://172.22.50.216:8888',
+        // target: 'http://172.16.50.185:8888',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/change': '',
+        },
+      },
+    },
+  },
+```
+-生产模式 路径
+一、优化代码运行性能 代码打包速度
+开发模式不用输出 所以path：undefined
+在package.json中直接配置运行指令
+```javascript
+"scripts": {
+    "serve": "vue-cli-service serve --mode dev",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+```
+二、css处理 npm install --save-dev mini-css-extract-plugin  
+提取css成单独的文件 并且把style.loader替换成MiniCssExtractPlugin.loader
+三、样式兼容性处理
+postcss-loader 放在css-loader和less-loader中间
+四 css压缩 $ npm install css-minimizer-webpack-plugin --save-dev
+
+
+-生产环境移除console  
+```javascript
+if(process.env.NODE_ENV === 'production') {
+plugins.push("transform-remove-console")
+}
+```
+
+-高级配置
+
+
+
+
+
+
+
+
+
 
 >[webpack参考学习资料](https://juejin.cn/post/6844904094281236487#heading-0)
 
@@ -79,3 +209,5 @@
 
 
 -[Webpack优化手段](https://blog.csdn.net/m0_68997646/article/details/129116360?spm=1001.2014.3001.5502)
+
+
