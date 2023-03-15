@@ -3,38 +3,29 @@
   （3）calc()函数支持 “+”, “-“, “*”, “/” 运算；
   （4）calc()函数使用标准的数学运算优先级规则；
   （5）但需要注意的是 + - 必须用空格隔开;
-  [原文链接](https://blog.csdn.net/m0_38099607/article/details/73012637) 
-  
+  [原文链接](https://blog.csdn.net/m0_38099607/article/details/73012637)
 - 2 盒模型的组成：外边距（margin）+ border（边框） + 内边距（padding）+ content（内容），可以把每一个容器，比如div，都看做是一个盒子模型
    分为  标准盒模型 box-sizing:content-box  设置的width是content的宽度  div的宽高是 content加padding加border
         怪异盒模型 box-sizing:border-box   设置的width是content+padding+border的宽度  div的宽高是 设置的宽高
   标准盒模型大小等于width+padding+border，例如设置width为100，padding为10，border为10，那么这个盒模型的大小为140，
   IE盒模型设置width为100，那么这个盒模型的大小就为100，且content等于100-40=60。
   二 offSetWidth 布局宽度：content + padding + border ； clientWidth 内容宽度 content + padding ；scrollWidth 滚动内容宽度 ：padding + 实际内容尺寸
-
 - 3.BFC相关原理及特性？ [什么是BFC，他有什么用？](https://blog.csdn.net/sqLeiQ/article/details/125261564)
->BFC(Block Formatting Context)：块级格式化上下文，BFC是一块块独立的渲染区域，它有一套渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
-> BFC的布局规则：
+BFC(Block Formatting Context)：块级格式化上下文，BFC是一块块独立的渲染区域，它有一套渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
+- BFC的布局规则：
 1 内部的Box会在垂直方向，一个接一个地放置。
 2 Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠。
 3 每个盒子（块盒与行盒）的margin box的左边，与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。
 4 BFC的区域不会与float box重叠。
 5 BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
 6 计算BFC的高度时，浮动元素也参与计算。
-
->创建BFC的情况。
-
->1.根元素，即HTML标签。
-
->2.position设置为absolute和fixed。
-
->3.float元素设置为非none即left right。
-
->4.display的inline-block和flex、table-cell、table、grid等。
-
->5.overflow设置为非visible（默认值。内容不会被修剪，会呈现在元素框之外）。
-
->应用：1.解决margin会导致的外边距塌陷问题。2.清除浮动。3.阻止元素被浮动元素覆盖。
+- 创建BFC的情况。
+1.根元素，即HTML标签。
+2.position设置为absolute和fixed。
+3.float元素设置为非none即left right。
+4.display的inline-block和flex、table-cell、table、grid等。
+5.overflow设置为非visible（默认值。内容不会被修剪，会呈现在元素框之外）。
+应用：1.解决margin会导致的外边距塌陷问题。2.清除浮动。3.阻止元素被浮动元素覆盖。
 
 -margin外边距的塌陷问题
 margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇，两个元素的外边距不是两个间距的加和，而是两个边距中值比较大的，边距小的塌陷到了边距值大的值内部。

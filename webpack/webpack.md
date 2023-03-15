@@ -122,6 +122,21 @@ plugins.push("transform-remove-console")
 ```
 
 -高级配置
+-提升打包构建速度 
+一、HotModuleReplacementPlugin（HMR/热模块替换）：在开发中我们修改了一个模块的代码，就只这个模块重新打包编译，这样就提升了打包速度
+vue-loader其实已经集成了 只在开发模式下配置
+二 oneof 每个文件只能被module加载器中rules中其中一个loader处理
+三 include包含（只处理一个文件） exclude排除一些文件比如node_modules  只针对js的babel eslint
+四 cache  缓存 eslint和 babel的缓存
+每次打包时js文件都要通过eslint检查和babel编译，速度慢，可以缓存之前的结果，这样第二次打包就快了
+在babel/eslint配置项options中 加cacheDirectory:true//开启缓存 cacheCompression：false //关闭缓存文件的压缩   美[kəmˈprɛʃən]压缩
+五、thread-loader  多进程打包  美[θred] n.	(棉、毛、丝等的)线; 线索; 脉络; 思绪; 思路;
+多进程同时干js的babel eslint terse（webpack内置的用来开发环境下压缩js代码）
+```javascript
+const os = require('os')//引入nodejs的核心模块os 
+const threads = os.cpu().length //获取cpu核数
+//在options加works:threads
+```
 
 
 
