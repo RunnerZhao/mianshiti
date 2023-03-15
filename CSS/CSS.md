@@ -25,9 +25,8 @@ BFC(Block Formatting Context)：块级格式化上下文，BFC是一块块独立
 3.float元素设置为非none即left right。
 4.display的inline-block和flex、table-cell、table、grid等。
 5.overflow设置为非visible（默认值。内容不会被修剪，会呈现在元素框之外）。
-应用：1.解决margin会导致的外边距塌陷问题。2.清除浮动。3.阻止元素被浮动元素覆盖。
-
--margin外边距的塌陷问题
+- 应用：1.解决margin会导致的外边距塌陷问题。2.清除浮动。3.阻止元素被浮动元素覆盖。
+margin外边距的塌陷问题
 margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇，两个元素的外边距不是两个间距的加和，而是两个边距中值比较大的，边距小的塌陷到了边距值大的值内部。
 兄弟关系：1. 同级元素塌陷：上面的元素有下边距，下面的元素有上边距，两个边距相遇，真正盒子间距离是较大的那个值。
 父子关系：2. 父子元素塌陷：父子元素之间也会出现margin塌陷，（1）父元素和子元素都设置了同方向的margin-top值，两个属性之间没有其他内容进行隔离，导致两个属性相遇，发生margin塌陷。
@@ -35,19 +34,18 @@ margin塌陷现象：在垂直方向如果有两个元素的外边距有相遇�
 解决方法： （1）同级元素：如果两个元素垂直方向有间距，只需要设置给一个元素，不要进行拆分。
 （2）父子元素：1 让两个边距不要相遇，中间可以使用父元素border或padding将边距分隔开；2 更加常用的方法，父子盒模型之间的距离就不要用子元素的margin去设置，
 而是用父元素的padding挤出来。3利用伪元素给父元素的前面添加一个空元素(伪元素是行内元素)  .father::before {content:'';display:table}  4 最常用的方法：给父元素添加overflow：hidden（注意是给父级元素添加）
-注：水平方向没有margin塌陷 除非设置writing-mode(书写模式，比如实现古代诗词竖向效果) 。 
-
--清除浮动主要是为了解决，父元素因为子级元素浮动引起的内部高度为0的问题（高度塌陷） [清除浮动的4种方式](https://blog.csdn.net/weixin_43638968/article/details/107617275)
-方法：1.父级添加overflow:hidden方法： 可以通过触发BFC的方式，实现清除浮动效果。
+注：水平方向没有margin塌陷 除非设置writing-mode(书写模式，比如实现古代诗词竖向效果) 。
+- 清除浮动主要是为了解决，父元素因为子级元素浮动引起的内部高度为0的问题（高度塌陷）
+方法：1父级添加overflow:hidden方法： 可以通过触发BFC的方式，实现清除浮动效果。
 优点： 简单、代码少、浏览器支持好 缺点： 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素。不能和position配合使用，因为超出的尺寸的会被隐藏。
-2. 在浮动元素后使用一个空元素如<div class="clear"></div>，并在CSS中赋予.clear{clear:both;}属性即可清理浮动。亦可使用<br class="clear" />或<hr class="clear" />来进行清理。
-3.使用after伪元素清除浮动：.father::after{content:"";display:block;clear:both} （clear：none/left/right/both 左侧/右侧/两边不能出现浮动元素 ）
+2在浮动元素后使用一个空元素如<div class="clear"></div>，并在CSS中赋予.clear{clear:both;}属性即可清理浮动。亦可使用<br class="clear" />或<hr class="clear" />来进行清理。
+3使用after伪元素清除浮动：.father::after{content:"";display:block;clear:both} （clear：none/left/right/both 左侧/右侧/两边不能出现浮动元素 ）
 :after方式为空元素的升级版，好处是不用单独加标签了。IE8以上和非IE浏览器才支持:after，
 zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 优点： 符合闭合浮动思想，结构语义化正确，不容易出现怪问题（目前：大型网站都有使用，如：腾迅，网易，新浪等等） 
 缺点： 由于IE6-7不支持：after，使用zoom：1   zoom在ie、chorm支持，在火狐Firefox中不支持
-
--伪元素 伪类   伪类本质上是为了弥补常规CSS选择器的不足，以便获取到更多信息；  伪元素本质上是创建了一个有内容的虚拟容器
+  
+- 伪元素 伪类   伪类本质上是为了弥补常规CSS选择器的不足，以便获取到更多信息；  伪元素本质上是创建了一个有内容的虚拟容器
 一 伪元素：::before  ::after
     1 ::first-letter
     伪元素 ::first-letter 用来设置指定元素中内容第一个字符的样式，通常用来配合 font-size 和 float 属性制作首字下沉效果。需要注意的是，伪元素 ::first-letter 仅可以用于块级元素，行内元素想要使用该伪元素，则需要先将其转换为块级元素。
@@ -59,11 +57,9 @@ zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 二 伪元素 ::placeholder 用来设置表单元素（、 元素）的占位文本（通过 HTML 的 placeholder 属性设置的文本）比如： input.text::placeholder{ color: red; background-color: #CCC; }
     ![伪类](.CSS_images/080c6aba.png)
 
-
 - 4.通过修改文字方式如何控制div大小？
     使用em rem单位
-
-
+  
 - 7 水平垂直居中 
 1、父元素设置 display: flex; justify-content 项目在主轴上的对齐方式: center; align-items 项目在交叉轴上如何对齐: center; ，唯一的子元素就能水平垂直居中
 2、父级元素设置 flex，子元素设置 margin: auto;   
@@ -73,7 +69,7 @@ zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 6、网格布局 父元素display: grid; 子元素 justify-self: center;水平方向    align-self: center;垂直方向
   [CSS 不定宽高的垂直水平居中](https://juejin.cn/post/6844903933350150158#heading-4)
 
--   8 position属性
+- 8 position属性
 static（静态定位）
 对象遵循标准文档流中，top, right, bottom, left 等属性失效。
 relative（相对定位）
@@ -82,7 +78,7 @@ absolute（绝对定位）
 对象脱离标准文档流，使用top, right, bottom, left 等属性进行绝对定位（相对于static定位以外的第一个父元素进行绝对定位） 同时可通过z-index定义层叠关系。
 fixed（固定定位）
 对象脱离标准文档流，使用top, right, bottom, left 等属性进行绝对定位（相对于浏览器窗口进行绝对定位）同时可通过z-index定义层叠关系。
--   9 margin 和 padding 的区别 
+- 9 margin 和 padding 的区别 
     作用对象不同，padding是施加于自身的，margin是施加于外部的
 - 10 px、%、em、vw、vh、vmax、vmin、rem区别
   % 相对于自己的父级。
@@ -94,17 +90,17 @@ vmax指浏览器可视区的宽、高，以最大的进行百分计算。
 vmin指浏览器可视区的宽、高，以最小的进行百分比的计算。
 rem 是相对于根字体的大小。1rem等于根字体大小px
   
--11 块级元素跟行内元素区别
+- 11 块级元素跟行内元素区别
 块元素可以设置宽高，宽度默认继承父元素的宽度
 行内元素不能设置宽高，他的大小由内容撑起来的
--12如何让浏览器支持小字体 
-谷歌最小是12px   transform:scale(0.8)
+- 12如何让浏览器支持小字体 
+谷歌最小是12px   transform:scale(0.8)   	美[skeɪl] 天平，秤 调节
 -13 移动端1px解决方案
 1px问题产生的原因
 从移动端的角度说个具体的场景，以iphone6为例。
 iphone6的屏幕宽度为375px，设计师做的视觉稿一般是750px，也就是2x，这个时候设计师在视觉稿上画了1px的边框，于是你就写了“border-width:1px”，so...1px边框问题产生了。
 对设计师来说它的1px是相对于750px的（物理像素），对你来说你的1px是相对于375px的（css像素）“实际上你应该是border-width:0.5px”。
-媒体查询 + 伪元素 + transfrom
+媒体查询 + 伪元素 + transfrom:scale
 @media(媒体) screen(屏幕) and (-webkit（网络套件）-min-device（装置）-pixel（像素）-ratio（率）: 2) {
 .border-top::after {
 content: "";
@@ -187,20 +183,18 @@ Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型�
   
 -[HTML - 替换（置换）元素和非替换（置换）元素](https://blog.csdn.net/huanan__/article/details/117285403?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-117285403-blog-79510379.pc_relevant_recovery_v2&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-117285403-blog-79510379.pc_relevant_recovery_v2&utm_relevant_index=1)
 一、替换元素
-1.定义
+1 定义
 一个内容不受CSS视觉格式化模型控制，CSS渲染模型并不考虑对此内容的渲染，且元素本身一般拥有固有尺寸（宽度，高度，宽高比）的元素，被称之为置换元素。简单来说就是浏览器通过其标签的元素属性来判断显示具体的内容的元素。
-2.举例说明
+2 举例说明
 <img>元素：浏览器根据src来显示图片内容；
 <input>元素：浏览器根据其type值来选择显示输入框还是其他类型。
-3.替换元素有哪些
-3.html中的替换元素有：<img>, <input>, <textarea>, <select>, <object> 等
+3 替换元素有哪些
+3 html中的替换元素有：<img>, <input>, <textarea>, <select>, <object> 等
 二、非替换元素
-1.定义
+1 定义
 html中大多数都是非替换元素，他们直接将内容告诉浏览器，直接显示出来，通常都是双标签。
-2.举例说明
- <span>元素，浏览器会直接显示span标签里的内容。
- <p>元素，浏览器会直接显示span标签里的内容。
-3.非替换元素有哪些
+2 举例说明 :<span>元素，浏览器会直接显示span标签里的内容。<p>元素，浏览器会直接显示span标签里的内容。
+3 非替换元素有哪些
 非替换元素（non-replaced element）就是除了 img, input, textarea, select, object 等替换元素以外的元素，如：<p>,<span>,<div>,h标签等文本类标签。
 
 
