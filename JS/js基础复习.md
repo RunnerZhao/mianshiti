@@ -1,21 +1,25 @@
-- let var 声明提升：把声明提升到作用域的顶部，即提升到所有可执行代码之前。 （作用域分为全局作用域、函数作用域、块级作用域，此处仅指前两个作用域。）
-  声明提升分为“变量”声明提升、“函数”声明提升。（类定义不能提升） 提升会导致一些奇怪现象
+- 1var let const 区别
+  一 var有 声明提升：把声明提升到作用域的顶部，即提升到所有可执行代码之前。 （作用域分为全局作用域、函数作用域、块级作用域，此处仅指前两个作用域。）
+  声明提升分为“变量”声明提升、“函数”声明提升。（类定义不能提升） 提升会导致一些奇怪现象。let const没有声明提升
  [](https://zhuanlan.zhihu.com/p/519406888)
+  二、重复声明 var可以 let、const不行
+  三、let定义的变量 。 const定义常量，必须初始化值，并且不能修改指针，只能修改对象里面的属性
+  四、在全局作用域下var声明的变量会挂载在window上，这样可能会覆盖window上的属性。而let const不会
 
--作用域 变量 作用域链 [原生js作用域以及变量提升和函数提升的理解](https://blog.csdn.net/weixin_39755186/article/details/93161335)
+- 2作用域 变量 作用域链 [原生js作用域以及变量提升和函数提升的理解](https://blog.csdn.net/weixin_39755186/article/details/93161335)
 作用域 一：全局作用域：在整个script标签或者一个单独的js文件内起作用 二：函数作用域（局部作用域）：只能在函数内部起效果和作用
 三：块级作用域：在for(){},if(){},else{}，try{},cath(){}等等的花括号{}内部的作用域，ES6中新增了块级作用域 
 在块级作用域中，var定义的变量是全局变量，let定义的变量是局部变量。而在局部作用域中，无论是用var定义的变量还是用let定义的变量都是局部变量。
 无论是在块级作用域还是局部作用域，省略变量前面的var或者let都会变成一个全局变量。
 注意：①对象的{}不属于块级作用域，像for(){},if(){},else{}，try{},cath(){}等等的花括号才是块级作用域
-②对象的{}的作用域 是什么作用域取决于对象所处的作用域，比如对象在全局作域 下定义的，那么对象的{}的作用域就是全局作用域 
+②对象的{}的作用域 是什么作用域取决于对象所处的作用域，比如对象在全局作用域下定义的，那么对象的{}的作用域就是全局作用域 
 全局变量和局部变量 根据作用域的不同，变量可以分为全局变量和局部变量。
 （1）全局变量：在全局作用域下的变量，在全局下都可以使用，包括函数内部。并且，全局变量只有浏览器关闭的时候才会销毁，比较占内存资源。
 （2）局部变量：在局部作用域下的变量，或者说成在函数内部的变量。并且，局部变量在程序执行完毕后就会立即销毁，比较节约内存资源。
 注意： （1）在函数内部没有声明就直接赋值的变量是全局变量 （2）函数的形参可以看作是局部变量 
 作用域链:内部作用域访问外部作用域的变量，采取的是链式查找的方式来决定取哪个值，这种结构我们称为作用域链，采取就近原则的方式向上一级一级的作用域来查找变量值， 最顶级是全局作用域，如果到全局作用域也没找值，那么就会报错。
 
-1)基本数据类型：String Number Boolean Null Undefined Symbel Bigint 引用数据类型 Object Array Function
+- 3数据类型 基本数据类型：String Number Boolean Null Undefined Symbel Bigint 引用数据类型 Object Array Function
 undefined 表示未定义的变量。 null 值表示一个空对象指针 undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。
 典型用法是： -变量被声明了，但没有赋值时，就等于 undefined。 -调用函数时，应该提供的参数没有提供，该参数等于undefined。
 -对象没有赋值的属性，该属性的值为 undefined。 -函数没有返回值时，默认返回 undefined。 
@@ -23,7 +27,8 @@ null表示"没有对象"，即该处不应该有值。，典型的用法如下 -
 为什么typeof null 是object 第一版的 JavaScript 是用 32 位比特来存储值的，且是通过值的低 1 位或 3 位来识别类型的，对象的类型标签是 000 。由于 null
 代表的是空指针（低三位也是 000 ），因此，null 的类型标签是 000，typeof null 也因此返回 "object"。
 
-2)判断数组的方法 • Object.prototype.toString.call()。 每一个继承 Object 的对象都有 toString 方法，如果 toString 方法没有重写的话，会返回 [Object type]，其中
+- 4判断数组的方法 
+• Object.prototype.toString.call()。 每一个继承 Object 的对象都有 toString 方法，如果 toString 方法没有重写的话，会返回 [Object type]，其中
 type 为对象的类型  
 • Array.isArray()
 const a = [];const b = {};Array.isArray(a);//trueArray.isArray(b);//false 
@@ -37,14 +42,14 @@ function B() {};let b = new B();console.log(b.constructor === B) // true 而数�
 isArray >Object.prototype.toString.call() > instanceof > constructor
 [帮你彻底搞懂JS中的prototype、__proto__与constructor（图解）](https://chen-cong.blog.csdn.net/article/details/81211729?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&utm_relevant_index=1)
 
-1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 
+- 5symbel 1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 
 const a = Symbol('描述啊'); String(a) // "Symbol(描述啊)"  a.toString() // "Symbol(描述啊)"  a.description // "描述啊"
 2、用处 一，避免对象的键被覆盖。Symbol用于对象的属性名时，能保证对象不会出现同名的属性。这对于一个对象由多个模块构成的情况非常有用，能防止某一个键被不小心改写或覆盖。
 二，避免魔术字符串。魔术字符串的诠释是：在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值。风格良好的代码，应该尽量消除魔术字符串，改由含义清晰的变量代替。 
 3 方法 Symbol.for()方法接受一个字符串作为参数，然后全局搜索有没有以该参数作为描述值的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建一个以该字符串为名称的 Symbol 值，并将其注册到全局
 Symbol.keyFor()方法返回一个已全局注册的 Symbol 类型值的描述值，如果该 Symbol 类型值未全局注册，则返回undefined。 它类似于通过Symbol值的属性description直接获取描述内容
 
--原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显式原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
+- 6原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显式原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
 prototype是函数独有的 __proto__ constrctor是对象独有的 因为函数也是对象，所以函数也有__proto__ constrctor
 ```javascript
 function Person(name) {
@@ -58,7 +63,6 @@ nick.toString
 按理说， nick是 Person构造函数生成的实例，而 Person的 prototype并没有 toString方法，那么为什么， nick能获取到 toString方法？
 这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。
 构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
-
 画出下面代码的原型链图
 ```javascript
 class A {}
@@ -68,7 +72,7 @@ const b = new B();
 ![原型链图](.js基础复习_images/原型链图.png)
 
 
-构造函数分为 实例成员 和 静态成员 [ js原型及原型链](https://juejin.cn/post/6844904093828251662)
+- 7构造函数分为 实例成员 和 静态成员 [ js原型及原型链](https://juejin.cn/post/6844904093828251662)
 实例成员： 实例成员就是在构造函数内部，通过this添加的成员。实例成员只能通过实例化的对象来访问。
 静态成员： 在构造函数本身上添加的成员，只能通过构造函数来访问
 ```javascript
@@ -107,102 +111,103 @@ class Student extends Person{
 }
 ```
 
--[this、apply、call、bind](https://juejin.cn/post/6844903496253177863)
-1 this 的指向:this 永远指向最后调用它的那个对象
-2 改变 this 的指向的方法：
-1)使用 ES6 的箭头函数 ：ES6箭头函数的 this 始终指向函数定义时的 this，而非执行时。箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，
-如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
-
-箭头函数为什么不能作为构造函数
+- 8箭头函数为什么不能作为构造函数
 箭头函数没有自己的 this，
 箭头函数没有自己的 prototype， 修改原型对象无法进行
 
-箭头函数与普通函数的区别？
+- 9箭头函数与普通函数的区别？
 1.this指向不同，普通函数指向调用对象，而箭头函数没有自己的this，this的值取决于执行上下文,不能使用call apply bind改变this指向。
 2.箭头函数不能作为构造函数。因为它没有prototype属性。
 3.箭头函数没有arguments属性，不能通过arguments属性拿到变量。
 
-箭头函数不能用的情况
-1. ![对象方法](.js基础复习_images/839db600.png) 2 ![原型方法](.js基础复习_images/28aad8d1.png) 3 ![构造函数](.js基础复习_images/86f59012.png)
-4 ![动态上下文中的回调函数](.js基础复习_images/1e0fb493.png)  5 ![vue生命周期和methods](.js基础复习_images/36535b1b.png)
+- 10箭头函数不能用的情况
+1 ![对象方法](.js基础复习_images/839db600.png) 2 ![原型方法](.js基础复习_images/28aad8d1.png) 3 ![构造函数](.js基础复习_images/86f59012.png)
+   4 ![动态上下文中的回调函数](.js基础复习_images/1e0fb493.png)  5 ![vue生命周期和methods](.js基础复习_images/36535b1b.png)
    传统vue组件是js对象 传统React 组件是class
-```javascript
-    var name = "windowsName";
-    var a = {
-        name : "Cherry",
-        func1: function () {
-            console.log(this.name)     
-        },
-        func2: function () {
-            setTimeout( () => {
-                this.func1()
-            },100);
-        }
-    };
-    a.func2()     // Cherry
-```
-2)在函数内部使用 _this = this   如果不使用 ES6，那么这种方式应该是最简单的不会出错的方式了，我们是先将调用这个函数的对象保存在变量 _this 中，
-然后在函数中都使用这个 _this，这样 _this 就不会改变了。
-```javascript
-    var name = "windowsName";
 
-    var a = {
+- 11[this、apply、call、bind](https://juejin.cn/post/6844903496253177863)
+一、es5中this 的指向:this 永远指向最后调用它的那个对象
+二、改变 this 的指向的方法：
+    1)使用 ES6 的箭头函数 ：ES6箭头函数的 this 始终指向函数定义时的 this，而非执行时。箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，
+    如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
+    ```javascript
+        var name = "windowsName";
+        var a = {
+            name : "Cherry",
+            func1: function () {
+                console.log(this.name)     
+            },
+            func2: function () {
+                setTimeout( () => {
+                    this.func1()
+                },100);
+            }
+        };
+        a.func2()     // Cherry
+    ```
+    2)在函数内部使用 _this = this   如果不使用 ES6，那么这种方式应该是最简单的不会出错的方式了，我们是先将调用这个函数的对象保存在变量 _this 中，
+    然后在函数中都使用这个 _this，这样 _this 就不会改变了。
+    ```javascript
+        var name = "windowsName";
+    
+        var a = {
+    
+            name : "Cherry",
+    
+            func1: function () {
+                console.log(this.name)     
+            },
+    
+            func2: function () {
+                var _this = this;
+                setTimeout( function() {
+                    _this.func1()
+                },100);
+            }
+    
+        };
+    
+        a.func2()       // Cherry
+    ```
+    3)使用 apply、call、bind  
+    ```javascript
+    //使用apply call bind
+        var a = {
+            name : "Cherry",
+    
+            func1: function () {
+                console.log(this.name)
+            },
+    
+            func2: function () {
+                setTimeout(  function () {//apply
+                    this.func1()
+                }.apply(a),100);
+                // setTimeout(  function () {//call
+                //     this.func1()
+                // }.call(a),100);
+                // setTimeout(  function () {//bind
+                //     this.func1()
+                // }.bind(a)(),100);
+            }
+    
+        };
+    
+        a.func2()            // Cherry
+    ```
 
-        name : "Cherry",
-
-        func1: function () {
-            console.log(this.name)     
-        },
-
-        func2: function () {
-            var _this = this;
-            setTimeout( function() {
-                _this.func1()
-            },100);
-        }
-
-    };
-
-    a.func2()       // Cherry
-```
-3)使用 apply、call、bind  
-```javascript
-//使用apply call bind
-    var a = {
-        name : "Cherry",
-
-        func1: function () {
-            console.log(this.name)
-        },
-
-        func2: function () {
-            setTimeout(  function () {//apply
-                this.func1()
-            }.apply(a),100);
-            // setTimeout(  function () {//call
-            //     this.func1()
-            // }.call(a),100);
-            // setTimeout(  function () {//bind
-            //     this.func1()
-            // }.bind(a)(),100);
-        }
-
-    };
-
-    a.func2()            // Cherry
-```
-apply、call、bind 区别:
-1))apply定义：apply() 方法调用一个函数, 其具有一个指定的this值，以及作为一个数组（或类似数组的对象）提供的参数
-语法：fun.apply(thisArg, [argsArray]) ：
-thisArg：在 fun 函数运行时指定的 this 值。需要注意的是，指定的 this 值并不一定是该函数执行时真正的 this 值，如果这个函数处于非严格模式下，
-则指定为 null 或 undefined 时会自动指向全局对象（浏览器中就是window对象），同时值为原始值（数字，字符串，布尔值）的 this 会指向该原始值的自动包装对象。
-argsArray：一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 fun 函数。
-如果该参数的值为null 或 undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。浏览器兼容性请参阅本文底部内容。
-2))apply 和 call 的区别
-call语法：fun.call(thisArg[, arg1[, arg2[, ...]]])
-区别:call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
-3))bind 和 apply、call 区别
-bind的入参跟call一致，可以传多个参数，但是bind 是创建一个新的函数，我们必须要手动去调用
+- 12 apply、call、bind 区别:
+  1))apply定义：apply() 方法调用一个函数, 其具有一个指定的this值，以及作为一个数组（或类似数组的对象）提供的参数
+  语法：fun.apply(thisArg, [argsArray]) ：
+  thisArg：在 fun 函数运行时指定的 this 值。需要注意的是，指定的 this 值并不一定是该函数执行时真正的 this 值，如果这个函数处于非严格模式下，
+  则指定为 null 或 undefined 时会自动指向全局对象（浏览器中就是window对象），同时值为原始值（数字，字符串，布尔值）的 this 会指向该原始值的自动包装对象。
+  argsArray：一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 fun 函数。
+  如果该参数的值为null 或 undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。浏览器兼容性请参阅本文底部内容。
+  2))apply 和 call 的区别
+  call语法：fun.call(thisArg[, arg1[, arg2[, ...]]])
+  区别:call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
+  3))bind 和 apply、call 区别
+  bind的入参跟call一致，可以传多个参数，但是bind 是创建一个新的函数，我们必须要手动去调用
 ```javascript
     var a ={
         name : "Cherry",
@@ -213,7 +218,8 @@ bind的入参跟call一致，可以传多个参数，但是bind 是创建一个�
     var b = a.fn;
     b.bind(a,1,2)()           // 3  手动调用
 ```
-- JS 中的函数调用：
+
+- 13 JS 中的函数调用：
 1)作为一个函数调用:
 ```javascript
     var name = "windowsName";
@@ -308,7 +314,6 @@ Object.create() 方法用于创建一个新对象，使用现有的对象来作�
     console.log(object[Symbol.iterator]); // undefined
   5） 键的值 ：在 Map 对象中,该对象的 key 可以是任何类型的值,
     而在普通对象中的 key 只能是 string 类型(number类型会自动转变成 string 类型)和 Symbol 类型,如果传进来的是复杂类型会自动报错:
-
 四  WeakSet WeakMap [深入了解ES6的Set，WeakSet，Map和WeakMap](https://juejin.cn/post/7062921417196568607#heading-9)
     1）WeakSet  和Set结构类似，也是不重复的值的集合，但WeakSet的成员只能是对象。
     其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。
