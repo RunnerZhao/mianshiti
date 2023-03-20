@@ -51,7 +51,7 @@
         return res
     }
     const arr1 = [1,2,[3,[4,5]],6]
-    // console.log('flatten',flatten(arr1))
+    console.log('flatten',arr1.flat(1))
     //使用concat
     function flatten1(arr){
         let res = [];
@@ -106,6 +106,23 @@
     }
     const arr3 = [1,2,[3,[4,5]],6]
     console.log("flattenDeep1",flattenDeep1(arr3))
+
+    //用flat
+    const arr4 = [1,2,[3,[4,5]],6]
+    console.log('flat',arr4.flat(Infinity),arr4)
+    // flat() 方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
+    //flat  arr.flat([depth])  depth 是可以传递数组的展开深度（默认不填、数值是 1），即展开一层数组。
+    // 那么如果多层的该怎么处理呢？参数也可以传进 Infinity，代表不论多少层都要展开。
+
+    //用reduce
+    const arr5 = [1,2,[3,[4,5]],6]
+    function reduceFlatten(arr){
+        return arr.reduce((t,v) => {
+           return  t.concat(Array.isArray(v)?reduceFlatten(v):v)
+        },[])
+    }
+    console.log('reduceFlatten',reduceFlatten(arr5),arr5)
+
 
 
     //获取详细的数据类型

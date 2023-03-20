@@ -67,13 +67,26 @@
   ![Vue生命周期](.Vue_images/178810d7.png)
   [答案](https://juejin.cn/post/6844904084374290446#heading-5)
 二、Vue的nextTick实现原理以及应用场景？
-Vue的nextTick实现原理是在Vue中dom更新并不是在数据变化之后立马发生的，而是按照一定的策略进行DOM的更新，而在此过程中，dom更新之后会立马执行nextTick的回调函数。
+Vue的nextTick 在Vue中dom更新并不是在数据变化之后立马发生的，而是按照一定的策略进行DOM的更新，而在此过程中，dom更新之后会立马执行nextTick的回调函数。 
+  就是你放在$nextTick 当中的操作不会立即执行，而是等数据更新、DOM更新完成之后再执行
+ 原理 就是$nextTick将回调函数放到微任务或者宏任务当中以延迟它的执行
 应用场景，在created阶段，如果需要操作渲染后的视图，就需要使用nextTick方法。
 三、vue什么时候操作dom比较合适
   mounted跟uptated都不能保证子组件全部挂载完成
   使用$nextTick操作dom
 四、ajax放在created跟mounted都可以 相比ajax请求的时间1s，created到mounted的时间特别小10ms
-  
+
+- 15.Vue父子组件执行过程中生命周期？
+  创建阶段：父组件执行了前三个生命周期：beforeCreate=>created=>beforeMounted，
+  然后等子组件执行完四个生命周期:beforeCreate=>created=>beforeMount=>mounted,父组件再执行了mounted
+  如果父组件传给子组件的数据是异步获取的，比如在父组件created中通过接口获取数据，接口很长时间才返回，那么在子组件的created、beforeMounted、mounted都拿不到数据
+  解决方案：在子组件中watch要传的数据
+  [父子组件的生命周期执行流程是怎么样的呢？](https://juejin.cn/post/7024151086436974623)
+  [vue父子组件传值不能实时更新](https://blog.csdn.net/catascdd/article/details/129065973)
+  更新阶段： 先执行父组件的beforeUpdate（） 再执行子组件的beforeUpdate（） 再执行子组件的 updated（）再执行父组件的 updated（）
+  销毁阶段：先执行父组件的beforeDestroy（） 再执行子组件的beforeDestroy（） 再执行子组件的 destroyed（） 再执行父组件的 destroyed（）
+
+
 - 7.如何写一个组件和设计一个组件？
 一 、
 如果全局引入，那么所有的组件需要要注册到Vue component 上，并导出。
@@ -106,6 +119,26 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
 - <script setup> 语法糖 父组件访问子组件数据
 [Vue3父组件访问子组件数据 defineExpose用法](https://blog.csdn.net/qq_29585681/article/details/126485407)
 - 4.Vue2和Vue3的区别？(必问)
+一 、数据双向绑定
+  vue2 的双向数据绑定是利⽤ES5 的⼀个 API ，Object.defineProperty()对数据进⾏劫持 结合 发布订阅模式的⽅式来实现的。
+  vue3 中使⽤了 es6 的 ProxyAPI 对数据代理，通过 reactive() 函数给每⼀个对象都包⼀层 Proxy，通过 Proxy 监听属性的变化，从⽽
+  实现对数据的监控。
+  这⾥是引相⽐于vue2版本，使⽤proxy的优势如下
+  1.defineProperty 无法监听对象或数组新增、删除的元素。
+  Vue2 方案：针对常用数组原型方法push、pop、shift、unshift、splice、sort、reverse进行了hack处理；
+  提供Vue.set监听对象/数组新增属性。对象的新增/删除响应，还可以new个新对象，新增则合并新属性和旧对象；
+  删除则将删除属性后的对象深拷贝给新对象
+  2.可以监听数组，不⽤再去单独的对数组做特异性操作,通过Proxy可以直接拦截所有对象类型数据的操作，完美⽀持对数组的监听。
+二、数据和方法的定义
+  Vue2使⽤的是选项类型API（Options API），Vue3使⽤的是合成型API（Composition API）
+  Vue2：
+  data() { return {}; }, methods:{ }
+  复制代码
+  Vue3：
+  数据和⽅法都定义在setup中，并统⼀进⾏return{}
+三、生命周期 
+
+
 
 - 5.Vue和React的区别？(必问)
 
@@ -216,14 +249,7 @@ export default new Vuex.Store({
 
 - 14.Vue和React的区别？(必问)
 
-- 15.Vue父子组件执行过程中生命周期？
-  创建阶段：父组件执行了前三个生命周期：beforeCreate=>created=>beforeMounted，
-  然后等子组件执行完四个生命周期:beforeCreate=>created=>beforeMount=>mounted,父组件再执行了mounted
-  如果父组件传给子组件的数据是异步获取的，比如在父组件created中通过接口获取数据，接口很长时间才返回，那么在子组件的created、beforeMounted、mounted都拿不到数据
-  解决方案：在子组件中watch要传的数据 [父子组件的生命周期执行流程是怎么样的呢？](https://juejin.cn/post/7024151086436974623)  [vue父子组件传值不能实时更新](https://blog.csdn.net/catascdd/article/details/129065973)
-  更新阶段： 先执行父组件的beforeUpdate（） 再执行子组件的beforeUpdate（） 再执行子组件的 updated（）再执行父组件的 updated（）
-  销毁阶段：先执行父组件的beforeDestroy（） 再执行子组件的beforeDestroy（） 再执行子组件的 destroyed（） 再执行父组件的 destroyed（）
-    
+
 
 - 16.Vue父子组件通信？
 

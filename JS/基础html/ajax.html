@@ -22,18 +22,41 @@
 </head>
 
 <body>
-<h2>防抖节流</h2>
+<h2>用XMLHttpRequest fetch 实现 ajax</h2>
 
 </body>
 <script>
-function fangdou(delay,fn){
-    //创建timer = setTimeOut
+    //用XMLHttpRequest fetch 实现 ajax
+    function ajax1(url,sucessFn){
+        const xhr = new XMLHttpRequest()
+        xhr.open('GET',url,false)//false 异步
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState ==4){
+                if(xhr.status == 200){
+                    sucessFn(xhr.responseText)
+                }
+            }
+        }
+        xhr.send(null)
+    }
+    ajax1('https://www.fastmock.site/mock/8d2379d99cbc63432bfc2dcdb7d4af0a/runmonitor/serveInfo/paginQuery',function (res){console.log(res)})
+    function ajax2(url){
+        fetch(url).then(
+            function(res) {
+                if (res.status === 200) {
+                    return res.json()
+                } else {
+                    return Promise.reject(res.json())
+                }
+            }
+        ).then(function(data) {
+            console.log(data);
+        }).catch(function(err) {
+            console.log(err);
+        })
+    }
+    ajax2('https://www.fastmock.site/mock/8d2379d99cbc63432bfc2dcdb7d4af0a/runmonitor/serveInfo/paginQuery')
 
-    if (timer) clearTimeout(timer)
-    let time = setTimeout(function (){
-        fn.call(this,)
-    },delay)
-}
 </script>
 
 </html>
