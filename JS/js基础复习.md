@@ -42,7 +42,7 @@ function B() {};let b = new B();console.log(b.constructor === B) // true 而数�
 isArray >Object.prototype.toString.call() > instanceof > constructor
 [帮你彻底搞懂JS中的prototype、__proto__与constructor（图解）](https://chen-cong.blog.csdn.net/article/details/81211729?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-81211729-blog-124744136.pc_relevant_multi_platform_whitelistv4&utm_relevant_index=1)
 
-- 5symbel 1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 
+- 5 symbel 1、什么是 Symbol我们可以通过调用内置函数 Symbol() 创建，这个函数会动态的生成一个匿名、全局唯一的值。 
 const a = Symbol('描述啊'); String(a) // "Symbol(描述啊)"  a.toString() // "Symbol(描述啊)"  a.description // "描述啊"
 2、用处 一，避免对象的键被覆盖。Symbol用于对象的属性名时，能保证对象不会出现同名的属性。这对于一个对象由多个模块构成的情况非常有用，能防止某一个键被不小心改写或覆盖。
 二，避免魔术字符串。魔术字符串的诠释是：在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值。风格良好的代码，应该尽量消除魔术字符串，改由含义清晰的变量代替。 
@@ -51,74 +51,70 @@ Symbol.keyFor()方法返回一个已全局注册的 Symbol 类型值的描述值
 
 - 6原型 原型链 所有的对象都有原型，一个是隐式原型__proto__,一个是显式原型prototype，隐式原型的属性值指向其构造函数显式原型的属性值,比如：[].__proto__ === Array.prototype
 prototype是函数独有的 __proto__ constrctor是对象独有的 因为函数也是对象，所以函数也有__proto__ constrctor
-```javascript
-function Person(name) {
-    this.name = name
-    return this // 其实这行可以不写，默认返回 this 对象
-}
-var nick = new Person("nick")
-nick.toString
-// ƒ toString() { [native code] }
-```
+        ```javascript
+        function Person(name) {
+            this.name = name
+            return this // 其实这行可以不写，默认返回 this 对象
+        }
+        var nick = new Person("nick")
+        nick.toString
+        // ƒ toString() { [native code] }
+        ```
 按理说， nick是 Person构造函数生成的实例，而 Person的 prototype并没有 toString方法，那么为什么， nick能获取到 toString方法？
 这里就引出 原型链的概念了， nick实例先从自身出发检索自己，发现并没有 toString方法。找不到，就往上走，找 Person构造函数的 prototype属性，还是没找到。
 构造函数的 prototype也是一个对象嘛，那对象的构造函数是 Object，所以就找到了 Object.prototype 下的 toString方法。
 画出下面代码的原型链图
-```javascript
-class A {}
-class B extends A {}
-const b = new B();
-```
+        ```javascript
+        class A {}
+        class B extends A {}
+        const b = new B();
+        ```
 ![原型链图](.js基础复习_images/原型链图.png)
 
 
 - 7构造函数分为 实例成员 和 静态成员 [ js原型及原型链](https://juejin.cn/post/6844904093828251662)
 实例成员： 实例成员就是在构造函数内部，通过this添加的成员。实例成员只能通过实例化的对象来访问。
 静态成员： 在构造函数本身上添加的成员，只能通过构造函数来访问
-```javascript
-    function Star(name,age) {
-        //实例成员
-        this.name = name;
-        this.age = age;
-    }
-    //静态成员
-    Star.sex = '女';
-
-    let stars = new Star('小红',18);
-    console.log(stars);      // Star {name: "小红", age: 18}
-    console.log(stars.sex);  // undefined     实例无法访问sex属性
-
-    console.log(Star.name); //Star     通过构造函数无法直接访问实例成员
-    console.log(Star.sex);  //女       通过构造函数可直接访问静态成员
-
-class Preson{
-    constructor(name){
-        this.name = name
-    }
-    pritName(){
-        console.log("pritName")
-    }
-}
-class Student extends Person{
-    constructor(name,score){
-        super(name)
-        this.score = score
-      
-    }
-  printScore(){
-        console.log("printScore")
-  }
-}
-```
+        ```javascript
+            function Star(name,age) {
+                //实例成员
+                this.name = name;
+                this.age = age;
+            }
+            Star.sex = '女';//静态成员
+            let stars = new Star('小红',18);
+            console.log(stars);      // Star {name: "小红", age: 18}
+            console.log(stars.sex);  // undefined     实例无法访问sex属性
+            console.log(Star.name); //Star     通过构造函数无法直接访问实例成员
+            console.log(Star.sex);  //女       通过构造函数可直接访问静态成员
+        class Preson{
+            constructor(name){
+                this.name = name
+            }
+            pritName(){
+                console.log("pritName")
+            }
+        }
+        class Student extends Person{
+            constructor(name,score){
+                super(name)
+                this.score = score
+            }
+          printScore(){
+                console.log("printScore")
+          }
+        }
+        ```
 
 - 8箭头函数为什么不能作为构造函数
 箭头函数没有自己的 this，
-箭头函数没有自己的 prototype， 修改原型对象无法进行
+箭头函数没有自己的 prototype， new实例化的过程中不能继承原型对象
 
 - 9箭头函数与普通函数的区别？
-1.this指向不同，普通函数指向调用对象，而箭头函数没有自己的this，this的值取决于执行上下文,不能使用call apply bind改变this指向。
+1.this指向不同，普通函数指向最终调用对象，而箭头函数没有自己的this，this的值取决于执行上下文,箭头函数的外层如果有普通函数，
+  那么箭头函数的this就是这个外层的普通函数的this，箭头函数的外层如果没有普通函数，那么箭头函数的this就是全局变量不能使用call apply bind改变this指向。
 2.箭头函数不能作为构造函数。因为它没有prototype属性。
-3.箭头函数没有arguments属性，不能通过arguments属性拿到变量。
+3.箭头函数没有自己的arguments，可以调用外围函数的arguments。箭头函数可以通过拓展运算符获取传入的参数 (...args) => {console.log(args)}。
 
 - 10箭头函数不能用的情况
 1 ![对象方法](.js基础复习_images/839db600.png) 2 ![原型方法](.js基础复习_images/28aad8d1.png) 3 ![构造函数](.js基础复习_images/86f59012.png)
@@ -130,71 +126,61 @@ class Student extends Person{
 二、改变 this 的指向的方法：
     1)使用 ES6 的箭头函数 ：ES6箭头函数的 this 始终指向函数定义时的 this，而非执行时。箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，
     如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
-    ```javascript
-        var name = "windowsName";
-        var a = {
-            name : "Cherry",
-            func1: function () {
-                console.log(this.name)     
-            },
-            func2: function () {
-                setTimeout( () => {
-                    this.func1()
-                },100);
-            }
-        };
-        a.func2()     // Cherry
-    ```
+        ```javascript
+            var name = "windowsName";
+            var a = {
+                name : "Cherry",
+                func1: function () {
+                    console.log(this.name)     
+                },
+                func2: function () {
+                    setTimeout( () => {
+                        this.func1()
+                    },100);
+                }
+            };
+            a.func2()     // Cherry
+        ```
     2)在函数内部使用 _this = this   如果不使用 ES6，那么这种方式应该是最简单的不会出错的方式了，我们是先将调用这个函数的对象保存在变量 _this 中，
     然后在函数中都使用这个 _this，这样 _this 就不会改变了。
-    ```javascript
-        var name = "windowsName";
-    
-        var a = {
-    
-            name : "Cherry",
-    
-            func1: function () {
-                console.log(this.name)     
-            },
-    
-            func2: function () {
-                var _this = this;
-                setTimeout( function() {
-                    _this.func1()
-                },100);
-            }
-    
-        };
-    
-        a.func2()       // Cherry
-    ```
+        ```javascript
+            var name = "windowsName";
+            var a = {
+                name : "Cherry",
+                func1: function () {
+                    console.log(this.name)     
+                },
+                func2: function () {
+                    var _this = this;
+                    setTimeout( function() {
+                        _this.func1()
+                    },100);
+                }
+            };
+            a.func2()       // Cherry
+        ```
     3)使用 apply、call、bind  
-    ```javascript
-    //使用apply call bind
-        var a = {
-            name : "Cherry",
-    
-            func1: function () {
-                console.log(this.name)
-            },
-    
-            func2: function () {
-                setTimeout(  function () {//apply
-                    this.func1()
-                }.apply(a),100);
-                // setTimeout(  function () {//call
-                //     this.func1()
-                // }.call(a),100);
-                // setTimeout(  function () {//bind
-                //     this.func1()
-                // }.bind(a)(),100);
-            }
-    
-        };
-    
-        a.func2()            // Cherry
-    ```
+        ```javascript
+        //使用apply call bind
+            var a = {
+                name : "Cherry",
+                func1: function () {
+                    console.log(this.name)
+                },
+                func2: function () {
+                    setTimeout(  function () {//apply
+                        this.func1()
+                    }.apply(a),100);
+                    // setTimeout(  function () {//call
+                    //     this.func1()
+                    // }.call(a),100);
+                    // setTimeout(  function () {//bind
+                    //     this.func1()
+                    // }.bind(a)(),100);
+                }
+            };
+            a.func2()            // Cherry
+        ```
 
 - 12 apply、call、bind 区别:
   1))apply定义：apply() 方法调用一个函数, 其具有一个指定的this值，以及作为一个数组（或类似数组的对象）提供的参数
@@ -206,87 +192,78 @@ class Student extends Person{
   2))apply 和 call 的区别
   call语法：fun.call(thisArg[, arg1[, arg2[, ...]]])
   区别:call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
-  3))bind 和 apply、call 区别
+  3))bind 和 apply、call 区别   call的性能比apply好，因为apply的入参是数组，需要对把数组处理成单个参数
   bind的入参跟call一致，可以传多个参数，但是bind 是创建一个新的函数，我们必须要手动去调用
-```javascript
-    var a ={
-        name : "Cherry",
-        fn : function (a,b) {
-            console.log( a + b)
-        }
-    }
-    var b = a.fn;
-    b.bind(a,1,2)()           // 3  手动调用
-```
+        ```javascript
+            var a ={
+                name : "Cherry",
+                fn : function (a,b) {
+                    console.log( a + b)
+                }
+            }
+            var b = a.fn;
+            b.bind(a,1,2)()           // 3  手动调用
+        ```
 
 - 13 JS 中的函数调用：
 1)作为一个函数调用:
-```javascript
-    var name = "windowsName";
-    function a() {
-        var name = "Cherry";
-
-        console.log(this.name);          // windowsName
-
-        console.log("inner:" + this);    // inner: Window
-    }
-    a();
-    console.log("outer:" + this)         // outer: Window
-```  
+        ```javascript
+            var name = "windowsName";
+            function a() {
+                var name = "Cherry";
+                console.log(this.name);          // windowsName
+                console.log("inner:" + this);    // inner: Window
+            }
+            a();
+            console.log("outer:" + this)         // outer: Window
+        ```  
 这样一个最简单的函数，不属于任何一个对象，就是一个函数，这样的情况在 JavaScript 的在浏览器中的非严格模式默认是属于全局对象 window 的，在严格模式，就是 undefined。
 但这是一个全局的函数，很容易产生命名冲突，所以不建议这样使用
 2）函数作为方法调用
-```javascript
-    var name = "windowsName";
-    var a = {
-        name: "Cherry",
-        fn : function () {
-            console.log(this.name);      // Cherry
-        }
-    }
-    a.fn();
-```
+        ```javascript
+            var name = "windowsName";
+            var a = {
+                name: "Cherry",
+                fn : function () {
+                    console.log(this.name);      // Cherry
+                }
+            }
+            a.fn();
+        ```
 这里定义一个对象 a，对象 a 有一个属性（name）和一个方法（fn）。
 然后对象 a 通过 . 方法调用了其中的 fn 方法。
 然后我们一直记住的那句话“this 永远指向最后调用它的那个对象”，所以在 fn 中的 this 就是指向 a 的。
-
-
 4)new 实例化一个对象 手写new
-```javascript
-  //手写new
-        function  myNew(constrc,...args){
-            //1,2 创建空对象并且把空对象的__proto__指向constrc的原型对象
-            let obj = Object.create(constrc.prototype)
-            console.log("obj",obj)
-
-            //3 改变constrc中this的指向并执行
-            let res = constrc.apply(obj,args)
-
-            console.log("res",res)
-            console.log("res instanceof Object",res instanceof Object)
-            //如果构造函数返回的是对象，则使用构造函数执行的结果。否则，返回新创建的对象
-            return res instanceof Object ?res:obj
-        }
-        let  aaa = {}
-        function person(name,age){
-            // this.name = name;
-            // this.age = age;
-            return aaa
-        }
-        const person1 = myNew(person,'xiaoming',18)
-        const person2 = new person('xiaoming',18)
-        console.log('person1',person1,person2,person1 == person2)
-```
-
+        ```javascript
+        //手写new
+            function  myNew(constrc,...args){
+                //1,2 创建空对象并且把空对象的__proto__指向constrc的原型对象
+                let obj = Object.create(constrc.prototype)
+                console.log("obj",obj)
+                //3 改变constrc中this的指向并执行
+                let res = constrc.apply(obj,args)
+                console.log("res",res)
+                console.log("res instanceof Object",res instanceof Object)
+                //如果构造函数返回的是对象，则使用构造函数执行的结果。否则，返回新创建的对象
+                return res instanceof Object ?res:obj
+            }
+            let  aaa = {}
+            function person(name,age){
+                // this.name = name;
+                // this.age = age;
+                return aaa
+            }
+            const person1 = myNew(person,'xiaoming',18)
+            const person2 = new person('xiaoming',18)
+            console.log('person1',person1,person2,person1 == person2)
+        ```
 Object.create() 方法用于创建一个新对象，使用现有的对象来作为新创建对象的原型（prototype）
 
-
-
-对象字面量创建对象(obj = {})与 Object.create(null) 创建对象有什么区别
+-14对象字面量创建对象(obj = {})与 Object.create(null) 创建对象有什么区别
 通过Object.create(null)创建的对象是非常纯净的，原型链的属性和方法都不会携带。这就非常适合数组对象开发的时候，从对象中取值，提高循环效率。
 
 
--map和set，map和object，map和weakMap，weakMap和weakSet？
+-15 map和set，map和object，map和weakMap，weakMap和weakSet？
 一  Map Set ES6提供了新的数据结构Set数据结构和Map数据结构
   1）Map 对象保存键值对，并且能够记住键的原始插入顺序。任何值（对象或者原始值）都可以作为一个键或一个值。
     let iMap = new Map([['name', '张三'], ['name', 20]]);
