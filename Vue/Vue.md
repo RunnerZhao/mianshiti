@@ -101,7 +101,7 @@ Vue的nextTick 在Vue中dom更新并不是在数据变化之后立马发生的�
   销毁阶段：先执行父组件的beforeDestroy（） 再执行子组件的beforeDestroy（） 再执行子组件的 destroyed（） 再执行父组件的 destroyed（）
 
 
-- 7.如何写一个组件和设计一个组件？
+- 7.如何写一个组件和设计一个组件？ [](https://blog.csdn.net/u011332271/article/details/105169882)
 一 、
 如果全局引入，那么所有的组件需要要注册到Vue component 上，并导出。
 Vue component用来注册一个组件。
@@ -132,6 +132,7 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
 
 - <script setup> 语法糖 父组件访问子组件数据
 [Vue3父组件访问子组件数据 defineExpose用法](https://blog.csdn.net/qq_29585681/article/details/126485407)
+
 - 4.Vue2和Vue3的区别？(必问)
 一 、数据双向绑定
   vue2 的双向数据绑定是利⽤ES5 的⼀个 API ，Object.defineProperty()对数据进⾏劫持 结合 发布订阅模式的⽅式来实现的。
@@ -152,6 +153,20 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
   数据和⽅法都定义在setup中，并统⼀进⾏return{}
 三、生命周期 
 
+-[详解defineProperty和Proxy](https://www.jianshu.com/p/0e2984d13ab4) [ defineProperty 与 proxy](https://juejin.cn/post/6844903710410162183)
+ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
+语法:Object.defineProperty(obj, prop, descriptor)
+参数 :  obj: 要在其上定义属性的对象。 prop: 要定义或修改的属性的名称。 descriptor: 将被定义或修改的属性的描述符。
+    函数的第三个参数 descriptor 所表示的属性描述符有两种形式：数据描述符和存取描述符。
+    两者均具有以下两种键值：
+        enumerable 当且仅当该属性的 enumerable 为 true 时，该属性才能够出现在对象的枚举属性中。默认为 false。
+        configurable 当且仅当该属性的 configurable 为 true 时，该属性描述符才能够被改变，也能够被删除。默认为 false。
+    数据描述符同时具有以下可选键值：
+        value 该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。
+        writable 当且仅当该属性的 writable 为 true 时，该属性才能被赋值运算符改变。默认为 false。
+    存取描述符同时具有以下可选键值：
+        get 一个给属性提供 getter 的方法，如果没有 getter 则为 undefined。该方法返回值被用作属性值。默认为 undefined。
+        set 一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
 
 
 - 5.Vue和React的区别？(必问)

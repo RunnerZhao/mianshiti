@@ -739,29 +739,6 @@ Object.keys()   （ES6对象的拓展） ：用于获取对象自身所有的可
 -for 和forEach哪个更快
 for更快  因为forEach每次都要创建一个函数来调用，而for不会创建函数。 函数会有独立的作用域，会有额外的开销
   
--[详解defineProperty和Proxy](https://www.jianshu.com/p/0e2984d13ab4) [ defineProperty 与 proxy](https://juejin.cn/post/6844903710410162183)
-ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
-语法:Object.defineProperty(obj, prop, descriptor)
-参数 :  obj: 要在其上定义属性的对象。 prop: 要定义或修改的属性的名称。 descriptor: 将被定义或修改的属性的描述符。
-函数的第三个参数 descriptor 所表示的属性描述符有两种形式：数据描述符和存取描述符。
-两者均具有以下两种键值：
-enumerable
-当且仅当该属性的 enumerable 为 true 时，该属性才能够出现在对象的枚举属性中。默认为 false。
-configurable
-当且仅当该属性的 configurable 为 true 时，该属性描述符才能够被改变，也能够被删除。默认为 false。
-数据描述符同时具有以下可选键值：
-value
-该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。
-复制代码
-writable
-当且仅当该属性的 writable 为 true 时，该属性才能被赋值运算符改变。默认为 false。
-复制代码
-存取描述符同时具有以下可选键值：
-get
-一个给属性提供 getter 的方法，如果没有 getter 则为 undefined。该方法返回值被用作属性值。默认为 undefined。
-复制代码
-set
-一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
 
 -Ajax Fetch axios 区别 
 Ajax是技术统称，  Fetch 具体API ，Axios 第三方库
