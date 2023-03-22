@@ -228,8 +228,7 @@ watch用于监听现有数据
 大白话：对数据(data)统一的管理,如果涉及到了数据的处理，来，到vuex里面进出吧！就像是超市对商品的统一管理一样
 import Vue from 'vue'; //首先引入vue
 import Vuex from 'vuex'; //引入vuex
-Vue.use(Vuex) 
-
+Vue.use(Vuex)
 export default new Vuex.Store({
     state: { 
         // state 类似 data
@@ -257,6 +256,8 @@ export default new Vuex.Store({
   mutations 必须同步代码
   actions 可包含异步代码
   
+-vuex持久化 vuex-persistedstate  [](https://blog.csdn.net/xm1037782843/article/details/128071142)
+persisted 美[pərˈsɪstɪd]持续存在;
 
 - 10.路由守卫？
 
