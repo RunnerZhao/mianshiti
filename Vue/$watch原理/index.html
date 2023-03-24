@@ -20,11 +20,19 @@
                        cityId:'01'
                    }
                }
-           }
+           },
+            watch:{
+               name(){
+                   console.log('name发生了变化1')
+               }
+
+            }
+
         });
-        // app.name = 'xiaohang'
-        // app.info.cityName = 'beijing'
-        // app.info.cityInfo.cityId = '02'
+        // app.$watch('name',()=>{
+        //     console.log('name发生变化')
+        // })
+
 
     </script>
 </body>

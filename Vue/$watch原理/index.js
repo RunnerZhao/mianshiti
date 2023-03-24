@@ -3,6 +3,7 @@ class Vue {
         this.$options = options;
         this._data = options.data;
         this.initData()//数据代理
+        this.initWatch()//watch
     }
 
     initData() {
@@ -25,6 +26,20 @@ class Vue {
             })
         }
         observe(data)
+
+    }
+    initWatch(){
+        let watch = this.$options.watch
+        debugger
+        if (watch){
+            for (let key in watch){
+                new Watcher(this,key,watch[key])
+            }
+        }
+    }
+    $watch(key,cb){
+        debugger
+        new Watcher(this,key,cb)
     }
 }
 
@@ -44,11 +59,13 @@ function defineReactive(obj,key,value){//劫持 工具函数
         configurable:true,
         get:function (){
             console.log(`${key}取值`)
+            dep.depend()//收集依赖
             return value
         },
         set:function (val){
             if (val === value) return
             console.log(`${key}改值`)
+            dep.notify()//派发通知
             value = val
         }
     })
@@ -68,14 +85,33 @@ class Dep {//依赖  dependence 的缩写 	美[dɪˈpendəns]
         this.subs = []// 收集到的Watcher对象集合 订阅发布模式    subs 美[sʌbz] 替补队员
     }
     depend(){//收集依赖
-        this.subs.push()
+        if (Dep.target){//舞台上有watcher的话就把watcher push到subs中
+            this.subs.push(Dep.target)
+        }
+
 
     }
     notify(){//通知 美[ˈnoʊtɪfaɪ]
-        this.subs.forEach(()=>{
+        this.subs.forEach((watcher)=>{
             //依次执行回调函数
+            watcher.run()
         })
     }
-
-
+}
+class Watcher{
+    constructor(vm,exp,cb) {//vm：vue的实例 exp：求值的属性 cb：回调函数
+        this.vm = vm
+        this.exp = exp
+        this.cb  = cb
+        this.get()
+    }
+    get(){//求值
+        debugger
+        Dep.target = this
+        this.vm[this.exp]//对vm的exp属性求值触发get
+        Dep.target = null
+    }
+    run(){//运行回调函数
+        this.cb.call(this.vm)
+    }
 }
