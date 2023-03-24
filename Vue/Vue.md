@@ -3,8 +3,89 @@
 
 
 - 1.Vue响应式原理？(必问)
+[答案](https://juejin.cn/post/6844904084374290446#heading-1)
+[如何实现一个类vue的双向绑定——Vue2.0 | MVVM | 数据劫持+发布订阅](https://blog.csdn.net/swallowblank/article/details/107542882)
+[Vue双向数据绑定原理(面试必问)](https://blog.csdn.net/Android062005/article/details/127198506)
+一、实现数据代理
+  把data的所有的属性都代理到了new出来的vue实例上，这样就使得对vue实例属性的修改就是对data的修改。具体的就是通过defineProperty代理 Vue对象作为obj参数，把data里面的属性作为prop参数 然后在get中返回data[key] set中设置data[key]=value(修改的值)
+  ![](.Vue_images/a416bac9.png)
+二 数据劫持
+  劫持data的属性，能够监听到data属性的get set
+  ![](.Vue_images/d2c548ca.png)
+  到现在，无论是对vue实例还是对data 的属性值进行获取或者修改，我们都能监听到
+三 数据递归劫持
+```javascript
+class Vue {
+    constructor(options) {
+        this.$options = options;
+        this._data = options.data;
+        this.initData()//数据代理
+    }
 
->[答案](https://juejin.cn/post/6844904084374290446#heading-1)
+    initData() {
+        let data = this._data;
+        for (let key in data){//数据代理
+            //  把data的所有的属性都代理到了new出来的vue实例上，
+            //  具体的就是通过defineProperty代理 Vue对象作为obj参数，把data里面的属性作为prop参数
+            //  然后在get中返回data[key] set中设置data[key]=value(修改的值)
+            Object.defineProperty(this,key,{
+                enumerable:true,
+                configurable:true,
+                get:function (){
+                    console.log(`${key}取值代理`)
+                    return data[key]
+                },
+                set:function (value){
+                    console.log(`${key}改值 代理`)
+                    data[key] = value
+                }
+            })
+        }
+        observe(data)
+    }
+}
+
+function observe(data){//观测data	美[əbˈzɜːrv] 观察
+    //data是基本数据类型就返回
+    let type = Object.prototype.toString.call(data)
+    if (type !== '[object Object]' && type !== '[object Array]') return;
+    new Observer(data)//这个时候并没有递归调用自己 观测对象
+
+}
+function defineReactive(obj,key,value){//劫持 工具函数
+    //obj:定义的对象  key 定义的属性  value 原来的值
+    observe(obj[key])
+    Object.defineProperty(obj,key,{
+        enumerable:true,
+        configurable:true,
+        get:function (){
+            console.log(`${key}取值`)
+            return value
+        },
+        set:function (val){
+            if (val === value) return
+            console.log(`${key}改值`)
+            value = val
+        }
+    })
+}
+class Observer{//观测类
+    constructor(data) {
+        this.walk(data)
+    }
+    walk(data){//遍历
+        for (let key in data){
+            defineReactive(data,key,data[key])//劫持
+        }
+    }
+
+}
+    
+```
+
+  
+  
+
 
 - 2.Vue组件通信？（必问）
 1、路由传参  
@@ -76,7 +157,7 @@ Vue的nextTick 在Vue中dom更新并不是在数据变化之后立马发生的�
   使用$nextTick操作dom
 四、ajax放在created跟mounted都可以 相比ajax请求的时间1s，created到mounted的时间特别小10ms
 
--$set原理 ($set原理 )[https://juejin.cn/post/7076138220970311688]
+-$set原理 [ $set原理](https://juejin.cn/post/7076138220970311688)
 一、this.$set( target, key, value ) 方法的作用： 响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
 它必须用于向响应式对象上添加新属性，对象不能是 Vue 实例，或者 Vue 实例的根数据对象
 二 原理
@@ -134,15 +215,14 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
 [Vue3父组件访问子组件数据 defineExpose用法](https://blog.csdn.net/qq_29585681/article/details/126485407)
 
 - 4.Vue2和Vue3的区别？(必问)
-一 、数据双向绑定
-  vue2 的双向数据绑定是利⽤ES5 的⼀个 API ，Object.defineProperty()对数据进⾏劫持 结合 发布订阅模式的⽅式来实现的。
-  vue3 中使⽤了 es6 的 ProxyAPI 对数据代理，通过 reactive() 函数给每⼀个对象都包⼀层 Proxy，通过 Proxy 监听属性的变化，从⽽
-  实现对数据的监控。
+一 、响应式原理
+  vue2 的响应式原理是利⽤ES5 的⼀个 API ，Object.defineProperty()对数据进⾏劫持 结合 发布订阅模式的⽅式来实现的。
+  Vue3.x是借助 Proxy 实现的，通过Proxy 对象创建一个对象的代理，并且 Proxy 的监听是深层次的，监听整个对象，而不是某个属性
   这⾥是引相⽐于vue2版本，使⽤proxy的优势如下
   1.defineProperty 无法监听对象或数组新增、删除的元素。
-  Vue2 方案：针对常用数组原型方法push、pop、shift、unshift、splice、sort、reverse进行了hack处理；
-  提供Vue.set监听对象/数组新增属性。对象的新增/删除响应，还可以new个新对象，新增则合并新属性和旧对象；
-  删除则将删除属性后的对象深拷贝给新对象
+      Vue2 方案：针对常用数组原型方法push、pop、shift、unshift、splice、sort、reverse进行了hack处理；
+      提供Vue.set监听对象/数组新增属性。对象的新增/删除响应，还可以new个新对象，新增则合并新属性和旧对象；
+      删除则将删除属性后的对象深拷贝给新对象
   2.可以监听数组，不⽤再去单独的对数组做特异性操作,通过Proxy可以直接拦截所有对象类型数据的操作，完美⽀持对数组的监听。
 二、数据和方法的定义
   Vue2使⽤的是选项类型API（Options API），Vue3使⽤的是合成型API（Composition API）
@@ -165,8 +245,8 @@ ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上�
         value 该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。
         writable 当且仅当该属性的 writable 为 true 时，该属性才能被赋值运算符改变。默认为 false。
     存取描述符同时具有以下可选键值：
-        get 一个给属性提供 getter 的方法，如果没有 getter 则为 undefined。该方法返回值被用作属性值。默认为 undefined。
-        set 一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将接受唯一参数，并将该参数的新值分配给该属性。默认为 undefined。
+        get 当访问prop属性时，get方法会执行，函数的返回值会作为prop属性的值返回。默认为 undefined。
+        set 当修改prop属性值时，set方法会执行，接受一个参数（就是属性的新值）默认为 undefined。
 
 
 - 5.Vue和React的区别？(必问)
@@ -212,6 +292,8 @@ computed是计算属性，用于计算现有数据并且产生新的数据  comp
 watch用于监听现有数据
 >[答案](https://juejin.cn/post/6844904084374290446#heading-7)
 
+- 实现watcher ![思路](.Vue_images/84feb3a0.png)
+
 - 9.说下Vue的keepalive？(大概率)
 
 >[答案](https://juejin.cn/post/6844904084374290446#heading-15)
@@ -255,9 +337,19 @@ export default new Vuex.Store({
 - mutation action 的区别 
   mutations 必须同步代码
   actions 可包含异步代码
-  
--vuex持久化 vuex-persistedstate  [](https://blog.csdn.net/xm1037782843/article/details/128071142)
+
+
+-vuex持久化 
+一 封装好localstorage存取数据的公共方法setItem getItem ，
+在state中定义数据的时候调用getItem   state: { language: getItem(LANGUAGE) || 'zh', }, 
+在mutations里面调用对数据的本地存储   mutations: {[SET_LANGUAGE](state, payload) {
+                                        state.language = payload
+                                        setItem(LANGUAGE, payload)
+                                        },
+                                    },
+二 用vuex-persistedstate  [](https://blog.csdn.net/xm1037782843/article/details/128071142)
 persisted 美[pərˈsɪstɪd]持续存在;
+
 
 - 10.路由守卫？
 
@@ -293,6 +385,25 @@ persisted 美[pərˈsɪstɪd]持续存在;
 - 20.双向绑定具体过程？
 
 
+-自定义指令 [](https://blog.csdn.net/ct5211314/article/details/125425317)
+一。什么是自定义指令
+    除了核心功能默认内置的指令 (v-model 和 v-show)，Vue 也允许注册自定义指令。
+    注意，在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。
+二、使用 比如定义input自动聚焦的指令v-focus
+//设置自定义指令
+import Vue from 'vue'
+Vue.directive('focus', {
+// 当被绑定的元素插入到 DOM 中时……
+inserted: function (el) {
+// 聚焦元素
+el.focus()
+}
+})
+//在main.js中引入
+import '@/utlis/focus'
+//在组件中使用
+<input type="text" name="" id="" v-focus>
+
 
 - 虚拟dom？
 虚拟dom： 用js对象模拟DOM节点数据 
@@ -303,7 +414,7 @@ persisted 美[pərˈsɪstɪd]持续存在;
   
 - 路由 vue-router三种模式
     1.hash local 用的 location.hash 获取#后面的内容
-    2 webHistory  用的h5的history.pushState 和 window.onpopState
+    2 webHistory  用的h5的history.pushState()：往浏览器历史添加url，能回退到上次历史  history.replaceState()：替换当前url，不能回退到上次页面  和 window.onpopState
     3 MemoryHistory （vuerouter4之前叫abstract history） 不能有浏览器的前进后退
   
 - vue遇到的坑

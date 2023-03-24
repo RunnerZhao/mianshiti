@@ -14,11 +14,11 @@ class MVVM {
     initData() {
         const _that = this;
         this.data = {};
-        for (let key in this_data) {
-            object.defineProperty(this.data, key, {
+        for (let key in this._data) {
+            Object.defineProperty(this.data, key, {
                 get() {
                     return _that._data[key];
-                }
+                },
                 set(newValue) {
                     _that._data = newValue;
                 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+<h2>
+    项目设计
+</h2>
+</body>
+<script type="text/javascript">
+    class MyStatistic {
+        constructor(productId){
+            this.productId = productId//项目id
+            this.initPerformance()
+            this.initError()
+
+        }
+        //发送统计数据
+        send(url,params = {}){
+            params.productId = this.productId
+            const paramsArr = []
+            for (let key in params){
+                const val = params[key]
+                paramsArr.push(`${key}=${val}`)
+            }
+            const newUrl = `${url}?${paramsArr.join('&')}`//url?a=10&b=20
+            //用img发送 1 可跨域 2 兼容性极好 比ajax fetch好
+            const img = document.createElement('img')
+            img.src = newUrl //get
+        }
+        //初始化性能统计
+        initPerformance(){
+            const url = 'yyy'
+            this.send('url',performance.timing)
+            //performance.timing 性能信息
+
+        }
+        //错误监控
+        initError(){
+            window.addEventListener('error',event =>{
+                const {error,lineno,colno} = event
+                this.error(error)
+            })
+            //promise未catch住的报错
+            window.addEventListener('unhandledrejection',event =>{
+                this.error(new Error(event.reason))
+            })
+        }
+        pv(){
+            //特殊的event
+            this.send('pv')
+        }
+        //自定义事件
+        event(key,val){
+            const url = 'xxx'//自定义事件统计接口url
+            this.send(url,{key,val})
+
+        }
+        error(err){
+            //send
+            this.url = 'zzz'
+            const {message,stack} = err
+            this.send(url,{message,stack})
+
+        }
+    }
+
+</script>
+
+</html>
