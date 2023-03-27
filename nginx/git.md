@@ -33,6 +33,7 @@ nginx.pid在/usr/local/nginx/logs/nginx.pid (我这里的是nginx version: nginx
 也可直接查找
 在当前目录下find ./ -name nginx.pid
 
+ 重启服务： service nginx restar
 说明：
 reload 只是重新加载配置文件，不会清理nginx 的一些缓存，在有些需要清理缓存的场景需要restart ，
 例如upstream 后端配置的集群服务地址是域名而不是ip，当后端IP 变了，
