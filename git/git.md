@@ -29,7 +29,10 @@ git rebase：改变基底
   feature指针自然最后也是指向D’
 用来优化合并提交记录。
 
-- 2.怎么解决代码冲突。 2
+
+- 2.怎么解决代码冲突。2
 
 >可以用过git status查看做了哪些修改，然后手动解决冲突，再进行提交。
-> 
+
+[](http://dexian.net.cn/archives/git-chuang-jian-fen-zhi--ti-jiao-dai-ma-xiang-xi-liu-cheng)
+
