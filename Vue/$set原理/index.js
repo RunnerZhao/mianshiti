@@ -39,18 +39,23 @@ class Vue {
     $watch(key,cb){
         new Watcher(this,key,cb)
     }
+    $set(target,key,value){
+        debugger
+        defineReactive(target,key,value)
+        target.__ob__.dep.notify()//
+    }
 }
 
 function observe(data){//观测data	美[əbˈzɜːrv] 观察
     //data是基本数据类型就返回
     let type = Object.prototype.toString.call(data)
     if (type !== '[object Object]' && type !== '[object Array]') return;
-    new Observer(data)//这个时候并没有递归调用自己 观测对象
+    return new Observer(data)//这个时候并没有递归调用自己 观测对象
+
 }
 function defineReactive(obj,key,value){//劫持 工具函数
     //obj:定义的对象  key 定义的属性  value 原来的值
-    observe(obj[key])//递归调用observe
-    debugger
+    let childOb =  observe(obj[key])//递归调用observe
     let dep = new Dep()// 维护一个Dep实例 闭包
     Object.defineProperty(obj,key,{
         enumerable:true,
@@ -58,6 +63,9 @@ function defineReactive(obj,key,value){//劫持 工具函数
         get:function (){
             console.log(`${key}取值`)
             dep.depend()//收集依赖
+            if (childOb){//如果data是对象
+                childOb.dep.depend()//收集依赖 调用Observer实例的dep的收集依赖方法
+            }
             return value
         },
         set:function (val){
@@ -70,7 +78,15 @@ function defineReactive(obj,key,value){//劫持 工具函数
 }
 class Observer{//观测类
     constructor(data) {
+        this.dep = new Dep()//创建一个dep实例挂载到observer实例上
         this.walk(data)
+        // 给observer实例加__ob__属性，为什么不用this.__ob__ ？因为对象为不可枚举的
+        Object.defineProperty(data,'__ob__',{
+            value:this,
+            enumerable:false,//不可枚举
+            configurable:true,
+            writable:true
+        })
     }
     walk(data){//遍历
         for (let key in data){

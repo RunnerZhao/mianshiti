@@ -205,13 +205,89 @@ html中大多数都是非替换元素，他们直接将内容告诉浏览器，�
 3 非替换元素有哪些
 非替换元素（non-replaced element）就是除了 img, input, textarea, select, object 等替换元素以外的元素，如：<p>,<span>,<div>,h标签等文本类标签。
   
-- 16margin:auto和margin:0 auto的区别
+- 16 margin:auto和margin:0 auto的区别
   1、意思不同。margin:auto=margin:auto auto auto auto，表示上下左右都为auto；margin:0 auto=margin:0 auto 0 auto，表示上下为0，左右为auto；
   2、居中方式不同。margin:auto表示横竖都居中，margin: 0 auto表示横居中，竖不居中；
     margin后面一般会跟4个参数，如margin:1px、1px、1px、1px，分别表示上外边距为1px、右外边距为1px、下外边距为1px、左外边距为1px。
     如果后面只写2个参数的话，如margin：1px、2px，则表示上下外边距为都为1px，左右外边距都为2px。
 
+- html5
+  一、新增语义化标签  
+  header — 头部标签
+  nav — 导航标签
+  article — 内容标签
+  section — 块级标签
+  aside — 侧边栏标签
+  footer — 尾部标签
+  二、多媒体标签 音频：<audio> 视频：<video>
+  三、input表单类型 表单属性 ![](.CSS_images/16112196.png)   ![](.CSS_images/5860fbdd.png)
+  <li>邮箱：<input type="email" /></li>
+  <li>网址：<input type="url" /></li>
+  <li>日期：<input type="date" /></li>
+  <li>时间：<input type="date" /></li>
+  <li>数量：<input type="number" /></li>
+  <li>手机号码：<input type="tel" /></li>
+  <li>搜索：<input type="search" /></li>
+  <li>颜色：<input type="color" /></li>
 
 
 
+-css3新属性 ![css3新属性](.CSS_images/f3774538.png)   [CSS3动画详解（图文教程）](https://www.cnblogs.com/qianguyihao/p/8435182.html)
+一、属性选择器 ![](.CSS_images/e7e2e2c5.png) 
+比如 a[id='123'] 就是选择id为123的a标签
+二、伪类选择器 ![](.CSS_images/c60cc7ab.png)
+三、伪元素选择器 ![](.CSS_images/84e7c452.png)
+四、过渡 transition 可以实现元素不同状态间的平滑过渡（补间动画），经常用来制作动画效果
+      transition 包括以下属性：
+        transition-property: all; 如果希望所有的属性都发生过渡，就使用all。
+        transition-duration: 1s; 过渡的持续时间。
+        transition-timing-function: linear; 运动曲线。属性值可以是：
+          linear 线性
+          ease 减速
+          ease-in 加速
+          ease-out 减速
+          ease-in-out 先加速后减速
+        transition-delay: 1s; 过渡延迟。多长时间后再执行这个过渡动画。
+  上面的四个属性也可以写成综合属性：
+      transition: 让哪些属性进行过度 过渡的持续时间 运动曲线 延迟时间;
+      transition: all 3s linear 0s;
+五、2D转换 transform  可以实现元素的位移、旋转、变形、缩放，甚至支持矩阵方式。
+  转换再配合过渡和动画，可以取代大量早期只能靠 Flash 才可以实现的效果。
+  在 CSS3 当中，通过 transform 转换来实现 2D 转换或者 3D 转换。
+  2D转换包括：缩放、移动、旋转。2D转换并不能把兄弟元素挤走
+  1、缩放：scale
+	transform: scale(x, y);
+	transform: scale(2, 0.5);
+    参数解释： x：表示水平方向的缩放倍数。y：表示垂直方向的缩放倍数。如果只写一个值就是等比例缩放。
+  2、位移：translate
+      transform: translate(水平位移, 垂直位移);
+      transform: translate(-50%, -50%);
+  参数解释： 参数为百分比，相对于自身移动。
+  正值：向右和向下。 负值：向左和向上。如果只写一个值，则表示水平移动。
+  3、旋转：rotate
+      transform: rotate(角度);
+      transform: rotate(45deg);
+  参数解释：正值 顺时针；负值：逆时针。
+六、3D转换
+  1、旋转
+    transform: rotateX(360deg);    //绕 X 轴旋转360度
+	transform: rotateY(360deg);    //绕 Y 轴旋转360度
+	transform: rotateZ(360deg);    //绕 Z 轴旋转360度
+
+
+
+文本阴影属性：text-shadow:水平距离 垂直距离 模糊半径(模糊程度) 阴影颜色
+盒子阴影 box-shadow : 水平距离(必填，可为负值) 垂直距离(必填，可为负值) 模糊距离 阴影大小 阴影颜色 阴影位置(内侧或外侧)
+文本换行  word-wrap
+CSS圆角属性 border-radius：一个值代表四个方向，上右下左
+
+-画三角形
+transparent 它代表着全透明黑色，即一个类似rgba(0,0,0,0)这样的值。
+设置div宽高为0 设置要显示的方向的三角为有颜色 其他的三个方向设置透明色transparent
+width: 0px;
+height: 0px;
+border-top: 100px solid red;
+border-right: 100px solid transparent;
+border-bottom: 100px solid transparent;
+border-left: 100px solid transparent;
 

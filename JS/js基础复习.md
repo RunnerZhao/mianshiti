@@ -324,6 +324,10 @@ let p = new Proxy(target, handler);
 
 - 总结：Proxy对象用于创建一个对象的代理，从而实现对对象的一些操作，例如拦截和自定义。Vue3中就使用了Proxy代替了Vue2中的Object.defineProperty。
 
+- Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 
+  简单来说，就是Object.assign()是对象的静态方法，可以用来复制对象的可枚举属性到目标对象，利用这个特性可以实现对象属性的合并。
+  [Object.assign用法](https://blog.csdn.net/weixin_43290151/article/details/124715850)
+
 - 2.深拷贝与浅拷贝的区别？怎么实现一个深拷贝？
 
 > [参考链接](https://juejin.cn/post/6908309980206759943)
@@ -417,9 +421,13 @@ console.log(obj2);
 
 > Lodash能处理function，undefined和Symbol()类型。
 
+使用 structuredClone  美[ˈstrʌktʃərd]
+const obj = {id: 'abcd1234', values: ['a', 'b']};
+const clone2 = structuredClone(obj)
+
 - 总结：深浅拷贝是针对引用类型的，浅拷贝是指拷贝对象属性的引用，而深拷贝是复制一个一模一样的对象，不共享内存，修改一个对象不会影响到另一个对象。 浅拷贝有3种方式，使用Object.assign()方法，使用展开语法，循环遍历。
   而深拷贝有4种方式，使用JSON.parse(JSON.stringify())，注意这种方法处理不了function、undefined和Symbol类型，第2种使用递归， 第3种使用jQuery的$.extend()
-  方法，第4种使用lodash库的_.defaultsDeep()方法。
+  方法，第4种使用lodash库的_.defaultsDeep()方法。 
 
 -如何解决深拷贝递归的循环引用问题？
     使用WeakMap解决循环引用的问题。

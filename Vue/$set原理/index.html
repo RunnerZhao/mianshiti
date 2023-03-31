@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h1>watch原理</h1>
+    <h1>$set原理</h1>
     <script src="./index.js"></script>
     <script>
         const app = new Vue({
@@ -23,21 +23,14 @@
                }
            },
             watch:{
-               name(){
-                   // this.age = 20
-                   console.log('name发生了变化1')
+                info(){
+
+                   console.log('info发生了变化1')
                }
 
             }
-
         });
-        // app.$watch('name',()=>{
-        //     console.log('name发生变化')
-        // })
-        // app.name = 'xiaohuang'
-        // app.name = 'xiaohuang1'
-        // app.name = 'xiaohuang2'
-        // console.log('age',app.age)
+        app.$set(app.info,'time','88')
 
 
     </script>
