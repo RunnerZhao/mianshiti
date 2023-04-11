@@ -413,7 +413,34 @@ persisted 美[pərˈsɪstɪd]持续存在;
   beforeRouteLeave (to, from, next) {}//离开守卫：通过路由规则，离开该组件时被调用
 
 
-- 11.diff算法？
+- 11.diff算法？ [](https://juejin.cn/post/6994959998283907102#heading-2)
+一、diff算法就是对比新旧虚拟dom的算法，对比出是哪个虚拟节点更改了，找出这个虚拟节点，并只更新这个虚拟节点所对应的真实节点，
+  而不用更新其他数据没发生改变的节点，实现精准地更新真实DOM，进而提高效率
+二、对比流程 ![](.Vue_images/6a0a75c5.png)
+  当数据改变时，会触发setter，并且通过Dep.notify去通知所有订阅者Watcher，
+  订阅者们就会调用patch方法，给真实DOM打补丁，更新相应的视图
+三、patch方法 ![patch代码 部分1](.Vue_images/f8f571b3.png) 
+  这个方法作用就是，通过sameVnode方法对比当前同层的虚拟节点是否为同一种类型的标签(同一类型的标准，下面会讲)：
+    是：继续执行patchVnode方法进行精细化比较
+    否：没必要比对了，暴力删除旧的，插入新的虚拟节点，创建节点时，所有子节点需要递归创建出来（creatElement ![creatElement](.Vue_images/4ffa047c.png)） 
+四、sameVnode方法  判断是否为同一类型节点（key值、标签名是否一样，是否都为注释节点、是否都定义了data、当标签为input时，type必须是否相同）
+五、patchVnode方法
+  主要做了5件事情
+      找到对应的真实DOM，称为el
+      判断newVnode和oldVnode是否指向同一个对象，如果是，那么直接return
+      如果他们都有文本节点并且不相等，那么将el的文本节点设置为newVnode的文本节点。
+      如果oldVnode有子节点而newVnode没有，则删除el的子节点
+      如果oldVnode没有子节点而newVnode有，则将newVnode的子节点真实化之后添加到el
+      如果两者都有子节点，则执行updateChildren函数比较子节点，这一步很重要
+六、updateChildren方法
+  通过双端比较的方法，对比新旧虚拟dom的子节点集合，
+
+一、h函数生成虚拟节点vnode，嵌套使用h函数就生成虚拟dom树
+二、 1 diff算法是最小量更新，key很重要，key是节点的唯一标识，表示更改前后是同一个dom节点
+   2  同一个虚拟节点才会进行精细化比较（同一个虚拟节点就是选择器相同，key相同），否则就是暴力拆除旧的，插入新的
+    3 只进行同层比较，不会进行跨层比较
+三、patch函数 ![patch函数 思路 部分1 ](.Vue_images/4829e5cb.png)  ![[patch函数 思路 部分2](.Vue_images/0907afe3.png)
+  
 深度比较，同层优先。
 先比较同级，再比较子节点。如果都有子节点的话，会递归比较。
   一、diff算法很早就有而且应用广泛，例如github中pull代码的时候 。如果要严格diff两棵树，时间复杂度是O(n^3),不可用
