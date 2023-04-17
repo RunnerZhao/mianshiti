@@ -268,11 +268,56 @@ html中大多数都是非替换元素，他们直接将内容告诉浏览器，�
       transform: rotate(角度);
       transform: rotate(45deg);
   参数解释：正值 顺时针；负值：逆时针。
+     rotate 旋转时，默认是以盒子的正中心为坐标原点的。如果想改变旋转的坐标原点，可以用transform-origin属性。格式如下：
+        transform-origin: 水平坐标 垂直坐标;
+        transform-origin: 50px 50px;
+        transform-origin: center bottom;   //旋转时，以盒子底部的中心为坐标原点
 六、3D转换
   1、旋转
     transform: rotateX(360deg);    //绕 X 轴旋转360度
 	transform: rotateY(360deg);    //绕 Y 轴旋转360度
 	transform: rotateZ(360deg);    //绕 Z 轴旋转360度
+  2、移动：translateX、translateY、translateZ
+	transform: translateX(100px);    //沿着 X 轴移动
+	transform: translateY(360px);    //沿着 Y 轴移动
+	transform: translateZ(360px);    //沿着 Z 轴移动  必须配合透视来使用  perspective: 1000px;
+3、透视：perspective
+  电脑显示屏是一个 2D 平面，图像之所以具有立体感（3D效果），其实只是一种视觉呈现，通过透视可以实现此目的。
+  透视可以将一个2D平面，在转换的过程当中，呈现3D效果。但仅仅只是视觉呈现出3d 效果，并不是正真的3d。
+    格式有两种写法：
+    作为一个属性，设置给父元素，作用于所有3D转换的子元素
+    作为 transform 属性的一个值，做用于元素自身。
+4、3D呈现（transform-style）
+  3D元素构建是指某个图形是由多个元素构成的，可以给这些元素的父元素设置transform-style: preserve-3d来使其变成一个真正的3D图形。属性值可以如下：
+	transform-style: preserve-3d;     //让 子盒子 位于三维空间里
+	transform-style: flat;            //让子盒子位于此元素所在的平面内（子盒子被扁平化）
+七、动画
+动画是CSS3中具有颠覆性的特征，可通过设置多个节点 来精确控制一个或一组动画，常用来实现复杂的动画效果。
+  1、定义动画的步骤
+  （1）通过@keyframes定义动画；
+  （2）将这段动画通过百分比，分割成多个节点；然后各节点中分别定义各属性；
+  （3）在指定元素里，通过 animation 属性调用动画。
+  之前,我们在 js 中定义一个函数的时候，是先定义，再调用：
+      js 定义函数：
+          function fun(){ 函数体 }
+       调用：
+          fun();
+  同样，我们在 CSS3 中定义动画的时候，也是先定义，再调用：
+      定义动画：
+          @keyframes 动画名{
+              from{ 初始状态 }
+              to{ 结束状态 }
+          }
+       调用：
+        animation: 动画名称 持续时间；
+  其中，animation属性的格式如下：
+animation: 定义的动画名称(animation-name 必选) 持续时间(animation-duration 必选)  执行次数（animation-iteration-coun infinite 表示无限次） 
+            是否反向（animation-direction: alternate; 属性值：normal 正常，alternate 反向。）
+            运动曲线（animation-timing-function: ease-in; 属性值可以是：linear ease-in-out steps()等。
+                注意，如果把属性值写成steps()，则表示动画不是连续执行，而是间断地分成几步执行。） 
+            延迟执行（animation-delay: 1s）。
+animation: move1 1s  alternate linear 3;
+animation: move2 4s;
 
 
 
