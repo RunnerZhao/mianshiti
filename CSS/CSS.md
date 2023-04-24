@@ -128,6 +128,11 @@ zoom(IE专有属性)可解决ie6,ie7浮动问题（较常用推荐）
 6、网格布局 父元素display: grid; 子元素 justify-self: center;水平方向    align-self: center;垂直方向
   [CSS 不定宽高的垂直水平居中](https://juejin.cn/post/6844903933350150158#heading-4)
 
+-圣杯布局 [](https://www.jianshu.com/p/f9bcddb0e8b4)
+父盒子：padding：0 200px  三个子盒子：float:left  position:relative  中间子盒子：width：100% 
+左边盒子：width：200px margin-left:-100% left：-200px   右边盒子： width：200px  margin-left：200px  right：-200px
+
+
 - 8 position属性
 static（静态定位）
 对象遵循标准文档流中，top, right, bottom, left 等属性失效。
