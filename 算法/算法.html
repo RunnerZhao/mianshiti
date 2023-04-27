@@ -27,6 +27,111 @@
 
 </body>
 <script type="text/javascript">
+    //求数组嵌套对象平均数
+    function getAverageValue(list) {
+        //记录属性及属性值的和
+        let map = {};
+        //学生数
+        let studentNum = list.length;
+
+        // 递归遍历获得属性及属性值的和
+        function getSum(obj) {
+            for (let key in obj) {
+                //判断是属性值是数字
+                if (Object.prototype.toString.call(obj[key]) === '[object Number]') {
+                    if (map.hasOwnProperty(key)) {//检查map的自有属性中存在key
+                        map[key] += obj[key];//累加
+                    } else {
+                        map[key] = obj[key];//设置属性及属性值
+                    }
+                } else {//不是数字就是对象 递归
+                    getSum(obj[key]);
+                }
+            }
+        }
+
+        //遍历每个学生
+        for (let i = 0; i < studentNum; i++) {
+            getSum(list[i]);
+        }
+
+        //属性组成的一维对象
+        let result = {};
+        // 获得平均值
+        for (let key in map) {
+            result[key] = Math.round((map[key] / studentNum) * 100) / 100;
+        }
+
+
+        //最终结果 获得嵌套属性 用第一个student对象深拷贝而来,为了不改变原数组
+        let res = JSON.parse(JSON.stringify(list[0]));
+
+        //根据result获得属性值
+        function getRes(obj) {
+            for (let key in obj) {
+                if (Object.prototype.toString.call(obj[key]) === '[object Number]') {
+                    obj[key] = result[key];
+                } else {
+                    getRes(obj[key]);
+                }
+            }
+        }
+
+        getRes(res);
+        delete res.studentId;
+        return res;
+    }
+
+    let testListWithNestedDicts = [
+        {
+            "studentId": 1,
+            "age": 7,
+            "height": 2,
+            "weight": 3,
+            "scores": {
+                "spanish": 80,
+                "mathematics": 90,
+                "english": 100,
+                "pe": {
+                    "run": 85,
+                    "jump": 95
+                }
+            }
+        },
+        {
+            "studentId": 2,
+            "age": 8,
+            "height": 4,
+            "weight": 6,
+            "scores": {
+                "spanish": 90,
+                "mathematics": 90,
+                "english": 80,
+                "pe": {
+                    "run": 90,
+                    "jump": 90
+                }
+            }
+        },
+        {
+            "studentId": 3,
+            "age": 7,
+            "height": 3,
+            "weight": 6,
+            "scores": {
+                "spanish": 86,
+                "mathematics": 90,
+                "english": 75,
+                "pe": {
+                    "run": 65,
+                    "jump": 90
+                }
+            }
+        }
+    ];
+    console.log(getAverageValue(testListWithNestedDicts));
+
+
     // //旋转数组 pop unshift  时间复杂度 O(n^2) 空间复杂度O（1）
     // function rotate1(arr, k) {
     //     // 1 定义length来处理数组长度为0的情况，以及用来取旋转的步数step
