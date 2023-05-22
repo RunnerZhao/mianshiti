@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+
+        }
+    </style>
+</head>
+
+<body>
+<h2>
+    绪水
+</h2>
+
+</body>
+<script type="text/javascript">
+
+    function getAverageValue(list) {
+        //记录属性及属性值的和
+        let map = {};
+        //学生数
+        let studentNum = list.length;
+
+        // 递归遍历获得属性及属性值的和
+        function getSum(obj) {
+            for (let key in obj) {
+                //判断是属性值是数字
+                if (Object.prototype.toString.call(obj[key]) === '[object Number]') {
+                    if (map.hasOwnProperty(key)) {//检查map的自有属性中存在key
+                        map[key] += obj[key];//累加
+                    } else {
+                        map[key] = obj[key];//设置属性及属性值
+                    }
+                } else {//不是数字就是对象 递归
+                    getSum(obj[key]);
+                }
+            }
+        }
+
+        //遍历每个学生
+        for (let i = 0; i < studentNum; i++) {
+            getSum(list[i]);
+        }
+
+        //属性组成的一维对象
+        let result = {};
+        // 获得平均值
+        for (let key in map) {
+            result[key] = Math.round((map[key] / studentNum) * 100) / 100;
+        }
+
+
+        //最终结果 获得嵌套属性 用第一个student对象深拷贝而来,为了不改变原数组
+        let res = JSON.parse(JSON.stringify(list[0]));
+
+        //根据result获得属性值
+        function getRes(obj) {
+            for (let key in obj) {
+                if (Object.prototype.toString.call(obj[key]) === '[object Number]') {
+                    obj[key] = result[key];
+                } else {
+                    getRes(obj[key]);
+                }
+            }
+        }
+
+        getRes(res);
+        delete res.studentId;
+        return res;
+    }
+
+    let testListWithNestedDicts = [
+        {
+            "studentId": 1,
+            "age": 7,
+            "height": 2,
+            "weight": 3,
+            "scores": {
+                "spanish": 80,
+                "mathematics": 90,
+                "english": 100,
+                "pe": {
+                    "run": 85,
+                    "jump": 95
+                }
+            }
+        },
+        {
+            "studentId": 2,
+            "age": 8,
+            "height": 4,
+            "weight": 6,
+            "scores": {
+                "spanish": 90,
+                "mathematics": 90,
+                "english": 80,
+                "pe": {
+                    "run": 90,
+                    "jump": 90
+                }
+            }
+        },
+        {
+            "studentId": 3,
+            "age": 7,
+            "height": 3,
+            "weight": 6,
+            "scores": {
+                "spanish": 86,
+                "mathematics": 90,
+                "english": 75,
+                "pe": {
+                    "run": 65,
+                    "jump": 90
+                }
+            }
+        }
+    ];
+    console.log(getAverageValue(testListWithNestedDicts));
+
+
+
+    // 在线面试平台。将链接分享给你的朋友以加入相同的房间。
+    // Author: tdzl2003<dengyun@meideng.net>
+    // QQ-Group: 839088532
+
+
+    /*
+    1.扁平化数组
+    请你编写一个函数，它接收一个 多维数组 arr 和它的深度 n ，并返回该数组的 扁平化 后的结果。
+    多维数组 是一种包含整数或其他 多维数组 的递归数据结构。
+    数组 扁平化 是对数组的一种操作，定义是将原数组部分或全部子数组删除，并替换为该子数组中的实际元素。只有当嵌套的数组深度大于 n 时，才应该执行扁平化操作。第一层数组中元素的深度被认为是 0。
+    请在没有使用内置方法 Array.flat 的前提下解决这个问题。
+
+     
+
+    示例 1：
+    输入
+    arr = [1, 2, 3, [4, 5, 6], [7, 8, [9, 10, 11], 12], [13, 14, 15]]
+    n = 0
+    输出
+    [1, 2, 3, [4, 5, 6], [7, 8, [9, 10, 11], 12], [13, 14, 15]]
+
+    解释
+    传递深度 n=0 的多维数组将始终得到原始数组。这是因为 子数组(0) 的最小可能的深度不小于 n=0 。因此，任何子数组都不应该被平面化。
+
+    示例 2：
+    输入
+    arr = [1, 2, 3, [4, 5, 6], [7, 8, [9, 10, 11], 12], [13, 14, 15]]
+    n = 1
+    输出
+    [1, 2, 3, 4, 5, 6, 7, 8, [9, 10, 11], 12, 13, 14, 15]
+
+    解释
+    以 4 、7 和 13 开头的子数组都被扁平化了，这是因为它们的深度为 0 ， 而 0 小于 1 。然而 [9,10,11] 其深度为 1 ，所以未被扁平化。
+
+    示例 3：
+    输入
+    arr = [[1, 2, 3], [4, 5, 6], [7, 8, [9, 10, 11], 12], [13, 14, 15]]
+    n = 2
+    输出
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+    解释
+    所有子数组的最大深度都为 1 。因此，它们都被扁平化了。
+     
+
+    提示：
+    0 <= arr 的元素个数 <= 105
+    0 <= arr 的子数组个数 <= 105
+    maxDepth <= 1000
+    -1000 <= each number <= 1000
+    0 <= n <= 1000
+    */
+
+    /**
+     * @param {any[]} arr
+     * @param {number} depth
+     * @return {any[]}
+     */
+    var flat = function (arr, n) {
+        //定义返回结果
+        let res = [];
+        //定义当前的层级
+        let nowNum = 0;
+        arr.forEach(item => {
+            //如果是数组的话 并且nowNum 小于等于n 递归调用
+
+            if(Arry.isArry(item) && nowNum <= n  ){
+                let flatItem = flat(item,n)
+                nowNum++
+                res = res.concat(flatItem)
+
+            }else{
+                res = res.concat(item)
+
+            }
+            return res
+
+        })
+    };
+
+</script>
+
+</html>

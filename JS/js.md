@@ -421,13 +421,13 @@ console.log(obj2);
 
 > Lodash能处理function，undefined和Symbol()类型。
 
-使用 structuredClone  美[ˈstrʌktʃərd]
+> 5 使用 structuredClone  美[ˈstrʌktʃərd]
 const obj = {id: 'abcd1234', values: ['a', 'b']};
 const clone2 = structuredClone(obj)
 
 - 总结：深浅拷贝是针对引用类型的，浅拷贝是指拷贝对象属性的引用，而深拷贝是复制一个一模一样的对象，不共享内存，修改一个对象不会影响到另一个对象。 浅拷贝有3种方式，使用Object.assign()方法，使用展开语法，循环遍历。
   而深拷贝有4种方式，使用JSON.parse(JSON.stringify())，注意这种方法处理不了function、undefined和Symbol类型，第2种使用递归， 第3种使用jQuery的$.extend()
-  方法，第4种使用lodash库的_.defaultsDeep()方法。 
+  方法，第4种使用lodash库的_.defaultsDeep()方法,5 structuredClone。 
 
 -如何解决深拷贝递归的循环引用问题？
     使用WeakMap解决循环引用的问题。
@@ -579,7 +579,6 @@ function fn(f) {
 > splice(拼接) array.splice(startingIndex, length, ...items) 从数组固定位置对原数组进行删除添加操作。会改变原数组。返回的是startIndex和length取出的值组成的数组
 
 > slice（片） array.slice(startingIndex, endingIndex)从数组中提取一部分元素组成数组并返回。不会改变原数组
-
 - 13.类数组转换成数组的方法？
 
 > 1.Array.from()。
@@ -897,9 +896,8 @@ preconnect DNS预连接（tcp连接） connect 美[kəˈnekt] 使计算机连接
   提前把html css js 下载到app内部 ，在app webview中使用file://协议加载页面文件 ，再用请求接口数据
   
 - ES增加了哪些新特性？
-一
-ES6新增了类、模块、迭代器、生成器、箭头函数、Promise、反射、代理和众多新的数据类型。
-ES6新增了，let和const，展开语法，箭头函数，Promise，类，模板字符串，函数参数默认值，对象数组解构，for...of...,for...in。
+一 ES6新增了let和const，展开语法，类、模块、迭代器、生成器、箭头函数，Promise，函数参数默认值，
+  模板字符串， 对象数组解构，for...of...,反射、代理和众多新的数据类型。
   
 
 -ES2020 [可选链和模块动态导入](https://blog.csdn.net/KlausLily/article/details/124580720) 

@@ -221,7 +221,7 @@ const threads = os.cpu().length //获取cpu核数
 
 >2.webpack配置相关？
 
->3.webpack性能优化相关？
+
 
 >4.loader相关？
 
@@ -237,4 +237,25 @@ const threads = os.cpu().length //获取cpu核数
 
 -[Webpack优化手段](https://blog.csdn.net/m0_68997646/article/details/129116360?spm=1001.2014.3001.5502)
 
+- 1.webpack打包优化的方式？
+
+>参考链接1：[常用的webpack优化方法](https://www.cnblogs.com/wangjiachen666/p/11561186.html#_label1_4)
+
+>参考链接2：[深入浅出webpack](https://webpack.wuhaolin.cn/4%E4%BC%98%E5%8C%96/4-3%E4%BD%BF%E7%94%A8HappyPack.html)
+
+>分为优化打包速度和优化打包后的体积。
+
+>优化打包速度：1.优化Loader搜索范围。2.cache-loader缓存loader处理结果，只对性能开销较大的loader进行缓存。因为保存和读取这些缓存会有一些时间开销。3.使用多线程打包的方法。4.noParse：可以配置让webpack不去进行某些模块的解析。5.webpack-bundle-analyzer生成代码分析报告。
+
+>优化打包体积：
+
+>1.使用image-webpack-loader对图片进行压缩和优化。
+
+>2.删除无用的CSS样式。使用purgecss-webpack-plugin插件
+
+>3.以CDN的方式加载资源。使用add-asset-html-cdn-webpack-plugin插件。
+
+>4.开启Tree Shaking。去除代码中的无用代码。
+
+>7.按需加载。
 

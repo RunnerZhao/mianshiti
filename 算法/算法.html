@@ -27,6 +27,125 @@
 
 </body>
 <script type="text/javascript">
+
+    // 在一个数组中找出3个数相加和为n
+    let arr11 = [1,0,0,6,2,3,4]
+    function getNum(arr,n){
+        let length = arr.length;
+        let res = []
+        arr.sort((a,b) =>{a-b})
+        //遍历arr 固定arr[i]  从后面寻找两数之和等于 num - arr[i]
+        for (let i = 0 ;i < length ;i++){
+            //两个指针
+            let left = i+1 ,right = length - 1;
+            //两数之和
+            let sum = n - arr[i];
+            //
+            while (left < right){
+                //如果 两数之和等于sum 就把 三个数push到返回数组里
+                if (arr[left] + arr[right] == sum){
+                    res.push(arr[i],arr[left],arr[right]);
+                    //首指针右移
+                    left++;
+                    //末尾指针左移
+                    right--;
+
+                }else if (arr[left] + arr[right] < sum){
+                    //如果 两数之和小于sum 首指针右移
+                    left++;
+                }else{
+                    //两数和大于sum 末尾指针左移
+                    right--;
+
+                }
+            }
+            return res;
+        }
+
+    }
+    console.log('getNum',getNum(arr11,3))
+
+
+
+    function isNew(constrc , ...args){
+        console.log(21111)
+        //创建对象 原型指向
+        let obj = Object.create(constrc.prototype)
+        //改变this指向执行
+        let res = constrc.apply(obj,args);
+        //如果res是对象 就返回结果 否则返回obj
+        return res instanceof Object?res:obj;
+    }
+    let aa = {};
+    function Person(name,age){
+        this.name = name
+        this.age = age
+    }
+    // const person1 = isNew(Person,'xiaoming',18)
+    // console.log(person1,'person1')
+
+    function thoo(fn,delay){
+        let timer = null
+        return function (...args){
+            let context = this
+            clearTimeout(timer)
+            timer = setTimeout(function (){
+                fn.apply(context,args)
+            },delay)
+        }
+    }
+    const person1 = thoo(isNew,2000)
+
+    person1(Person,'xiaoming',18)
+    person1(Person,'xiaoming',18)
+    person1(Person,'xiaoming',18)
+    // console.log(person1,'person1')
+
+    function th(fn,delay) {
+        //定义flag
+        let isRun = false;
+        return function (...args) {
+            let context = this
+            if (isRun) return
+            isRun = true
+            setTimeout(function () {
+                fn.apply(context, args)
+                isRun = false
+            }, delay)
+
+        }
+    }
+
+
+    // 给你一个字符串 s，找到 s 中最长的回文子串
+    // 郑昭
+    // dwajygyjdadwa
+    let string1 = 'dwajygyjdadwa'
+    function longestPalindrome(s) {
+        let res = ''
+        for (let i = 0; i < s.length; i ++) {
+            let left = i - 1, right = i + 1 // s为奇数长度
+            while (left >= 0 && right < s.length && s[left] === s[right]) {
+                left --, right ++
+            }
+            if (res.length < right - left - 1) {
+                res = s.substring(left + 1, right)
+            }
+
+            left = i, right = i + 1 // s为偶数长度
+            while (left >= 0 && right < s.length && s[left] === s[right]) {
+                left --, right ++
+            }
+            if (res.length < right - left - 1) {
+                res = s.substring(left + 1, right)
+            }
+        }
+        return res
+    }
+
+    console.log('longestPalindrome',longestPalindrome(string1))
+
+
     //求数组嵌套对象平均数
     function getAverageValue(list) {
         //记录属性及属性值的和

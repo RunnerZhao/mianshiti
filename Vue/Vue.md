@@ -241,7 +241,7 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
 - <script setup> 语法糖 父组件访问子组件数据
 [Vue3父组件访问子组件数据 defineExpose用法](https://blog.csdn.net/qq_29585681/article/details/126485407)
 
-- 4.Vue2和Vue3的区别？(必问)
+- 4.Vue2和Vue3的区别？(必问) [](https://zhuanlan.zhihu.com/p/410951679)
 一 、响应式原理
   vue2 的响应式原理是利⽤ES5 的⼀个 API ，Object.defineProperty()对数据进⾏劫持 结合 发布订阅模式的⽅式来实现的。
   Vue3.x是借助 Proxy 实现的，通过Proxy 对象创建一个对象的代理，并且 Proxy 的监听是深层次的，监听整个对象，而不是某个属性
@@ -259,6 +259,19 @@ context 有三个属性 attrs slots emit 分别对应vue2中的attrs属性、slo
   Vue3：
   数据和⽅法都定义在setup中，并统⼀进⾏return{}
 三、生命周期 
+四、组件根节点的不同  vue3在组件中支持多个根节点. vue2只能一个根节点
+    原因：在vue2中只所以这么做是因为vdom是一颗单根树形结构，patch方法在遍历的时候从根节点开始遍历，它要求只有一个根节点，
+        组件也会转换为一个vdom,自然满足这个要求
+    vue3中值所以可以有多个节点，是因为引入了Fragment的概念，这是一个抽象的节点，如果发现组件有多个根，就创建一个Fragment节点，
+        把多个根节点作为它的children,将来path的时候，如果发现是一个Fragement节点，则直接遍历children创建或更新。
+五、diff算法
+    vue2中的虚拟dom是全量的对比（每个节点不论写死的还是动态的都会一层一层比较，这就浪费了大部分事件在对比静态节点上）
+    vue3新增了静态标记（patchflag）与上次虚拟节点对比时，只对比带有patch flag的节点（动态数据所在的节点）；
+    可通过flag信息得知当前节点要对比的具体内容。
+六、静态提升
+  vue2无论元素是否参与更新，每次都会重新创建然后再渲染。
+   vue3对于不参与更新的元素，会做静态提升，只会被创建一次，在渲染时直接复用即可。
+  
 
 -[详解defineProperty和Proxy](https://www.jianshu.com/p/0e2984d13ab4) [ defineProperty 与 proxy](https://juejin.cn/post/6844903710410162183)
 ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
@@ -295,28 +308,10 @@ ES5 提供了 Object.defineProperty 方法，该方法可以在一个对象上�
   4 keep-alive缓存组件 比如频繁切换的tabs，不能乱用，因为缓存太多会占用内存，且不好debug
   5 异步组件 [defineAsyncComponent](https://blog.csdn.net/weixin_44733660/article/details/128639280)
   ES 模块动态导入也会返回一个 Promise，所以多数情况下我们会将它和 defineAsyncComponent 搭配使用 ![](.项目_images/5af59217.png)
-  6 路由懒加载  7 服务端渲染ssr  
+  6 路由懒加载 vue-lazyload  
+  7 服务端渲染ssr  
     
-
-
->1.路由懒加载
-
->2.keep-alive缓存页面
-
->3.使用v-show复用dom
-
->4.v-for同级别避免使用v-if
-
->5.长列表性能优化，如果只是做纯粹的数据展示，不会有任何改变，就不需要响应化，对对象进行冻结。
-
->6.事件销毁
-
->7.图片懒加载 vue-lazyload
-
->8.插件按需引入
-
->9.SSR,服务端渲染。
-
+  
 
 >[答案](https://juejin.cn/post/6844904084374290446#heading-23)
 
@@ -342,10 +337,20 @@ watcher是异步执行 并且对于监听属性的多次变化，只执行一次
 
 - 8.vue-router的实现原理？（大概率）
 
-- 9.Vuex的实现原理？（大概率）
+- 9.Vuex的实现原理？（大概率） [](https://www.jb51.net/article/261550.htm)
 介绍vuex
 官方解释: Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化
 大白话：对数据(data)统一的管理,如果涉及到了数据的处理，来，到vuex里面进出吧！就像是超市对商品的统一管理一样
+  Vuex状态管理跟使用传统全局变量的不同之处：
+
+Vuex的状态存储是响应式的： 就是当你的组件使用到了这个 Vuex 的状态，一旦它改变了，所有关联的组件都会自动更新相对应的数据，这样开发者省事很多。
+不能直接修改Vuex的状态： 如果是个全局对象变量，要修改很容易，但是在 Vuex 中不能这样做，想修改就得使用 Vuex 提供的唯一途径： 
+显示地提交（commint）mutations来实现修改。这样做的好处就是方便我们跟踪每一个状态的变化，在开发过程中调试的时候，非常实用。
+通过commit 提交 mutation 的方式来修改 state 时，vue的调试工具能够记录每一次 state 的变化，这样方便调试
+。但是如果是直接修改state，则没有这个记录，那样做会使状态不受我们管控。如果是多个模块需要引用一个state的，
+然后每个人可能由不同的人开发，如果直接修改值，可能会造成数据的混乱，Mutation 也记录不到，到时候调试会有麻烦。
+但是通过 mutation 修改 state 这样设计，就有个统一的地方进行逻辑运算去修改。如果逻辑有变动，修改一个地方就可以了
+```javascript
 import Vue from 'vue'; //首先引入vue
 import Vuex from 'vuex'; //引入vuex
 Vue.use(Vuex)
@@ -353,6 +358,7 @@ export default new Vuex.Store({
     state: { 
         // state 类似 data
         //这里面写入数据
+        isLogin:localStorage.getItem("isLogin")?localStorage.getItem("isLogin"):false,//判断是否登录
     },
     getters:{ 
         // getters 类似 computed 
@@ -361,15 +367,61 @@ export default new Vuex.Store({
     mutations:{ // 突变 美[mjuˈteɪʃənz]  
         // mutations 类似methods
         // 写方法对数据做出更改(同步操作)
+        //判断是否登录
+        setLogin(state,payload){
+            state.isLogin=payload
+            localStorage.setItem("isLogin",state.isLogin)
+        },
+        //退出登录
+        logout(state){
+            console.log("[退出登录]",state)
+            state.isLogin=false
+            localStorage.clear();//清除本地缓存
+        }
 
     },
     actions:{
         // actions 类似methods
         // 写方法对数据做出更改(异步操作)
+        getLogin(context,payload){
+            context.commit("setLogin",payload)
+        }
     }
 })
-//可能有的地方书写的风格不是这样的，如果需要的了解的可以百度看看其他人的
-在dom中使用方法为：$store.commit()加上store.js中的属性的名称
+//在页面中使用或者修改vuex中的值
+// mapState用于将state中的数据映射到组件的计算属性中，而mapGetters用于将getter中的计算属性映射到组件的计算属性中，
+import { mapState, mapActions,mapMutations } from "vuex"
+export default {
+    name:"index",
+    data() {
+        return {
+
+        }
+    },
+    computed:{
+        ...mapState({
+            isLogin:state=>state.isLogin,
+            isLoginhhh:'isLogin'//上面的简写 
+        }),//等同于==>...mapState(['isLogin']);映射 this.isLogin 为 this.$store.state.isLogin
+        ...mapGetters(//使用跟mapState类似   mapGetters是Vuex提供的将store中的getter映射到组件计算属性中的辅助函数
+            ['isLogin']
+        ),
+    },
+    mounted(){
+        this.$store.state.isLogin;//等同于==》this.isLogin
+        this.$store.dispatch("getLogin",true);
+        //等同于==》this.getLogin(true)；dispatch触发actions里的方法，Action 提交的是 mutation，而不是直接变更状态，
+        // Action 可以包含任意异步操作
+        this.$store.commit("logout");
+        //等同于==》this.logout()；commit触发mutations里的方法，
+        // 更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
+    },
+    methods:{
+        ...mapMutations(["logout"]),// 将 `this.logout()` 映射为 `this.$store.commit('logout')`
+        ...mapActions(["getLogin"]),// 将 `this.getLogin()` 映射为 `this.$store.dispatch('getLogin')`
+    }
+}
+```
 如果你想要直接使用一些数据，但是在computed中没有给出来怎么办？ 可以写成这样 {{ $store.state.goods.totalPrice }}
 
 - mutation action 的区别  为什么区分
@@ -497,6 +549,29 @@ import '@/utlis/focus'
     2 webHistory  用的h5的history.pushState()：往浏览器历史添加url，能回退到上次历史  history.replaceState()：替换当前url，不能回退到上次页面  和 window.onpopState
     3 MemoryHistory （vuerouter4之前叫abstract history） 不能有浏览器的前进后退
   
+
+-history模式下刷新页面404问题 [](https://www.cnblogs.com/Lencamo/p/16860823.html)
+原理：
+① 导航栏的跳转
+导航栏间的跳转是不会向服务端发送请求的。
+hash 模式：会匹配路由规则，进而进行组件切换
+history 模式：会利用 h5 的 history API 进行导航切换
+② 回车刷新
+前端打包后的 dist 包中，只有 index.html。所以，history 模式下发送的请求地址，服务端是找不到的。
+hash 模式：只将 hash 前面的部分当作地址
+history 模式：会将地址栏中的地址全部看作请求地址
+方案
+① 开发环境（前端）
+在vue.config.js中设置 historyApiFallback: true
+② 部署环境   
+在vue.config.js中 publicPath:	process.env.NODE_ENV === 'production' ? '/': '/', 
+[vue之解析vue.config.js中的配置项之publicPath](https://www.jianshu.com/p/c79bb6cd6bce)
+配置nginx :location / {
+    root   /usr/share/nginx/html;
+    index  index.html index.htm;
+    //配置url🎈重写语句（先返回404，然后返回index.html）
+    try_files $uri $uri/ /index.html;
+}
 - vue遇到的坑
 一 内存泄漏
   产生原因：全局变量、全局事件、全局定时器、自定义事件 没有销毁
@@ -534,4 +609,10 @@ window.addEventListener('error',event => { event是一个错误事件对象})
   1 优化服务端接口 2 继续分析，优化前端组件内部逻辑 3 服务端渲染 
 六 持续跟进持续优化  
   
+
+- scoped原理 ![](.Vue_images/f2679270.png)
+  scope的时候，会给元素节点新增自定义属性：data-xx，然后在css中通过属性选择器的方式给元素添加样式，这就是scope的原理。
   
+- proxy解决跨域的原理
+  浏览器是禁止跨域的，但是服务端不禁止，在本地运行npm run dev等命令时实际上是用node运行了一个服务器，
+  因此proxyTable实际上是将请求发给自己的服务器，再由服务器转发给后台服务器

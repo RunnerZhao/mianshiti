@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex-shrink</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: hotpink;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="box">
+
+</div>
+</body>
+<script >
+    const boxElement = document.querySelector(".box");
+    const params = {
+        isDragging: false,
+        lengthTillLeftEdge: 0,
+        lengthTillTopEdge: 0,
+        boxHeight: boxElement.offsetHeight,
+        boxWidth: boxElement.offsetWidth,
+        boxRangeX: 0,
+        boxRangeY: 0,
+    };
+
+    boxElement.onmousedown = function (e) {
+        params.isDragging = true;
+        // 2 号深绿色线所示的距离，就是鼠标的位置（e.clientX）， 到div盒子左侧边框的距离，关于offsetLeft这个参见下面的链接
+        params.lengthTillLeftEdge = e.clientX - boxElement.offsetLeft;
+        // 3 号深蓝色线所示的距离，
+        params.lengthTillTopEdge = e.clientY - boxElement.offsetTop;
+        // 水平方向 box 的css属性，left 可设置的最大的值，因为再多就出去了，
+        params.boxRangeX = document.body.clientWidth - params.boxWidth;
+        // 垂直方向 box 的css属性，top 可设置的最大的值，因为再多就出去了，
+        // 因为body我们没有设定高度，所以这里用window来获取页面高度
+        config.boxRangeY = window.innerHeight - config.boxHeight;
+    };
+
+    document.onmousemove = function (e) {
+        if (params.dragging) {
+            // shiftX, shiftY 分别是代表左右偏移的最终距离
+            let shiftX, shiftY;
+            // e.clientX - params.lengthTillLeftEdge 就是图中 1线 - 2线的距离
+            if (e.clientX - params.lengthTillLeftEdge > params.boxRangeX) {
+                shiftX = params.boxRangeX;
+            } else {
+                // 同上看当div往左侧移动时，确保不会从左侧边界溜出去。
+                shiftX = e.clientX - params.lengthTillLeftEdge < 0 ? 0 : e.clientX - params.lengthTillLeftEdge;
+            }
+            // e.clientX - params.lengthTillLeftEdge 就是图中 4线 - 3线的距离
+            if (e.clientY - params.lengthTillTopEdge > params.boxRangeY) {
+                shiftY = params.boxRangeY;
+            } else {
+                // 同上看当div往顶侧移动时，确保不会从顶侧边界溜出去。
+                shiftY = e.clientY - params.lengthTillTopEdge < 0 ? 0 : e.clientY - params.lengthTillTopEdge;
+            }
+            // 确定完偏移量之后，进行最终的设定
+            boxElement.style.left = shiftX + "px";
+            boxElement.style.top = shiftY + "px";
+        }
+    };
+
+    document.onmouseup = function (e) {
+        params.isDragging = false;
+    };
+
+</script>
+</html>
