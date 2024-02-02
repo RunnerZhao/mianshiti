@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>读取json每天的降雨量改时间格式</title>
+    <script src="./xlsx.full.min.js"></script>
+</head>
+<body>
+读取json每天的降雨量改时间格式
+</body>
+
+<script>
+
+
+    //读取json 每天的降雨量改时间格式
+        let url = './风json/巢湖2022 5-10月每天降雨量.json'
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                debugger
+                // 在这里处理读取的 JSON 数据
+                json.forEach(function(entry) {
+                    var parts = entry.时间.split('/');
+                    var year = parts[0];
+                    var month = parts[1];
+                    var day = parts[2];
+                    entry.时间 = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                });
+                console.log('json',json)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+
+
+
+
+</script>
+</html>

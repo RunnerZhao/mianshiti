@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>读取json</title>
+    <script src="./xlsx.full.min.js"></script>
+</head>
+<body>
+读取json
+</body>
+
+<script>
+    //读取json转为一天一个json  风
+    // const fs = require('fs');
+    for (let n = 1; n <21; n++) {
+        // let n= 1
+        let url = './风json/' + n + '.json'
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                // 在这里处理读取的 JSON 数据
+
+                let res = json.content
+                for (let i = 1; i < 6; i++) {
+                    let startData = '2022/6/' + i + ' '
+                    let endData = '2022/6/' + (i + 1) + ' '
+
+                    let startIndex = res.findIndex(item => item['时间'].slice(0, 9) == startData)
+                    let endIndex = res.findIndex(item => item['时间'].slice(0, 9) == endData)
+
+                    let jsonData = res.slice(startIndex, endIndex)
+                    console.log('data', n, startData, endData, startIndex, endIndex);
+
+                    // return res.slice(startIndex,endIndex)
+                    // console.log('arr', n, res.slice(startIndex, endIndex));
+                   let  jsonDataStr =  {content:jsonData}
+                    var jsonStr = JSON.stringify(jsonDataStr);
+                    var blob = new Blob([jsonStr], {type: 'application/json'});
+                    // 生成下载链接
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.download = n
+debugger
+                    // 模拟点击下载链接
+                    downloadLink.click();
+
+                }
+                console.log(json);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    // //读取json 处理数据
+    // for (let n = 1; n < 21; n++) {
+    //     // let n= 9
+    //     let url = './风json/' + n + '.json'
+    //     fetch(url)
+    //         .then(function (response) {
+    //             return response.json();
+    //         })
+    //         .then(function (json) {
+    //             // 在这里处理读取的 JSON 数据
+    //
+    //             let res = json
+    //
+    //             res.forEach(item => {
+    //                 item['流向'] = item['风向'];
+    //                 item['流速'] = item['风速'];
+    //                 item['水层'] = 1;
+    //                 item['站点'] = n;
+    //                 delete item['风向'];
+    //                 delete item['风速'];
+    //                 delete item['气温'];
+    //                 delete item['湿度'];
+    //                 delete item['气压'];
+    //
+    //             })
+    //             // console.log('res',res)
+    //             debugger
+    //             let resJson = {content: res}
+    //             var jsonStr = JSON.stringify(resJson);
+    //             var blob = new Blob([jsonStr], {type: 'application/json'});
+    //             // 生成下载链接
+    //             var downloadLink = document.createElement('a');
+    //             downloadLink.href = URL.createObjectURL(blob);
+    //             downloadLink.download = n
+    //
+    //             // 模拟点击下载链接
+    //             downloadLink.click();
+    //
+    //
+    //
+    //             // for (let i = 1; i < 6; i++) {
+    //             //     let startData = '2023/4/' + i + ' '
+    //             //     let endData = '2023/4/' + (i + 1) + ' '
+    //             //
+    //             //
+    //             //     let startIndex = res.findIndex(item => item['时间'].slice(0, 9) === startData)
+    //             //     let endIndex = res.findIndex(item => item['时间'].slice(0, 9) === endData)
+    //             //
+    //             //     let jsonData = res.slice(startIndex, endIndex)
+    //             //     console.log('data', n, startData, endData, startIndex, endIndex);
+    //             //
+    //             //     // return res.slice(startIndex,endIndex)
+    //             //     console.log('arr', n, res.slice(startIndex, endIndex));
+    //             //     var jsonStr = JSON.stringify(jsonData);
+    //             //     var blob = new Blob([jsonStr], {type: 'application/json'});
+    //             //     // 生成下载链接
+    //             //     var downloadLink = document.createElement('a');
+    //             //     downloadLink.href = URL.createObjectURL(blob);
+    //             //     downloadLink.download = n
+    //             //     debugger
+    //             //
+    //             //     // 模拟点击下载链接
+    //             //     // downloadLink.click();
+    //             //
+    //             // }
+    //             // console.log(json);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
+
+
+
+
+
+    // //读取json转为一天一个json
+    // // const fs = require('fs');
+    // debugger
+    // for (let n = 12; n < 21; n++) {
+    //     // let n= 9
+    //     let url = './' + n + '.json'
+    //     fetch(url)
+    //         .then(function (response) {
+    //             return response.json();
+    //         })
+    //         .then(function (json) {
+    //             // 在这里处理读取的 JSON 数据
+    //
+    //             let res = json.content
+    //             for (let i = 1; i < 6; i++) {
+    //                 let startData = '2023/4/' + i + ' '
+    //                 let endData = '2023/4/' + (i + 1) + ' '
+    //
+    //
+    //                 let startIndex = res.findIndex(item => item['时间'].slice(0, 9) === startData)
+    //                 let endIndex = res.findIndex(item => item['时间'].slice(0, 9) === endData)
+    //
+    //                 let jsonData = res.slice(startIndex, endIndex)
+    //                 console.log('data', n, startData, endData, startIndex, endIndex);
+    //
+    //                 // return res.slice(startIndex,endIndex)
+    //                 console.log('arr', n, res.slice(startIndex, endIndex));
+    //                 var jsonStr = JSON.stringify(jsonData);
+    //                 var blob = new Blob([jsonStr], {type: 'application/json'});
+    //                 // 生成下载链接
+    //                 var downloadLink = document.createElement('a');
+    //                 downloadLink.href = URL.createObjectURL(blob);
+    //                 downloadLink.download = n
+    //                 debugger
+    //
+    //                 // 模拟点击下载链接
+    //                 downloadLink.click();
+    //
+    //             }
+    //             console.log(json);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
+
+
+</script>
+</html>

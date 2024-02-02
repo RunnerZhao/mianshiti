@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯js读取excel文件内容并显示</title>
+    <script src="./xlsx.full.min.js"></script>
+</head>
+<body>
+<input type="file" onchange="readExcel(this)">
+</body>
+
+<script>
+    function readExcel(fileObj) {
+        var reader = new FileReader();
+        var file = fileObj.files[0];
+        reader.readAsArrayBuffer(file);
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var wb = window.XLSX.read(data, { type: 'binary' });
+            var sheetName = wb.SheetNames[0];
+            var sheets = wb.Sheets[sheetName];
+            var jsonData = XLSX.utils.sheet_to_json(sheets);
+            jsonData.forEach((item) => {
+                let radian = item['流向'] * 0.017453
+                let velocity = item['流速']
+                item.V =Number((Math.sin(radian).toFixed(3) * velocity).toFixed(2))
+                item.N = Number((Math.cos(radian).toFixed(3) * velocity).toFixed(2))
+            })
+            var jsonStr = JSON.stringify(jsonData);
+            var blob = new Blob([jsonStr], { type: 'application/json' });
+            debugger
+            // 生成下载链接
+            var downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'output.json';
+
+            // 模拟点击下载链接
+            downloadLink.click();
+        };
+    }
+</script>
+</html>

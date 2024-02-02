@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .box {
+            width: 250px;
+            height: 250px;
+            border: 1px dashed red;
+            margin: 100px auto;
+
+
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="box">
+    <canvas id="canvas" width="200" height="400"></canvas>
+</div>
+</body>
+<script>
+
+    function mapValueToColor(value) {
+        console.log('value',value)
+        var red = 0;
+        var green = 0;
+        var blue = 0;
+
+        if (value <= 0.05) {
+            blue = Math.floor((value / 0.05) * 255);
+        } else if (value <= 0.1) {
+            green = Math.floor(((value - 0.05) / 0.05) * 255);
+            blue = 255 - Math.floor(((value - 0.05) / 0.05) * 255);
+        } else if (value <= 0.15) {
+            green = 255;
+            blue = Math.floor(((value - 0.1) / 0.05) * 255);
+        } else if (value <= 0.18) {
+            red = Math.floor(((value - 0.15) / 0.03) * 255);
+            green = 255 - Math.floor(((value - 0.15) / 0.03) * 255);
+        } else {
+            red = 255;
+            green = Math.floor(((value - 0.18) / 0.02) * 255);
+        }
+
+        return "rgba(" + red + ", " + green + ", " + blue + ", 1)";
+    }
+
+    var randomValue = 0.2;
+    var FoursValue  = randomValue / 4
+
+    debugger
+    var color = mapValueToColor(randomValue);
+    console.log(color);
+    let computeValue = 0
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    const blockWidth = 200;
+    const blockHeight = 100;
+
+    // 绘制矩形块
+    for (let y = 0; y < canvas.height; y += blockHeight) {
+        for (let x = 0; x < canvas.width; x += blockWidth) {
+            const red = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 256);
+            const blue = Math.floor(Math.random() * 256);
+
+            // context.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+            context.fillStyle = mapValueToColor(randomValue -= FoursValue );
+            // context.fillStyle = mapValueToColor(0.0325 );
+            context.fillRect(x, y, blockWidth, blockHeight);
+        }
+    }18161656420
+
+    // 将画布内容导出为 PNG 图片
+    const dataURL = canvas.toDataURL('image/png');
+    console.log('dataURL',dataURL)
+
+
+</script>
+</html>

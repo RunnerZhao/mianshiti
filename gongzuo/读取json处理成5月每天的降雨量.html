@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>读取json生成每天降雨量</title>
+    <script src="./xlsx.full.min.js"></script>
+</head>
+<body>
+读取json生成每天降雨量
+</body>
+
+<script>
+
+
+    //读取json生成每天降雨量
+        let n= 16//16是中湖心 数据
+        let url = './风json/' + n + '.json'
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                // 在这里处理读取的 JSON 数据
+                let rainFallData =[]
+                let res = json.content
+                for (let i = 1; i < 32; i++) {
+                    let startData = '2022/10/' + i
+                    let endData = '2022/10/' + (i + 1)
+                    // console.log('i',i)
+                    let startIndex,endIndex;
+
+                    startIndex = res.findIndex(item =>  item['时间'].split(" ")[0] == startData)
+                    // endIndex = res.findIndex(item =>  item['时间'].split(" ")[0] == endData)==-1?res.findIndex(item =>  item['时间'].split(" ")[0] == '2022/10/1'):res.findIndex(item =>  item['时间'].split(" ")[0] == endData)
+                    endIndex = res.findIndex(item =>  item['时间'].split(" ")[0] == endData)==-1?res.length:res.findIndex(item =>  item['时间'].split(" ")[0] == endData)
+
+                    // console.log('setIndex',startIndex,'endIndex',endIndex)
+                    let jsonData = res.slice(startIndex, endIndex)
+                    // console.log('data', n, startData, endData, startIndex, endIndex);
+                    let oneDayRainFall = 0
+                    jsonData.forEach(item => {
+                        // console.log('item',item['雨量'],item['时间'])
+                        oneDayRainFall =parseFloat((oneDayRainFall + Number(item['雨量'])).toFixed(2))
+                        // console.log('oneDayRainFall',oneDayRainFall)
+                    })
+                    rainFallData.push({
+                        '时间': startData,
+                        '降雨量': oneDayRainFall
+                    })
+
+
+                    // return res.slice(startIndex,endIndex)
+                    // console.log('arr', n, res.slice(startIndex, endIndex));
+                   let  jsonDataStr =  {content:jsonData}
+                    var jsonStr = JSON.stringify(jsonDataStr);
+                    var blob = new Blob([jsonStr], {type: 'application/json'});
+                    // 生成下载链接
+                    // var downloadLink = document.createElement('a');
+                    // downloadLink.href = URL.createObjectURL(blob);
+                    // downloadLink.download = n
+                    //
+                    // // 模拟点击下载链接
+                    // downloadLink.click();
+
+                }
+                console.log('rainFallData', rainFallData);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+
+
+
+
+</script>
+</html>
